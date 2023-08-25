@@ -1066,13 +1066,15 @@ export class ComfyApp {
 			this.graph.setDirtyCanvas(true, false);
 			delete this.nodePreviewImages[this.runningNodeId]
 		});
-
+		// TODO: UI Update
 		api.addEventListener("executed", ({ detail }) => {
 			this.nodeOutputs[detail.node] = detail.output;
 			const node = this.graph.getNodeById(detail.node);
 			if (node) {
 				if (node.onExecuted)
 					node.onExecuted(detail.output);
+
+				this.updateNode(node, detail);
 			}
 		});
 
@@ -1230,8 +1232,8 @@ export class ComfyApp {
 			this.loadGraphData();
 		}
 
-		// Save current workflow automatically
-		setInterval(() => localStorage.setItem("workflow", JSON.stringify(this.graph.serialize())), 1000);
+        // Save current workflow automatically
+        setInterval(async () => await this.saveWorkflow(), 1000);
 
 		this.#addDrawNodeHandler();
 		this.#addDrawGroupsHandler();
@@ -1244,6 +1246,9 @@ export class ComfyApp {
 		await this.#invokeExtensionsAsync("setup");
 	}
 
+	async saveWorkflow() {
+        localStorage.setItem("workflow", JSON.stringify(this.graph.serialize()));
+    }
 	/**
 	 * Registers nodes with the graph
 	 */
@@ -1703,11 +1708,23 @@ export class ComfyApp {
 		this.extensions.push(extension);
 	}
 
-	/**
-	 * Refresh combo list on whole nodes
-	 */
-	async refreshComboInNodes() {
+    /**
+     * Refresh combo list on whole nodes
+     * @param {HTMLElement} button
+     */
+	async refreshComboInNodes(button) {
+		if (button.getAttribute("disabled")) {
+			// Do not allow multiple refreshes
+			return;
+		}
+		button.setAttribute("disabled", true);
+		// Reload custom node modules under custom_nodes
+		const customNodeData = await api.getCustomNodes();
+
+		// Reload combobox
 		const defs = await api.getNodeDefs();
+        LiteGraph.clearRegisteredTypes();
+        await this.registerNodesFromDefs(defs);
 
 		for(const nodeId in LiteGraph.registered_node_types) {
 			const node = LiteGraph.registered_node_types[nodeId];
@@ -1739,6 +1756,8 @@ export class ComfyApp {
 				}
 			}
 		}
+
+		button.removeAttribute("disabled");
 	}
 
 	/**
@@ -1751,6 +1770,25 @@ export class ComfyApp {
 		this.lastExecutionError = null;
 		this.runningNodeId = null;
 	}
+
+	/**
+     * Update Node UI Based on node state data
+     * TODO: Better Idea than just plain impl into App?
+     */
+    updateNode(node, detail) {
+        switch (node.type) {
+            case "DebugNode":
+                const {texts} = detail.output
+                if (texts !== undefined && texts.length > 0) {
+                    node.title = texts[0].substring(0, 16);
+                    node.widgets[0].value = texts[0]
+                }
+                break;
+			case "DebugCond":
+				console.log(detail)
+				break;
+        }
+    }
 }
 
 export const app = new ComfyApp();
