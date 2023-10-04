@@ -1,0 +1,22 @@
+{
+    "client_id": "8e4f0e85af1242069413533b1d7fed03",
+    "prompt": {
+        "1": {
+            "inputs": {
+                "images": [
+                    "2",
+                    0
+                ]
+            },
+            "class_type": "PreviewImage"
+        },
+        "2": {
+            "inputs": {
+                "image": "example.png",
+                "choose file to upload": "image"
+            },
+            "class_type": "LoadImage"
+        }
+    },
+    "extra_data": {}
+}

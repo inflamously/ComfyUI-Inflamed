@@ -129,7 +129,7 @@ def recursive_execute(server, prompt, outputs, current_item, extra_data, execute
     inputs = prompt[unique_id]['inputs']
     class_type = prompt[unique_id]['class_type']
     class_def = nodes.NODE_CLASS_MAPPINGS[class_type]
-    if unique_id in outputs:
+    if unique_id in outputs: # TODO: Has Node with ID in outputs (which generated before a value) skip n use cache value
         return (True, None, None)
 
     for x in inputs:
@@ -162,11 +162,6 @@ def recursive_execute(server, prompt, outputs, current_item, extra_data, execute
             success, error = validate_output_ui_data(server, unique_id, prompt_id, class_type, executed, output_ui)
             if not success:
                 raise Exception("Output UI Error: {}".format(error))
-            if "UI_TEMPLATE" in output_ui:
-                template_file = os.path.join(os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)))), "custom_nodes", output_ui["UI_TEMPLATE"][0])
-                with open(template_file, "r") as f:
-                    output_ui["UI_TEMPLATE"] = f.read()
-                    if len(output_ui["UI_TEMPLATE"]) <= 0: raise Exception("UI_TEMPLATE cannot be empty!")
             outputs_ui[unique_id] = output_ui
             if server.client_id is not None:
                 server.send_sync("executed", { "node": unique_id, "output": output_ui, "prompt_id": prompt_id }, server.client_id)
@@ -361,7 +356,7 @@ class PromptExecutor:
                 d = self.outputs.pop(o)
                 del d
             to_delete = []
-            for o in self.object_storage:
+            for o in self.object_storage: # TODO: Incase object_storage not in prompt or class type mismatch delete
                 if o[0] not in prompt:
                     to_delete += [o]
                 else:
