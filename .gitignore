@@ -20,3 +20,4 @@ venv/
 !/web/extensions/core/
 /workflows
 **/comfyui_controlnet_aux
+/tests-ui/data/object_info.json
