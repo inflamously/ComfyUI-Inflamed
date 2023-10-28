@@ -1,7 +1,7 @@
-import PromptNodeLoadImage from "../+state/workflow/nodes/load-image.node.ts";
-import PromptNodePreviewImage from "../+state/workflow/nodes/preview-image.node.ts";
-import {createPromptWorkflow} from "../+state/workflow/create-workflow.ts";
 import {workflowDtoMapper} from "./workflow-to-workflow-dto.mapper.ts";
+import PromptNodeLoadImage from "../../+state/prompt-nodes/load-image.node.ts";
+import {createPromptWorkflow} from "../../+state/prompt-workflow/create-prompt-workflow.ts";
+import PromptNodePreviewImage from "../../+state/prompt-nodes/preview-image.node.ts";
 
 describe('Mapper for workflow conversion to DTO', () => {
     it('should map workflow to dto', () => {
@@ -14,6 +14,7 @@ describe('Mapper for workflow conversion to DTO', () => {
 
         expect(loadImageNode.getOutputs()?.image).toEqual({
             id: "1",
+            kind: "link",
             slot: 0,
         })
 

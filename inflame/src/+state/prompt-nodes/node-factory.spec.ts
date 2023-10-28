@@ -12,6 +12,7 @@ describe('testing out the node factory for creating various nodes', () => {
         expect(nodeLoadImage?.getOutputs()).toEqual({
             image: {
                 id: "1",
+                kind: "link",
                 slot: 0
             }
         })
@@ -29,6 +30,7 @@ describe('testing out the node factory for creating various nodes', () => {
         expect(nodePreviewImage?.getInputs()).toEqual({
             images: {
                 id: "1",
+                kind: "link",
                 slot: 0,
             }
         })

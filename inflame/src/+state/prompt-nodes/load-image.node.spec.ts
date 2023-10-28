@@ -12,6 +12,7 @@ describe('should test node parameters and typings indirectly', function () {
         expect(node.getOutputs()).toEqual({
             image: {
                 id: "1",
+                kind: "link",
                 slot: 0,
             }
         })

@@ -18,6 +18,8 @@ type NodeTypeCreatorFunction<Key extends NodeTypeKeys> = typeof nodeMap[Key]
  */
 type NodeTypeCreatorFunctionParams<Key extends NodeTypeKeys> = Parameters<NodeTypeCreatorFunction<Key>>;
 
+
+// TODO: do I need this anymore?
 /**
  * Given a node's classname, this function returns a function to create it.
  * @param classtype

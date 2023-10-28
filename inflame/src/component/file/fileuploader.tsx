@@ -1,7 +1,7 @@
 import {Box, Button, FormControl, FormErrorMessage, FormLabel, Input, Text, useBoolean} from "@chakra-ui/react";
 import {ChangeEventHandler, useCallback, useReducer, useState} from "react";
 import {validateFiles} from "./validators.ts";
-import {errorReducer, ErrorStateActionReset} from "../error/error.ts";
+import {errorReducer, ErrorStateActionReset} from "../../error-handling/error.ts";
 import {MIME_TYPES} from "./mimetypes.ts";
 import {fileUpload, hasFilelistProperty} from "./fileutils.ts";
 import FileDisplay from "./filedisplay.tsx";

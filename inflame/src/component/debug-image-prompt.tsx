@@ -1,13 +1,13 @@
 import {Box, Button, Textarea} from "@chakra-ui/react";
 import {ChangeEvent, useCallback, useState} from "react";
-import * as testPrompt from './prompting/test-prompt-minified.json'
+import * as testPrompt from '../assets/prompting/test-prompt-minified.json'
 import Fileuploader from "./file/fileuploader.tsx";
-import {socketStateSelectors} from "./+state/socket/socket-selectors.ts";
+import {socketStateSelectors} from "../+state/socket/socket-selectors.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {SOCKET_MAIN} from "./+state/socket/socket-names.ts";
-import {AppState} from "./+state/inflame-store.ts";
+import {SOCKET_MAIN} from "../+state/socket/socket-names.ts";
+import {AppState} from "../+state/inflame-store.ts";
 import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
-import promptWorkflowThunk from "./+state/prompt-workflow/prompt-workflow.thunk.ts";
+import promptWorkflowThunk from "../+state/prompt-workflow/prompt-workflow.thunk.ts";
 
 const DebugImagePrompt = () => {
     const socketState = useSelector((state: AppState) => socketStateSelectors.selectById(state, SOCKET_MAIN))

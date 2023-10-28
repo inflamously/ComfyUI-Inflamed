@@ -1,10 +1,10 @@
 import {Box} from "@chakra-ui/react";
 import useComfyuiSocket from "../socket/comfyui-socket.tsx";
-import {useNodesInitializer} from "../nodes/nodes-info.tsx";
 import {Outlet} from "react-router-dom";
-import NavigationBar from "../navigation/navigation.tsx";
+import {useNodesInitializer} from "../component/nodes/nodes-info.tsx";
+import NavigationBar from "../component/navigation/navigation.tsx";
 
-const App = () => {
+const PageApp = () => {
     useComfyuiSocket()
     useNodesInitializer()
 
@@ -16,4 +16,4 @@ const App = () => {
     )
 }
 
-export default App
+export default PageApp
