@@ -1,6 +1,6 @@
 import {RouteObject} from "react-router-dom";
 import {createContext} from "react";
-import router from "./router.tsx";
+import {Routing} from "./router.tsx";
 
 type Routes = (string | undefined)[]
 
@@ -17,7 +17,7 @@ export const routerPaths = () => {
         })
     }
 
-    queryPaths(router.routes, "")
+    queryPaths(Routing.routes, "")
 
     return paths
 }

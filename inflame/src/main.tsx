@@ -6,9 +6,9 @@ import {Provider} from "react-redux";
 import inflameStore from "./+state/inflame-store.ts";
 import {ChakraProvider} from "@chakra-ui/react";
 import {RouterProvider} from "react-router-dom";
-import {routerPaths} from "./router.utils.ts";
-import routing from './router.tsx'
-import {RoutePathsContext} from "./router.utils.ts";
+import {routerPaths} from "./routes/router.utils.ts";
+import {RoutePathsContext} from "./routes/router.utils.ts";
+import {Routing} from "./routes/router.tsx";
 
 ReactDOM.createRoot(
     document.getElementById('root')!
@@ -17,7 +17,7 @@ ReactDOM.createRoot(
         <Provider store={inflameStore}>
             <ChakraProvider theme={theme}>
                 <RoutePathsContext.Provider value={routerPaths()}>
-                    <RouterProvider router={routing.router} fallbackElement={<p>Loading...</p>}/>
+                    <RouterProvider router={Routing.router} fallbackElement={<p>Loading...</p>}/>
                 </RoutePathsContext.Provider>
             </ChakraProvider>
         </Provider>

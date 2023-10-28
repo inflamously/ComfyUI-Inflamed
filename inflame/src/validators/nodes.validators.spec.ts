@@ -1,8 +1,8 @@
 import {noEqualNamesValidator} from "./nodes.validators.ts";
-import {MOCK_OBJECT_NODE_DTO} from "./mocks/mock-object-node-dto.ts";
-import {ObjectNodeDTO} from "../dto/object-node.dto.ts";
-import {createDataNodeCollection} from "../../+state/nodes/data-node.utils.ts";
-import {DataNode} from "../../+state/nodes/data-node.model.ts";
+import {ObjectNodeDTO} from "../api/dto/object-node.dto.ts";
+import {MOCK_OBJECT_NODE_DTO} from "../api/mapper/mocks/mock-object-node-dto.ts";
+import {createDataNodeCollection} from "../+state/data-nodes/data-node.utils.ts";
+import {DataNode} from "../+state/data-nodes/data-node.model.ts";
 
 describe('tests various api validators functions', function () {
     let node: ObjectNodeDTO;
