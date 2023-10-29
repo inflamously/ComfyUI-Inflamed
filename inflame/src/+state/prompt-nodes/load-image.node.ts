@@ -3,12 +3,12 @@ import {
     PromptNodeFields,
     PromptNodeTypeGuard,
 } from "./prompt-node.ts";
-import {PromptNodeLink} from "./prompt-node-link.ts";
+import {BindValueLink} from "./bind-values.ts";
 
 type NodeLoadImageInputs = never
 
 type NodeLoadImageOutputs = {
-    image: PromptNodeLink,
+    image: BindValueLink,
 }
 
 type NodeLoadImageState = {
@@ -30,14 +30,23 @@ const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
     >(
         props,
         "LoadImage",
-        undefined,
         {
-            image: {
-                kind: "link",
-                id,
-                slot: 0
+            outputs: {
+                image: {
+                    kind: "link",
+                    id,
+                    slot: 0
+                }
+            },
+            extraInputs: (state) => {
+                return {
+                    image: {
+                        kind: "array",
+                        value: state.images
+                    }
+                }
             }
-        }
+        },
     );
 }
 

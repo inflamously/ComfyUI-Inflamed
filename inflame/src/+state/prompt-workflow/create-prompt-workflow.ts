@@ -13,6 +13,7 @@ export type PromptWorkflow = {
  * Creates a new workflow on given nodes
  * @param props
  */
+// TODO: sort nodes by id?
 export const createPromptWorkflow = (props: {
     nodes?: AbstractPromptNodeType[]
 }): PromptWorkflow => {

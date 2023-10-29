@@ -1,7 +1,8 @@
-import {PromptNodeTypeCreator, PromptNodeFields, PromptNodeLink} from "./prompt-node.ts";
+import {PromptNodeTypeCreator, PromptNodeFields} from "./prompt-node.ts";
+import {BindValueLink} from "./bind-values.ts";
 
 type TestNodeInputs = {
-    testInput: PromptNodeLink
+    testInput: BindValueLink
 }
 
 type TestNodeState = {
@@ -9,11 +10,11 @@ type TestNodeState = {
 }
 
 type TestNodeOutputs = {
-    testOutput: PromptNodeLink
+    testOutput: BindValueLink
 }
 
 const TestNode = (props: PromptNodeFields<TestNodeState>) => {
-    const { id } = props
+    const {id} = props
 
     return PromptNodeTypeCreator<TestNodeState, TestNodeInputs, TestNodeOutputs>(
         {
@@ -23,11 +24,13 @@ const TestNode = (props: PromptNodeFields<TestNodeState>) => {
             }
         },
         "TestNode",
-        undefined,
         {
-            testOutput: {
-                id,
-                slot: 0
+            outputs: {
+                testOutput: {
+                    id,
+                    kind: "link",
+                    slot: 0
+                }
             }
         }
     )
@@ -45,6 +48,7 @@ describe('test nodes and their generic functionality', function () {
         expect(node.getOutputs()).toEqual({
             testOutput: {
                 id: "1",
+                kind: "link",
                 slot: 0,
             }
         })

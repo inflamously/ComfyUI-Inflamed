@@ -5,10 +5,11 @@ import {
     PromptNodeFields,
     PromptNodeTypeGuard
 } from "./prompt-node.ts";
-import {PromptNodeLink} from "./prompt-node-link.ts";
+import {BindValueLink} from "./bind-values.ts";
+
 
 type NodePreviewImageInputs = {
-    images: PromptNodeLink,
+    images: BindValueLink,
 }
 
 type NodePreviewImageOutputs = never
@@ -29,6 +30,7 @@ const PromptNodePreviewImage = (props: PromptNodeFields<NodePreviewImageState>) 
     >(
         props,
         "PreviewImage",
+        {}
     )
 }
 

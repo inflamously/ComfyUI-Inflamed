@@ -36,6 +36,22 @@ describe('Mapper for workflow conversion to DTO', () => {
         })
 
         const workflowDto = workflowDtoMapper(workflow)
-        expect(workflowDto).toEqual({})
+        expect(workflowDto).toEqual(
+            {
+                "1": {
+                    "class_type": "LoadImage",
+                    "inputs": {}
+                },
+                "2": {
+                    "class_type": "PreviewImage",
+                    "inputs": {
+                        "images": [
+                            "1",
+                            0
+                        ]
+                    }
+                }
+            }
+        )
     })
 });
