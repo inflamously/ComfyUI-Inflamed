@@ -30,7 +30,7 @@ describe('test the creation of a workflow based on nodes', function () {
             // Work with specific type
             expect(node.id).toEqual("1")
             // Work with abstract type
-            expect(node.state).toEqual({
+            expect(node.getState()).toEqual({
                 images: []
             })
         }
@@ -63,7 +63,7 @@ describe('test the creation of a workflow based on nodes', function () {
             // Work with specific type
             expect(node?.id).toEqual("1")
             // Work with abstract type
-            expect(node?.state).toEqual({
+            expect(node?.getState()).toEqual({
                 images: []
             })
         }

@@ -17,7 +17,7 @@ describe('should test node parameters and typings indirectly', function () {
             }
         })
         expect(node.getInputs()).toEqual(undefined)
-        expect(node.state).toEqual({
+        expect(node.getState()).toEqual({
             images: ["test.png"]
         })
     })
@@ -33,7 +33,7 @@ describe('should test node parameters and typings indirectly', function () {
 
         if (isPromptNodeLoadImage(node)) {
             expect(node.id).toEqual("1");
-            expect(node.state?.images)
+            expect(node.getState()?.images)
         }
     })
 });

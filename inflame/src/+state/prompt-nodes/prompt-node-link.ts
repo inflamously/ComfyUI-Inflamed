@@ -1,23 +1,19 @@
-export type PromptNodeValueKind<Kind extends string> = {
-    kind: Kind
-}
+import {BindValueArray, BindValueLink, BindValueString} from "./bind-values.ts";
 
-export type PromptNodeLink = PromptNodeValueKind<"link"> & {
-    id: string,
-    slot: number,
-}
+export type PromptNodeBindTypes = BindValueLink | BindValueString | BindValueArray
 
-export type PromptNodeValueString = PromptNodeValueKind<"string"> & {
-    value: string
-}
-
+// TODO: Renamed link to binding
 // Defines an object which stores node links to other nodes
-export type PromptNodeLinkObject = Record<string, Readonly<PromptNodeLink | undefined>>;
+// export type PromptNodeLinkObject = Record<string, Readonly<PromptNodeBindTypes | undefined>>;
 
-export type DynamicPromptNodeLinkObject<Type extends Record<string, unknown>> = {
+export type PromptNodeBindMap = Readonly<PromptNodeBindTypes | undefined>
+
+export type DynamicPromptNodeLinkObject<Type extends Record<string, PromptNodeBindMap>> = {
     // Given some Type which extends Record<string, unknown> (extract props) we can map each item to an PromptNodeLink
-    [Key in keyof Type]: Readonly<PromptNodeLink | PromptNodeValueString | undefined>
+    [Key in keyof Type]: PromptNodeBindMap
 }
+
+export type AbstractDynamicPromptNodeLinkObject = DynamicPromptNodeLinkObject<never>
 
 // This type checks if the passed generic is proper and valid
-export type PromptNodeLinkObjectKey<Inputs> = Inputs extends PromptNodeLinkObject ? Inputs : never
+// export type PromptNodeLinkObjectKey<Inputs> = Inputs extends PromptNodeLinkObject ? Inputs : never
