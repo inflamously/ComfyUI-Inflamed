@@ -35,12 +35,12 @@ export type PromptNodeType<
 > = {
     id: Readonly<string>,
     classtype: string,
-    getInputs: () => Readonly<DynamicPromptNodeLinkObject<Inputs>> | undefined,
+    getInputs: () => DynamicPromptNodeLinkObject<Inputs> | undefined,
     getExtraInputs: () => PromptNodeExtraInputsResult<State> | undefined,
     setInputs: (inputs: DynamicPromptNodeLinkObject<Inputs>) => void
-    getState: () => Readonly<State>,
+    getState: () => State,
     setState: (state: State) => void,
-    getOutputs: () => Readonly<DynamicPromptNodeLinkObject<Outputs>> | undefined,
+    getOutputs: () => DynamicPromptNodeLinkObject<Outputs> | undefined,
 }
 
 /**
@@ -105,11 +105,12 @@ export const PromptNodeTypeCreator = <
 export type AbstractPromptNodeType = {
     id: Readonly<string>,
     classtype: string,
-    getInputs: () => DynamicPromptNodeLinkObject<Record<string, never>> | undefined,
+    getInputs: () => DynamicPromptNodeLinkObject<Record<string, PromptNodeBindMap>> | undefined,
+    getExtraInputs: () => PromptNodeExtraInputsResult<never> | undefined,
     setInputs: (inputs: DynamicPromptNodeLinkObject<never>) => void
-    getState: () => Readonly<never | unknown>,
+    getState: () => never | unknown,
     setState: (state: never) => void,
-    getOutputs: () => DynamicPromptNodeLinkObject<Record<string, never>> | undefined,
+    getOutputs: () => DynamicPromptNodeLinkObject<Record<string, PromptNodeBindMap>> | undefined,
 }
 
 export type PromptNodeTypeGuardFunction<T extends AbstractPromptNodeType = never> = (obj: AbstractPromptNodeType | undefined) => obj is T;
