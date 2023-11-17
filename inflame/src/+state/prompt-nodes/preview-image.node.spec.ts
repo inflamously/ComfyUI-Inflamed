@@ -7,7 +7,7 @@ describe('should test node parameters and typings indirectly', function () {
         const externNode = PromptNodeLoadImage({
             id: "2",
             initialState: {
-                image: "",
+                currentImage: "",
                 images: []
             }
         })
