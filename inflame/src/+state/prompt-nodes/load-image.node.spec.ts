@@ -6,7 +6,8 @@ describe('should test node parameters and typings indirectly', function () {
         const node = PromptNodeLoadImage({
             id: "1",
             initialState: {
-                images: ["test.png"]
+                images: ["test.png"],
+                image: "test.png",
             }
         })
         expect(node.getOutputs()).toEqual({
@@ -18,6 +19,7 @@ describe('should test node parameters and typings indirectly', function () {
         })
         expect(node.getInputs()).toEqual(undefined)
         expect(node.getState()).toEqual({
+            image: "test.png",
             images: ["test.png"]
         })
     })
@@ -27,7 +29,8 @@ describe('should test node parameters and typings indirectly', function () {
         const node: AbstractPromptNodeType = PromptNodeLoadImage({
             id: "1",
             initialState: {
-                images: []
+                images: [],
+                image: "test.png",
             }
         })
 
