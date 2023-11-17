@@ -9,7 +9,7 @@ describe('Mapper for workflow conversion to DTO', () => {
             id: "1",
             initialState: {
                 images: [],
-                image: "test.png",
+                currentImage: "test.png",
             }
         })
 

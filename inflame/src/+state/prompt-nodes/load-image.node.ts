@@ -13,7 +13,7 @@ type NodeLoadImageOutputs = {
 
 type NodeLoadImageState = {
     images: string[],
-    image: string,
+    currentImage: string,
 }
 
 export type PromptNodeLoadImageType = ReturnType<typeof PromptNodeLoadImage>
@@ -47,7 +47,7 @@ const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
                     },
                     image: {
                         kind: "string",
-                        value: state.image
+                        value: state.currentImage
                     }
                 }
             }
