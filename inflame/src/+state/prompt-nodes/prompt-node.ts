@@ -1,20 +1,17 @@
 import {
-    DynamicPromptNodeLinkObject, PromptNodeBindMap, PromptNodeBindTypes,
+    PromptNodeConnections, PromptNodeConnection, PromptNodeConnectionBind,
 } from "./prompt-node-link.ts";
 
-// TODO: Fix typing issue?
-type PromptNodeExtraInputs<ParamState> = (state: ParamState) => DynamicPromptNodeLinkObject<Record<string, never>>
-type PromptNodeExtraInputsResult<ParamState> = ReturnType<PromptNodeExtraInputs<ParamState>>
 
 export type PromptNodeConfig<
     State,
-    Inputs extends Record<string, PromptNodeBindMap>,
-    Outputs extends Record<string, PromptNodeBindMap>
+    Inputs extends Record<string, PromptNodeConnection>,
+    Outputs extends Record<string, PromptNodeConnection>
 > = {
-    inputs?: DynamicPromptNodeLinkObject<Inputs>,
-    outputs?: DynamicPromptNodeLinkObject<Outputs>,
-    // Defines extra inputs which are some sort of special use case of that specific node.
-    extraInputs?: PromptNodeExtraInputs<State>
+    inputs?: PromptNodeConnections<Inputs>,
+    outputs?: PromptNodeConnections<Outputs>,
+    // Defines inputs which are bound to state and or are of special use cases.
+    stateInputs?: (state: State) => PromptNodeConnections<Record<string, never>>
 }
 
 /**
@@ -30,17 +27,17 @@ export type PromptNodeFields<State> = {
  */
 export type PromptNodeType<
     State,
-    Inputs extends Record<string, PromptNodeBindMap>,
-    Outputs extends Record<string, PromptNodeBindMap>,
+    Inputs extends Record<string, PromptNodeConnection>,
+    Outputs extends Record<string, PromptNodeConnection>,
 > = {
     id: Readonly<string>,
     classtype: string,
-    getInputs: () => DynamicPromptNodeLinkObject<Inputs> | undefined,
-    getExtraInputs: () => PromptNodeExtraInputsResult<State> | undefined,
-    setInputs: (inputs: DynamicPromptNodeLinkObject<Inputs>) => void
+    getInputs: () => PromptNodeConnections<Inputs> | undefined,
+    getStateInputs?: () => PromptNodeConnections<Record<string, never>> | undefined,
+    setInputs: (inputs: PromptNodeConnections<Inputs>) => void
     getState: () => State,
     setState: (state: State) => void,
-    getOutputs: () => DynamicPromptNodeLinkObject<Outputs> | undefined,
+    getOutputs: () => PromptNodeConnections<Outputs> | undefined,
 }
 
 /**
@@ -53,8 +50,8 @@ export type PromptNodeType<
 // TODO: Check inputs and validate for ids
 export const PromptNodeTypeCreator = <
     State,
-    Inputs extends Record<string, Readonly<PromptNodeBindTypes | undefined>>,
-    Outputs extends Record<string, Readonly<PromptNodeBindTypes | undefined>>,
+    Inputs extends Record<string, Readonly<PromptNodeConnectionBind | undefined>>,
+    Outputs extends Record<string, Readonly<PromptNodeConnectionBind | undefined>>,
 >(
     props: PromptNodeFields<State>,
     classtype: string,
@@ -73,7 +70,7 @@ export const PromptNodeTypeCreator = <
     const {
         inputs,
         outputs,
-        extraInputs
+        stateInputs
     } = config;
 
     // Node's state values
@@ -83,15 +80,17 @@ export const PromptNodeTypeCreator = <
 
     // Nodes state changing functions
     const setState = (state: State) => __state = state
-    const setInputs = (inputs: DynamicPromptNodeLinkObject<Inputs>) => {
+    const setInputs = (inputs: PromptNodeConnections<Inputs>) => {
         __inputs = inputs
     }
+
+    // extraInputs?.(__state))
 
     return {
         id,
         classtype,
         getInputs: () => __inputs,
-        getExtraInputs: () => extraInputs?.(__state),
+        getStateInputs: () => stateInputs?.(__state),
         setInputs,
         getState: () => __state,
         setState,
@@ -105,12 +104,12 @@ export const PromptNodeTypeCreator = <
 export type AbstractPromptNodeType = {
     id: Readonly<string>,
     classtype: string,
-    getInputs: () => DynamicPromptNodeLinkObject<Record<string, PromptNodeBindMap>> | undefined,
-    getExtraInputs: () => PromptNodeExtraInputsResult<never> | undefined,
-    setInputs: (inputs: DynamicPromptNodeLinkObject<never>) => void
+    getInputs: () => PromptNodeConnections<Record<string, PromptNodeConnection>> | undefined,
+    getStateInputs?: () => PromptNodeConnections<Record<string, never>> | undefined,
+    setInputs: (inputs: PromptNodeConnections<never>) => void
     getState: () => never | unknown,
     setState: (state: never) => void,
-    getOutputs: () => DynamicPromptNodeLinkObject<Record<string, PromptNodeBindMap>> | undefined,
+    getOutputs: () => PromptNodeConnections<Record<string, PromptNodeConnection>> | undefined,
 }
 
 export type PromptNodeTypeGuardFunction<T extends AbstractPromptNodeType = never> = (obj: AbstractPromptNodeType | undefined) => obj is T;

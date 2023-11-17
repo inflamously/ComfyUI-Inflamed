@@ -8,7 +8,8 @@ describe('Mapper for workflow conversion to DTO', () => {
         const loadImageNode = PromptNodeLoadImage({
             id: "1",
             initialState: {
-                images: []
+                images: [],
+                image: "test.png",
             }
         })
 
@@ -40,7 +41,10 @@ describe('Mapper for workflow conversion to DTO', () => {
             {
                 "1": {
                     "class_type": "LoadImage",
-                    "inputs": {}
+                    "inputs": {
+                        "choose file to upload": "image",
+                        "image": "test.png"
+                    }
                 },
                 "2": {
                     "class_type": "PreviewImage",

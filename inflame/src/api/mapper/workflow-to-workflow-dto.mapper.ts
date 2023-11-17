@@ -1,6 +1,25 @@
 import {PromptNodeDTO, PromptNodeInputsDTO, PromptNodeValueDTO, PromptWorkflowDTO} from "../dto/prompt-node.dto.ts";
 import {PromptWorkflow} from "../../+state/prompt-workflow/create-prompt-workflow.ts";
+import {PromptNodeConnection} from "../../+state/prompt-nodes/prompt-node-link.ts";
 
+export const nodeConnectionToPromptNodeInputDto = (key: string, connection: PromptNodeConnection) => {
+    let nodeValue: PromptNodeValueDTO = undefined
+
+    if (connection?.kind === "link") {
+        nodeValue = [connection.id, connection.slot]
+    }
+
+    if (connection?.kind === "string") {
+        nodeValue = connection.value
+    }
+
+    return [key, nodeValue]
+}
+
+/**
+ * Converts workflow to dto using nodes in their respective order given from .getNodes()
+ * @param workflow
+ */
 export const workflowDtoMapper = (workflow: PromptWorkflow): PromptWorkflowDTO | undefined => {
     if (!workflow) {
         return undefined
@@ -9,25 +28,19 @@ export const workflowDtoMapper = (workflow: PromptWorkflow): PromptWorkflowDTO |
     return Object.fromEntries(
         workflow.getNodes().map((node) => {
             const inputs = node.getInputs() ?? {}
+            const extraInputs = node.getStateInputs?.();
 
-            const dtoInputs: PromptNodeInputsDTO = Object.fromEntries(
-                Object.keys(inputs).map((nodeKey) => {
-                        const nodeLink = inputs[nodeKey]
-                        let nodeValue: PromptNodeValueDTO = undefined
-
-                        if (nodeLink?.kind === "link") {
-                            nodeValue = [nodeLink.id, nodeLink.slot]
-                        }
-
-                        if (nodeLink?.kind === "string") {
-                            nodeValue = nodeLink.value
-                        }
-
-                        return [nodeKey, nodeValue]
-                    }
-                )
+            let dtoInputs: PromptNodeInputsDTO = Object.fromEntries(
+                Object.keys(inputs).map((nodeKey) => nodeConnectionToPromptNodeInputDto(nodeKey, inputs[nodeKey]))
             )
 
+            if (extraInputs) {
+                const dtoExtraInputs = Object.fromEntries(
+                    Object.keys(extraInputs).map((nodeKey) => nodeConnectionToPromptNodeInputDto(nodeKey, extraInputs[nodeKey]))
+                )
+
+                dtoInputs = Object.assign(dtoInputs, dtoExtraInputs)
+            }
 
             return [node.id, {
                 inputs: dtoInputs,
