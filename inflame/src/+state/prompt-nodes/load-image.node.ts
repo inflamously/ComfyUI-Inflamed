@@ -12,7 +12,8 @@ type NodeLoadImageOutputs = {
 }
 
 type NodeLoadImageState = {
-    images: string[]
+    images: string[],
+    image: string,
 }
 
 export type PromptNodeLoadImageType = ReturnType<typeof PromptNodeLoadImage>
@@ -38,11 +39,15 @@ const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
                     slot: 0
                 }
             },
-            extraInputs: (state) => {
+            stateInputs: (state) => {
                 return {
+                    "choose file to upload": {
+                        kind: "string",
+                        value: "image",
+                    },
                     image: {
-                        kind: "array",
-                        value: state.images
+                        kind: "string",
+                        value: state.image
                     }
                 }
             }
