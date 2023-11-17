@@ -3,6 +3,7 @@ import PromptNodeLoadImage from "../../+state/prompt-nodes/load-image.node.ts";
 import {createPromptWorkflow} from "../../+state/prompt-workflow/create-prompt-workflow.ts";
 import PromptNodePreviewImage from "../../+state/prompt-nodes/preview-image.node.ts";
 
+// TODO: Create wrappe with client id and workflow to build dto that can be prompted
 describe('Mapper for workflow conversion to DTO', () => {
     it('should map workflow to dto', () => {
         const loadImageNode = PromptNodeLoadImage({
