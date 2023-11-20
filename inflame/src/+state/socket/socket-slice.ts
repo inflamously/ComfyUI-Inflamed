@@ -1,11 +1,7 @@
 import {createEntityAdapter, createSlice} from "@reduxjs/toolkit";
+import {ComfyuiSocket} from "./comfyui-socket.model.ts";
 
-type ComfyuiSocketState = {
-    name: string,
-    clientId: string
-}
-
-export const socketAdapter = createEntityAdapter<ComfyuiSocketState>({
+export const socketAdapter = createEntityAdapter<ComfyuiSocket>({
     selectId: (state) => state.name,
 })
 

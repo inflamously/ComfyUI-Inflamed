@@ -2,6 +2,8 @@ import {PromptNodeResultDTO, PromptWorkflowDTO} from "./dto/prompt-node.dto.ts";
 import {PromptNodeErrorsDTO} from "./dto/error.dto.ts";
 import {ObjectNodesDTO} from "./dto/object-node.dto.ts";
 
+// TODO: Use redux toolkit to map api
+
 type ApiConfig = {
     url: string,
     port: number,

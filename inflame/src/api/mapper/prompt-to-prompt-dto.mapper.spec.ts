@@ -1,0 +1,53 @@
+import {Prompt} from "../../+state/prompt/prompt.ts";
+import {createPromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
+import PreviewImageNode from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
+import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image.node.ts";
+import {PromptDTO} from "../dto/prompt-node.dto.ts";
+import {promptToPromptDto} from "./prompt-to-prompt-dto.mapper.ts";
+
+describe('Mapper for converting a full prompt into a dto object that can be passed to /prompt', function () {
+    it('should convert a simple prompt object', () => {
+        const prompt: Prompt = {
+            socket: {
+                name: "main",
+                clientId: "test-123"
+            },
+            workflow: createPromptWorkflow({
+                nodes: [
+                    LoadImageNode({
+                        id: "1",
+                        initialState: {
+                            images: ["test.png"],
+                            currentImage: "test.png",
+                        }
+                    }),
+                    PreviewImageNode({
+                        id: "2",
+                        initialState: {
+                            images: []
+                        }
+                    })
+                ]
+            })
+        } satisfies Prompt
+
+        const dto: PromptDTO = promptToPromptDto(prompt)
+        expect(dto).toEqual({
+            client_id: "test-123",
+            prompt: {
+                "1": {
+                    "class_type": "LoadImage",
+                    "inputs": {
+                        "choose file to upload": "image",
+                        "image": "test.png"
+                    }
+                },
+                "2": {
+                    "class_type": "PreviewImage",
+                    "inputs": {}
+                }
+            },
+            extra_data: {}
+        })
+    })
+});
