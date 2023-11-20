@@ -4,14 +4,16 @@ import PreviewImageNode from "../../+state/prompt/prompt-nodes/preview-image.nod
 import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image.node.ts";
 import {PromptDTO} from "../dto/prompt-node.dto.ts";
 import {promptToPromptDto} from "./prompt-to-prompt-dto.mapper.ts";
+import {ComfyuiSocket} from "../../+state/socket/comfyui-socket.model.ts";
 
 describe('Mapper for converting a full prompt into a dto object that can be passed to /prompt', function () {
     it('should convert a simple prompt object', () => {
+        const socket: ComfyuiSocket = {
+            name: "main",
+            clientId: "test-123"
+        }
+
         const prompt: Prompt = {
-            socket: {
-                name: "main",
-                clientId: "test-123"
-            },
             workflow: createPromptWorkflow({
                 nodes: [
                     LoadImageNode({
@@ -31,7 +33,10 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
             })
         } satisfies Prompt
 
-        const dto: PromptDTO = promptToPromptDto(prompt)
+        const dto: PromptDTO = promptToPromptDto({
+            socket,
+            prompt
+        })
         expect(dto).toEqual({
             client_id: "test-123",
             prompt: {
