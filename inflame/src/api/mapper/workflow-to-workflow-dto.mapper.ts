@@ -1,6 +1,6 @@
 import {PromptNodeDTO, PromptNodeInputsDTO, PromptNodeValueDTO, PromptWorkflowDTO} from "../dto/prompt-node.dto.ts";
 import {PromptWorkflow} from "../../+state/prompt-workflow/create-prompt-workflow.ts";
-import {PromptNodeConnection} from "../../+state/prompt-nodes/prompt-node-link.ts";
+import {PromptNodeConnection} from "../../+state/prompt-nodes/prompt-node-connection.ts";
 
 export const nodeConnectionToPromptNodeInputDto = (key: string, connection: PromptNodeConnection) => {
     let nodeValue: PromptNodeValueDTO = undefined

@@ -1,11 +1,9 @@
-import {BindValueArray, BindValueLink, BindValueString} from "./bind-values.ts";
+import {BindValueArray, BindValueLink, BindValueString} from "./prompt-node-connection-value.ts";
 
 export type PromptNodeConnectionBind = BindValueLink | BindValueString | BindValueArray
 
-// TODO: Renamed link to binding
 // Defines an object which stores node links to other nodes
 // export type PromptNodeLinkObject = Record<string, Readonly<PromptNodeBindTypes | undefined>>;
-
 export type PromptNodeConnection = Readonly<PromptNodeConnectionBind | undefined>
 
 export type PromptNodeConnections<Type extends Record<string, PromptNodeConnection>> = {

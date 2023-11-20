@@ -1,5 +1,5 @@
 import {PromptNodeTypeCreator, PromptNodeFields} from "./prompt-node.ts";
-import {BindValueLink} from "./bind-values.ts";
+import {BindValueLink} from "./prompt-node-connection-value.ts";
 
 type TestNodeInputs = {
     testInput: BindValueLink
