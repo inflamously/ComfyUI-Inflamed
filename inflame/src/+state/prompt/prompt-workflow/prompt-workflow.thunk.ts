@@ -1,5 +1,5 @@
-import Api from "../../api/api.ts";
-import {PromptWorkflowDTO} from "../../api/dto/prompt-node.dto.ts";
+import Api from "../../../api/api.ts";
+import {PromptWorkflowDTO} from "../../../api/dto/prompt-node.dto.ts";
 
 const promptWorkflowThunk = () => {
     const postPrompt =

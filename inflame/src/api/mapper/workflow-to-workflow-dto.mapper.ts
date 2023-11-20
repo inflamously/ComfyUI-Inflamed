@@ -1,6 +1,6 @@
 import {PromptNodeDTO, PromptNodeInputsDTO, PromptNodeValueDTO, PromptWorkflowDTO} from "../dto/prompt-node.dto.ts";
-import {PromptWorkflow} from "../../+state/prompt-workflow/create-prompt-workflow.ts";
-import {PromptNodeConnection} from "../../+state/prompt-nodes/prompt-node-connection.ts";
+import {PromptNodeConnection} from "../../+state/prompt/prompt-nodes/prompt-node-connection.ts";
+import {PromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
 
 export const nodeConnectionToPromptNodeInputDto = (key: string, connection: PromptNodeConnection) => {
     let nodeValue: PromptNodeValueDTO = undefined
@@ -20,9 +20,9 @@ export const nodeConnectionToPromptNodeInputDto = (key: string, connection: Prom
  * Converts workflow to dto using nodes in their respective order given from .getNodes()
  * @param workflow
  */
-export const workflowDtoMapper = (workflow: PromptWorkflow): PromptWorkflowDTO | undefined => {
+export const workflowToWorkflowDtoMapper = (workflow: PromptWorkflow): PromptWorkflowDTO => {
     if (!workflow) {
-        return undefined
+        return {}
     }
 
     return Object.fromEntries(

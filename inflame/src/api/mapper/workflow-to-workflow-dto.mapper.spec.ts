@@ -1,7 +1,7 @@
-import {workflowDtoMapper} from "./workflow-to-workflow-dto.mapper.ts";
-import PromptNodeLoadImage from "../../+state/prompt-nodes/load-image.node.ts";
-import {createPromptWorkflow} from "../../+state/prompt-workflow/create-prompt-workflow.ts";
-import PromptNodePreviewImage from "../../+state/prompt-nodes/preview-image.node.ts";
+import {workflowToWorkflowDtoMapper} from "./workflow-to-workflow-dto.mapper.ts";
+import PromptNodeLoadImage from "../../+state/prompt/prompt-nodes/load-image.node.ts";
+import PromptNodePreviewImage from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
+import {createPromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
 
 // TODO: Create wrappe with client id and workflow to build dto that can be prompted
 describe('Mapper for workflow conversion to DTO', () => {
@@ -37,7 +37,7 @@ describe('Mapper for workflow conversion to DTO', () => {
             ]
         })
 
-        const workflowDto = workflowDtoMapper(workflow)
+        const workflowDto = workflowToWorkflowDtoMapper(workflow)
         expect(workflowDto).toEqual(
             {
                 "1": {
