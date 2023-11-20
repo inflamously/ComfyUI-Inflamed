@@ -6,7 +6,7 @@ export type PromptWorkflow = {
     addNode: (node: AbstractPromptNodeType) => void
     getNode: <T extends AbstractPromptNodeType>(
         id: string, typeguard: PromptNodeTypeGuardFunction<T> | undefined
-    ) => [typeof typeguard] extends [undefined] ? AbstractPromptNodeType : T | undefined
+    ) => [typeof typeguard] extends [undefined] ? AbstractPromptNodeType : T
 }
 
 /**
@@ -27,9 +27,13 @@ export const createPromptWorkflow = (props: {
         __nodes.push(node)
     }
 
-    const getNode = <T extends AbstractPromptNodeType>(id: string, typeguard: PromptNodeTypeGuardFunction<T> | undefined): [typeof typeguard] extends [undefined] ? AbstractPromptNodeType : T | undefined => {
+    const getNode = <T extends AbstractPromptNodeType>(id: string, typeguard: PromptNodeTypeGuardFunction<T> | undefined): [typeof typeguard] extends [undefined] ? AbstractPromptNodeType : T => {
         const node = __nodes.find((node) => node.id === id)
-        return (typeguard?.(node) && node) || undefined
+        if (typeguard?.(node) && node) {
+            return node
+        } else {
+            throw new Error("Invalid node type, typeguard failed.")
+        }
     }
 
     return {

@@ -1,6 +1,6 @@
 import {
     PromptNodeConnections, PromptNodeConnection, PromptNodeConnectionBind,
-} from "./prompt-node-link.ts";
+} from "./prompt-node-connection.ts";
 
 
 export type PromptNodeConfig<

@@ -4,23 +4,22 @@ import PromptNodePreviewImage, {isPromptNodePreviewImage} from "../prompt-nodes/
 
 describe('test the creation of a workflow based on nodes', function () {
     it('should create workflow and acquire node', () => {
-        const nodes = [
-            PromptNodeLoadImage({
-                id: "1",
-                initialState: {
-                    images: []
-                }
-            }),
-            PromptNodePreviewImage({
-                id: "2",
-                initialState: {
-                    images: []
-                }
-            })
-        ]
-
         const workflow = createPromptWorkflow({
-            nodes
+            nodes: [
+                PromptNodeLoadImage({
+                    id: "1",
+                    initialState: {
+                        images: ["test.png"],
+                        currentImage: "test.png",
+                    }
+                }),
+                PromptNodePreviewImage({
+                    id: "2",
+                    initialState: {
+                        images: []
+                    }
+                })
+            ]
         })
 
         expect(workflow).toBeDefined()
@@ -31,41 +30,35 @@ describe('test the creation of a workflow based on nodes', function () {
             expect(node.id).toEqual("1")
             // Work with abstract type
             expect(node.getState()).toEqual({
-                images: []
+                currentImage: "test.png",
+                images: ["test.png"]
             })
         }
     })
 
     it('should create workflow and acquired type node', () => {
-        const nodes = [
-            PromptNodeLoadImage({
-                id: "1",
-                initialState: {
-                    images: []
-                }
-            }),
-            PromptNodePreviewImage({
-                id: "2",
-                initialState: {
-                    images: []
-                }
-            })
-        ]
-
         const workflow = createPromptWorkflow({
-            nodes
+            nodes: [
+                PromptNodeLoadImage({
+                    id: "1",
+                    initialState: {
+                        images: [],
+                        currentImage: "",
+                    }
+                }),
+                PromptNodePreviewImage({
+                    id: "2",
+                    initialState: {
+                        images: []
+                    }
+                })
+            ]
         })
 
         expect(workflow).toBeDefined()
 
-        const node = workflow.getNode("1", isPromptNodePreviewImage);
-        if (node) {
-            // Work with specific type
-            expect(node?.id).toEqual("1")
-            // Work with abstract type
-            expect(node?.getState()).toEqual({
-                images: []
-            })
-        }
+        expect(() => {
+            workflow.getNode("1", isPromptNodePreviewImage)
+        }).toThrow()
     })
 });
