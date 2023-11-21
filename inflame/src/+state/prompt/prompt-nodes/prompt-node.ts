@@ -84,8 +84,6 @@ export const PromptNodeTypeCreator = <
         __inputs = inputs
     }
 
-    // extraInputs?.(__state))
-
     return {
         id,
         classtype,

@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {SOCKET_MAIN} from "../+state/socket/socket-names.ts";
 import {AppState} from "../+state/inflame-store.ts";
 import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
-import promptWorkflowThunk from "../+state/prompt-workflow/prompt-workflow.thunk.ts";
+import promptWorkflowThunk from "../+state/prompt/prompt-workflow/prompt-workflow.thunk.ts";
 
 const DebugImagePrompt = () => {
     const socketState = useSelector((state: AppState) => socketStateSelectors.selectById(state, SOCKET_MAIN))

@@ -27,19 +27,22 @@ export const workflowToWorkflowDtoMapper = (workflow: PromptWorkflow): PromptWor
 
     return Object.fromEntries(
         workflow.getNodes().map((node) => {
-            const inputs = node.getInputs() ?? {}
-            const extraInputs = node.getStateInputs?.();
+            // TODO: Evaluate if syntax is preferred?
+            // noUnusedInputsValidator(node);
+
+            const inputs = node.getInputs() ?? {} // In case of undefined just use empty array.
+            const stateInputs = node.getStateInputs?.();
 
             let dtoInputs: PromptNodeInputsDTO = Object.fromEntries(
                 Object.keys(inputs).map((nodeKey) => nodeConnectionToPromptNodeInputDto(nodeKey, inputs[nodeKey]))
             )
 
-            if (extraInputs) {
-                const dtoExtraInputs = Object.fromEntries(
-                    Object.keys(extraInputs).map((nodeKey) => nodeConnectionToPromptNodeInputDto(nodeKey, extraInputs[nodeKey]))
+            if (stateInputs) {
+                const dtoStateInputs = Object.fromEntries(
+                    Object.keys(stateInputs).map((nodeKey) => nodeConnectionToPromptNodeInputDto(nodeKey, stateInputs[nodeKey]))
                 )
 
-                dtoInputs = Object.assign(dtoInputs, dtoExtraInputs)
+                dtoInputs = Object.assign(dtoInputs, dtoStateInputs)
             }
 
             return [node.id, {
