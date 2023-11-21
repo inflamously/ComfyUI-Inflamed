@@ -49,10 +49,46 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
                 },
                 "2": {
                     "class_type": "PreviewImage",
-                    "inputs": {}
+                    "inputs": {
+                        "images": ["1", 0]
+                    }
                 }
             },
             extra_data: {}
         })
     })
+
+    it('should convet object and output proper json', () => {
+        const socket: ComfyuiSocket = {
+            name: "main",
+            clientId: "test-123"
+        }
+
+        const prompt: Prompt = {
+            workflow: createPromptWorkflow({
+                nodes: [
+                    LoadImageNode({
+                        id: "1",
+                        initialState: {
+                            images: ["test.png"],
+                            currentImage: "test.png",
+                        }
+                    }),
+                    PreviewImageNode({
+                        id: "2",
+                        initialState: {
+                            images: []
+                        }
+                    })
+                ]
+            })
+        } satisfies Prompt
+
+        const dto: PromptDTO = promptToPromptDto({
+            socket,
+            prompt
+        })
+        expect(JSON.stringify(dto)).toEqual("{\"client_id\":\"test-123\",\"prompt\":{\"1\":{\"inputs\":{\"choose file to upload\":\"image\",\"image\":\"test.png\"},\"class_type\":\"LoadImage\"},\"2\":{\"inputs\":{\"images\":[\"1\",0]},\"class_type\":\"PreviewImage\"}},\"extra_data\":{}}")
+    })
+
 });
