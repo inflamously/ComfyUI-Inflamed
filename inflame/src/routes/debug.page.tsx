@@ -1,4 +1,4 @@
-import DebugImagePrompt from "../component/debug-image-prompt.tsx";
+import DebugImagePrompt from "../component/debug-image/debug-image-prompt.tsx";
 
 const PageDebug = (props: unknown) => {
     return <>
