@@ -6,7 +6,8 @@ describe('testing out the node factory for creating various nodes', () => {
         const nodeLoadImage = loadImage({
             id: "1",
             initialState: {
-                images: []
+                images: [],
+                currentImage: ""
             }
         })
         expect(nodeLoadImage?.getOutputs()).toEqual({
