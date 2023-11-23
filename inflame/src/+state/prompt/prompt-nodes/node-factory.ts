@@ -1,6 +1,5 @@
 import PromptNodeLoadImage from "./load-image.node.ts";
 import PromptNodePreviewImage from "./preview-image.node.ts";
-import {AbstractPromptNodeType} from "./prompt-node.ts";
 
 const nodeMap = {
     LoadImage: PromptNodeLoadImage,
@@ -16,7 +15,6 @@ type NodeTypeCreatorFunction<Key extends NodeTypeKeys> = typeof nodeMap[Key]
 /**
  * Parameters of NodeTypeCreatorFunction
  */
-type NodeTypeCreatorFunctionParams<Key extends NodeTypeKeys> = Parameters<NodeTypeCreatorFunction<Key>>;
 
 
 // TODO: do I need this anymore?
@@ -36,9 +34,4 @@ export const getNodeTypeCreatorFunction = <Classtype extends NodeTypeKeys>(
         throw new Error(`nodeFactory("${classtype}"): NodeType not implemented!`);
     }
     return nodeFunc
-}
-
-export const createNodeFromType = <NodeKey extends NodeTypeKeys>(classtype: NodeKey, ...args: NodeTypeCreatorFunctionParams<NodeKey>): AbstractPromptNodeType => {
-    const nodeFunc: (...props: NodeTypeCreatorFunctionParams<NodeKey>) => AbstractPromptNodeType = getNodeTypeCreatorFunction(classtype)
-    return nodeFunc(...args)
 }
