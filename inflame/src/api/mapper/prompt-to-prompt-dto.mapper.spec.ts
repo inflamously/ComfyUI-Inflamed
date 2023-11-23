@@ -1,6 +1,6 @@
 import {Prompt} from "../../+state/prompt/prompt.ts";
 import {createPromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
-import PreviewImageNode from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
+import PreviewImageNode, {nodeTypePreviewImage} from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
 import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image.node.ts";
 import {PromptDTO} from "../dto/prompt-node.dto.ts";
 import {promptToPromptDto} from "./prompt-to-prompt-dto.mapper.ts";
@@ -31,12 +31,21 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
                     })
                 ]
             })
-        } satisfies Prompt
+        }
+
+        prompt.workflow.getNode("2", nodeTypePreviewImage).setInputs({
+            images: {
+                kind: "link",
+                id: "1",
+                slot: 0,
+            }
+        })
 
         const dto: PromptDTO = promptToPromptDto({
             socket,
             prompt
         })
+
         expect(dto).toEqual({
             client_id: "test-123",
             prompt: {
@@ -58,7 +67,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
         })
     })
 
-    it('should convet object and output proper json', () => {
+    it('should convert object and output proper json', () => {
         const socket: ComfyuiSocket = {
             name: "main",
             clientId: "test-123"
@@ -84,10 +93,19 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
             })
         } satisfies Prompt
 
+        prompt.workflow.getNode("2", nodeTypePreviewImage).setInputs({
+            images: {
+                kind: "link",
+                id: "1",
+                slot: 0,
+            }
+        })
+
         const dto: PromptDTO = promptToPromptDto({
             socket,
             prompt
         })
+
         expect(JSON.stringify(dto)).toEqual("{\"client_id\":\"test-123\",\"prompt\":{\"1\":{\"inputs\":{\"choose file to upload\":\"image\",\"image\":\"test.png\"},\"class_type\":\"LoadImage\"},\"2\":{\"inputs\":{\"images\":[\"1\",0]},\"class_type\":\"PreviewImage\"}},\"extra_data\":{}}")
     })
 

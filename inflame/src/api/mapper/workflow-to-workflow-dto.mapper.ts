@@ -1,6 +1,7 @@
 import {PromptNodeDTO, PromptNodeInputsDTO, PromptNodeValueDTO, PromptWorkflowDTO} from "../dto/prompt-node.dto.ts";
 import {PromptNodeConnection} from "../../+state/prompt/prompt-nodes/prompt-node-connection.ts";
 import {PromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
+import {unsetInputsValidator} from "../../validators/nodes.validators.ts";
 
 export const nodeConnectionToPromptNodeInputDto = (key: string, connection: PromptNodeConnection) => {
     let nodeValue: PromptNodeValueDTO = undefined
@@ -28,7 +29,9 @@ export const workflowToWorkflowDtoMapper = (workflow: PromptWorkflow): PromptWor
     return Object.fromEntries(
         workflow.getNodes().map((node) => {
             // TODO: Evaluate if syntax is preferred?
-            // noUnusedInputsValidator(node);
+            if (!unsetInputsValidator(node)) {
+                throw new Error(`Unused inputs detected at node type "${node.classtype}" !`);
+            }
 
             const inputs = node.getInputs() ?? {} // In case of undefined just use empty array.
             const stateInputs = node.getStateInputs?.();

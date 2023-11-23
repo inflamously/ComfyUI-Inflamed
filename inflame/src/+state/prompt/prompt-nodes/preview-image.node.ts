@@ -20,7 +20,7 @@ type NodePreviewImageState = {
 
 export type PromptNodePreviewImageType = ReturnType<typeof PromptNodePreviewImage>
 
-export const isPromptNodePreviewImage = PromptNodeTypeGuard<PromptNodePreviewImageType>("PreviewImage");
+export const nodeTypePreviewImage = PromptNodeTypeGuard<PromptNodePreviewImageType>("PreviewImage");
 
 const PromptNodePreviewImage = (props: PromptNodeFields<NodePreviewImageState>) => {
     return PromptNodeTypeCreator<
@@ -30,7 +30,9 @@ const PromptNodePreviewImage = (props: PromptNodeFields<NodePreviewImageState>) 
     >(
         props,
         "PreviewImage",
-        {}
+        {
+            images: null
+        },
     )
 }
 

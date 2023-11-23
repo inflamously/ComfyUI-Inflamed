@@ -1,5 +1,5 @@
 import PromptNodeLoadImage from "./load-image.node.ts";
-import PromptNodePreviewImage, {isPromptNodePreviewImage} from "./preview-image.node.ts";
+import PromptNodePreviewImage, {nodeTypePreviewImage} from "./preview-image.node.ts";
 import {AbstractPromptNodeType} from "./prompt-node.ts";
 
 describe('should test node parameters and typings indirectly', function () {
@@ -19,7 +19,9 @@ describe('should test node parameters and typings indirectly', function () {
             }
         })
 
-        expect(node.getInputs()).toEqual(undefined)
+        expect(node.getInputs()).toEqual({
+            images: null
+        })
 
         node.setInputs({
             images: externNode.getOutputs()?.image
@@ -44,7 +46,7 @@ describe('should test node parameters and typings indirectly', function () {
             }
         })
 
-        if (isPromptNodePreviewImage(node)) {
+        if (nodeTypePreviewImage(node)) {
             expect(node.id).toEqual("1");
         }
     })
