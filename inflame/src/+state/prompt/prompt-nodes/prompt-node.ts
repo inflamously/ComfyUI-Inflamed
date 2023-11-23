@@ -55,7 +55,8 @@ export const PromptNodeTypeCreator = <
 >(
     props: PromptNodeFields<State>,
     classtype: string,
-    config: PromptNodeConfig<
+    defaultInputs: [Inputs] extends [never] ? undefined : Inputs,
+    config?: PromptNodeConfig<
         State,
         Inputs,
         Outputs
@@ -67,16 +68,10 @@ export const PromptNodeTypeCreator = <
         initialState
     } = props
 
-    const {
-        inputs,
-        outputs,
-        stateInputs
-    } = config;
-
     // Node's state values
     let __state = initialState
-    let __inputs = inputs
-    const __outputs = outputs
+    let __inputs = config?.inputs ?? defaultInputs
+    const __outputs = config?.outputs
 
     // Nodes state changing functions
     const setState = (state: State) => __state = state
@@ -88,7 +83,7 @@ export const PromptNodeTypeCreator = <
         id,
         classtype,
         getInputs: () => __inputs,
-        getStateInputs: () => stateInputs?.(__state),
+        getStateInputs: () => config?.stateInputs?.(__state),
         setInputs,
         getState: () => __state,
         setState,

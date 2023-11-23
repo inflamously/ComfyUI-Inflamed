@@ -1,6 +1,6 @@
 import {createPromptWorkflow} from "./create-prompt-workflow.ts";
-import PromptNodeLoadImage, {isPromptNodeLoadImage} from "../prompt-nodes/load-image.node.ts";
-import PromptNodePreviewImage, {isPromptNodePreviewImage} from "../prompt-nodes/preview-image.node.ts";
+import PromptNodeLoadImage, {nodeTypeLoadImage} from "../prompt-nodes/load-image.node.ts";
+import PromptNodePreviewImage, {nodeTypePreviewImage} from "../prompt-nodes/preview-image.node.ts";
 
 describe('test the creation of a workflow based on nodes', function () {
     it('should create workflow and acquire node', () => {
@@ -24,7 +24,7 @@ describe('test the creation of a workflow based on nodes', function () {
 
         expect(workflow).toBeDefined()
 
-        const node = workflow.getNode("1", isPromptNodeLoadImage);
+        const node = workflow.getNode("1", nodeTypeLoadImage);
         if (node) {
             // Work with specific type
             expect(node.id).toEqual("1")
@@ -58,7 +58,7 @@ describe('test the creation of a workflow based on nodes', function () {
         expect(workflow).toBeDefined()
 
         expect(() => {
-            workflow.getNode("1", isPromptNodePreviewImage)
+            workflow.getNode("1", nodeTypePreviewImage)
         }).toThrow()
     })
 });

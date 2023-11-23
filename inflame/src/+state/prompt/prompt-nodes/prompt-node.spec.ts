@@ -25,6 +25,9 @@ const TestNode = (props: PromptNodeFields<TestNodeState>) => {
         },
         "TestNode",
         {
+            testInput: null
+        },
+        {
             outputs: {
                 testOutput: {
                     id,

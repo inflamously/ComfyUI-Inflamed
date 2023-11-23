@@ -17,7 +17,7 @@ type NodeLoadImageState = {
 }
 
 export type PromptNodeLoadImageType = ReturnType<typeof PromptNodeLoadImage>
-export const isPromptNodeLoadImage = PromptNodeTypeGuard<PromptNodeLoadImageType>("LoadImage")
+export const nodeTypeLoadImage = PromptNodeTypeGuard<PromptNodeLoadImageType>("LoadImage")
 
 const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
     const {
@@ -31,6 +31,7 @@ const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
     >(
         props,
         "LoadImage",
+        undefined,
         {
             outputs: {
                 image: {

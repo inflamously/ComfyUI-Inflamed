@@ -1,4 +1,4 @@
-import PromptNodeLoadImage, {isPromptNodeLoadImage} from "./load-image.node.ts";
+import PromptNodeLoadImage, {nodeTypeLoadImage} from "./load-image.node.ts";
 import {AbstractPromptNodeType} from "./prompt-node.ts";
 
 describe('should test node parameters and typings indirectly', function () {
@@ -34,7 +34,7 @@ describe('should test node parameters and typings indirectly', function () {
             }
         })
 
-        if (isPromptNodeLoadImage(node)) {
+        if (nodeTypeLoadImage(node)) {
             expect(node.id).toEqual("1");
             expect(node.getState()?.images)
         }
