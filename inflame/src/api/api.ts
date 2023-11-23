@@ -1,4 +1,4 @@
-import {PromptNodeResultDTO, PromptWorkflowDTO} from "./dto/prompt-node.dto.ts";
+import {PromptDTO, PromptNodeResultDTO} from "./dto/prompt-node.dto.ts";
 import {PromptNodeErrorsDTO} from "./dto/error.dto.ts";
 import {ObjectNodesDTO} from "./dto/object-node.dto.ts";
 
@@ -49,7 +49,7 @@ const Api = (options: ApiConfig) => {
     const endpoint = (name: string) => `${url}:${port}/${name}`
 
     const postPrompt = async <Transform = never>(
-        data: EndpointData<PromptWorkflowDTO, unknown, Transform>
+        data: EndpointData<PromptDTO, unknown, Transform>
     ): Promise<ApiResult<PromptNodeResultDTO, PromptNodeErrorsDTO>> => {
         const res = await fetch(endpoint("prompt"), {
             method: "POST",
