@@ -33,13 +33,13 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
             })
         }
 
-        prompt.workflow.getNode("2", nodeTypePreviewImage).setInputs({
+        prompt.workflow.getNode("2", nodeTypePreviewImage).inputs = {
             images: {
                 kind: "link",
                 id: "1",
                 slot: 0,
             }
-        })
+        }
 
         const dto: PromptDTO = promptToPromptDto({
             socket,
@@ -93,13 +93,13 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
             })
         } satisfies Prompt
 
-        prompt.workflow.getNode("2", nodeTypePreviewImage).setInputs({
+        prompt.workflow.getNode("2", nodeTypePreviewImage).inputs = {
             images: {
                 kind: "link",
                 id: "1",
                 slot: 0,
             }
-        })
+        }
 
         const dto: PromptDTO = promptToPromptDto({
             socket,

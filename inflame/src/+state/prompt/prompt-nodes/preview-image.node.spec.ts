@@ -1,6 +1,6 @@
 import PromptNodeLoadImage from "./load-image.node.ts";
 import PromptNodePreviewImage, {nodeTypePreviewImage} from "./preview-image.node.ts";
-import {AbstractPromptNodeType} from "./prompt-node.ts";
+import {AbstractPromptNode} from "./prompt-node.ts";
 
 describe('should test node parameters and typings indirectly', function () {
     it('instantiates previewimage node', () => {
@@ -19,15 +19,15 @@ describe('should test node parameters and typings indirectly', function () {
             }
         })
 
-        expect(node.getInputs()).toEqual({
+        expect(node.inputs).toEqual({
             images: null
         })
 
-        node.setInputs({
-            images: externNode.getOutputs()?.image
-        })
+        node.inputs = {
+            images: externNode.outputs.image,
+        }
 
-        expect(node.getInputs()).toEqual({
+        expect(node.inputs).toEqual({
             images: {
                 id: "2",
                 kind: "link",
@@ -35,11 +35,11 @@ describe('should test node parameters and typings indirectly', function () {
             }
         })
 
-        expect(node.getOutputs()).toEqual(undefined)
+        expect(node.outputs).toEqual({})
     })
 
     it('can map to abstract node and back', () => {
-        const node: AbstractPromptNodeType = PromptNodePreviewImage({
+        const node: AbstractPromptNode = PromptNodePreviewImage({
             id: "1",
             initialState: {
                 images: []

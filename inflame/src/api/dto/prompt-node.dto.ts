@@ -19,9 +19,7 @@ export type PromptWorkflowDTO = {
     [id in keyof PromptIds as string]: PromptNodeDTO
 }
 
-export type PromptNodeInputsDTO = {
-    [key: string]: PromptNodeValueDTO
-}
+export type PromptNodeInputsDTO = Record<string, PromptNodeValueDTO | unknown> // TODO: Need to fix typing?
 
 export type PromptNodeDTO = {
     inputs: PromptNodeInputsDTO // Depends on implementation

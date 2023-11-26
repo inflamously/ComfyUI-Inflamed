@@ -1,5 +1,5 @@
 import PromptNodeLoadImage, {nodeTypeLoadImage} from "./load-image.node.ts";
-import {AbstractPromptNodeType} from "./prompt-node.ts";
+import {AbstractPromptNode} from "./prompt-node.ts";
 
 describe('should test node parameters and typings indirectly', function () {
     it('instantiates loadimage node', () => {
@@ -10,23 +10,32 @@ describe('should test node parameters and typings indirectly', function () {
                 currentImage: "test.png",
             }
         })
-        expect(node.getOutputs()).toEqual({
+        expect(node.outputs).toEqual({
             image: {
                 id: "1",
                 kind: "link",
                 slot: 0,
             }
         })
-        expect(node.getInputs()).toEqual(undefined)
-        expect(node.getState()).toEqual({
+        expect(node.inputs).toEqual({
+            "choose file to upload": {
+                kind: "string",
+                value: "image"
+            },
+            image: {
+                kind: "state",
+                propertyPath: "currentImage"
+            }
+        })
+        expect(node.state).toEqual({
             currentImage: "test.png",
-            images: ["test.png"]
+            images: ["test.png"],
         })
     })
 
     it('can map to abstract node and back', () => {
         // Type is correctly set to AbstractPromptNode for testing inline conversion
-        const node: AbstractPromptNodeType = PromptNodeLoadImage({
+        const node: AbstractPromptNode = PromptNodeLoadImage({
             id: "1",
             initialState: {
                 images: [],
@@ -36,7 +45,7 @@ describe('should test node parameters and typings indirectly', function () {
 
         if (nodeTypeLoadImage(node)) {
             expect(node.id).toEqual("1");
-            expect(node.getState()?.images)
+            expect(node.state.images)
         }
     })
 });

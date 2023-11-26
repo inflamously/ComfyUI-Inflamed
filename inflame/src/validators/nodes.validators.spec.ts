@@ -47,13 +47,14 @@ describe('tests various api validators functions', function () {
             }
         })
 
-        previewImageNode.setInputs({
+        // Hint: Inputs should always by linked using outputs of another node.: Example: <customNode>.outputs.images
+        previewImageNode.inputs = {
             images: {
                 id: "2",
                 kind: "link",
                 slot: 0
             }
-        })
+        }
 
         expect(unsetInputsValidator(previewImageNode)).toEqual(true)
     })

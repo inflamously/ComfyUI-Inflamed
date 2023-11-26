@@ -13,7 +13,7 @@ describe('Mapper for workflow conversion to DTO', () => {
             }
         })
 
-        expect(loadImageNode.getOutputs()?.image).toEqual({
+        expect(loadImageNode.outputs?.image).toEqual({
             id: "1",
             kind: "link",
             slot: 0,
@@ -25,9 +25,9 @@ describe('Mapper for workflow conversion to DTO', () => {
                 images: []
             }
         })
-        previewImageNode.setInputs({
-            images: loadImageNode.getOutputs()?.image
-        })
+        previewImageNode.inputs = {
+            images: loadImageNode.outputs?.image
+        }
 
         const workflow = createPromptWorkflow({
             nodes: [

@@ -1,4 +1,4 @@
-import {PromptNodeTypeCreator, PromptNodeFields} from "./prompt-node.ts";
+import {createPromptNode, PromptNodeFields} from "./prompt-node.ts";
 import {BindValueLink} from "./prompt-node-connection-value.ts";
 
 type TestNodeInputs = {
@@ -13,10 +13,13 @@ type TestNodeOutputs = {
     testOutput: BindValueLink
 }
 
+type TestNodeStateInputs = never
+
+// TODO: Test some state inputs
 const TestNode = (props: PromptNodeFields<TestNodeState>) => {
     const {id} = props
 
-    return PromptNodeTypeCreator<TestNodeState, TestNodeInputs, TestNodeOutputs>(
+    return createPromptNode<TestNodeState, TestNodeInputs, TestNodeOutputs, TestNodeStateInputs>(
         {
             id,
             initialState: {
@@ -28,12 +31,10 @@ const TestNode = (props: PromptNodeFields<TestNodeState>) => {
             testInput: null
         },
         {
-            outputs: {
-                testOutput: {
-                    id,
-                    kind: "link",
-                    slot: 0
-                }
+            testOutput: {
+                id,
+                kind: "link",
+                slot: 0
             }
         }
     )
@@ -48,7 +49,7 @@ describe('test nodes and their generic functionality', function () {
             }
         })
 
-        expect(node.getOutputs()).toEqual({
+        expect(node.outputs).toEqual({
             testOutput: {
                 id: "1",
                 kind: "link",

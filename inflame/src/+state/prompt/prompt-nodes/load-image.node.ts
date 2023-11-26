@@ -1,9 +1,14 @@
 import {
-    PromptNodeTypeCreator,
+    createPromptNode,
     PromptNodeFields,
     PromptNodeTypeGuard,
 } from "./prompt-node.ts";
-import {BindValueLink} from "./prompt-node-connection-value.ts";
+import {BindValueLink, BindValueStateInput, BindValueString} from "./prompt-node-connection-value.ts";
+
+type NodeLoadImageState = {
+    images: string[],
+    currentImage: string,
+}
 
 type NodeLoadImageInputs = never
 
@@ -11,12 +16,13 @@ type NodeLoadImageOutputs = {
     image: BindValueLink,
 }
 
-type NodeLoadImageState = {
-    images: string[],
-    currentImage: string,
+type NodeLoadImageStateInputs = {
+    "choose file to upload": BindValueString,
+    image: BindValueStateInput,
 }
 
 export type PromptNodeLoadImageType = ReturnType<typeof PromptNodeLoadImage>
+
 export const nodeTypeLoadImage = PromptNodeTypeGuard<PromptNodeLoadImageType>("LoadImage")
 
 const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
@@ -24,22 +30,24 @@ const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
         id
     } = props
 
-    return PromptNodeTypeCreator<
+    return createPromptNode<
         NodeLoadImageState,
         NodeLoadImageInputs,
-        NodeLoadImageOutputs
+        NodeLoadImageOutputs,
+        NodeLoadImageStateInputs
     >(
         props,
         "LoadImage",
         undefined,
         {
-            outputs: {
-                image: {
-                    kind: "link",
-                    id,
-                    slot: 0
-                }
-            },
+            image: {
+                kind: "link",
+                id,
+                slot: 0
+            }
+        },
+        {
+            // TODO: Convert state to "path-property" object
             stateInputs: (state) => {
                 return {
                     "choose file to upload": {
@@ -47,9 +55,9 @@ const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
                         value: "image",
                     },
                     image: {
-                        kind: "string",
-                        value: state.currentImage
-                    }
+                        kind: "state",
+                        propertyPath: state.currentImage, // TODO: Retrieve from state above.
+                    },
                 }
             }
         },

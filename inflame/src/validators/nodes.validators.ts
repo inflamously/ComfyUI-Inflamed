@@ -16,10 +16,10 @@ export const noEqualNamesValidator = (input: {
 }
 
 export const unsetInputsValidator = (input: {
-    getInputs: () => Record<string, unknown> | undefined
+    inputs: Record<string, unknown> | undefined
 }): boolean => {
     const validator = () => {
-        const inputs = input.getInputs();
+        const inputs = input.inputs;
         // We skip undefined since it is allowed.
         if (inputs === undefined) {
             return true;
