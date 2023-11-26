@@ -13,7 +13,7 @@ export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
     const socket = useSelector(
         (state: AppState) => socketStateSelectors.selectById(state, "main")
     )
-    const [promptId, setPromptId] = useState<number | null>(null);
+    const [promptId] = useState<number | null>(null);
     const prompt = useSelector(
         (state: AppState) => promptId !== null ? promptsSelectors.selectPromptById(state, promptId) : undefined
     );
@@ -42,9 +42,9 @@ export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
             }
         })
 
-        previewImage.setInputs({
-            images: loadImage.getOutputs()?.image
-        })
+        previewImage.inputs = {
+            images: loadImage.outputs?.image
+        }
 
         const customPrompt: Prompt = {
             workflow: createPromptWorkflow({

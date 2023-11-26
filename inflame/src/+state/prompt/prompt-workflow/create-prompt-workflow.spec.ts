@@ -29,7 +29,7 @@ describe('test the creation of a workflow based on nodes', function () {
             // Work with specific type
             expect(node.id).toEqual("1")
             // Work with abstract type
-            expect(node.getState()).toEqual({
+            expect(node.state).toEqual({
                 currentImage: "test.png",
                 images: ["test.png"]
             })

@@ -1,13 +1,13 @@
-import {AbstractPromptNodeType, PromptNodeTypeGuardFunction} from "../prompt-nodes/prompt-node.ts";
+import {AbstractPromptNode, PromptNodeTypeGuardFunction} from "../prompt-nodes/prompt-node.ts";
 
 // TODO: Move out of this +state
 // TODO: Make store conform
 export type PromptWorkflow = {
-    getNodes: () => AbstractPromptNodeType[]
-    addNode: (node: AbstractPromptNodeType) => void
-    getNode: <T extends AbstractPromptNodeType>(
+    getNodes: () => AbstractPromptNode[]
+    addNode: (node: AbstractPromptNode) => void
+    getNode: <T extends AbstractPromptNode>(
         id: string, typeguard: PromptNodeTypeGuardFunction<T> | undefined
-    ) => [typeof typeguard] extends [undefined] ? AbstractPromptNodeType : T
+    ) => [typeof typeguard] extends [undefined] ? AbstractPromptNode : T
 }
 
 /**
@@ -16,19 +16,19 @@ export type PromptWorkflow = {
  */
 // TODO: sort nodes by id?
 export const createPromptWorkflow = (props: {
-    nodes?: AbstractPromptNodeType[]
+    nodes?: AbstractPromptNode[]
 }): PromptWorkflow => {
     const {nodes} = props
 
-    const __nodes: AbstractPromptNodeType[] = nodes ?? []
+    const __nodes: AbstractPromptNode[] = nodes ?? []
 
-    const getNodes = (): AbstractPromptNodeType[] => __nodes
+    const getNodes = (): AbstractPromptNode[] => __nodes
 
-    const addNode = (node: AbstractPromptNodeType): void => {
+    const addNode = (node: AbstractPromptNode): void => {
         __nodes.push(node)
     }
 
-    const getNode = <T extends AbstractPromptNodeType>(id: string, typeguard: PromptNodeTypeGuardFunction<T> | undefined): [typeof typeguard] extends [undefined] ? AbstractPromptNodeType : T => {
+    const getNode = <T extends AbstractPromptNode>(id: string, typeguard: PromptNodeTypeGuardFunction<T> | undefined): [typeof typeguard] extends [undefined] ? AbstractPromptNode : T => {
         const node = __nodes.find((node) => node.id === id)
         if (typeguard?.(node) && node) {
             return node

@@ -10,7 +10,7 @@ describe('testing out the node factory for creating various nodes', () => {
                 currentImage: ""
             }
         })
-        expect(nodeLoadImage?.getOutputs()).toEqual({
+        expect(nodeLoadImage?.outputs).toEqual({
             image: {
                 id: "1",
                 kind: "link",
@@ -25,10 +25,11 @@ describe('testing out the node factory for creating various nodes', () => {
                 images: []
             }
         })
-        nodePreviewImage?.setInputs({
-            images: nodeLoadImage?.getOutputs()?.image
-        })
-        expect(nodePreviewImage?.getInputs()).toEqual({
+        nodePreviewImage.inputs = {
+            images: nodeLoadImage?.outputs?.image
+        }
+
+        expect(nodePreviewImage?.inputs).toEqual({
             images: {
                 id: "1",
                 kind: "link",
