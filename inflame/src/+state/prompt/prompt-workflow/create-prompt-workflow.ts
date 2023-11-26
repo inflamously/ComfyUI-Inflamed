@@ -1,6 +1,7 @@
 import {AbstractPromptNodeType, PromptNodeTypeGuardFunction} from "../prompt-nodes/prompt-node.ts";
 
-
+// TODO: Move out of this +state
+// TODO: Make store conform
 export type PromptWorkflow = {
     getNodes: () => AbstractPromptNodeType[]
     addNode: (node: AbstractPromptNodeType) => void

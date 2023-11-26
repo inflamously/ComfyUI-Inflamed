@@ -105,6 +105,16 @@ export type AbstractPromptNodeType = {
     getOutputs: () => PromptNodeConnections<Record<string, PromptNodeConnection>> | undefined,
 }
 
+// TODO: Implement AbstractDataPromptNode for redux store / refactor
+export type AbstractDataPromptNode = {
+    id: Readonly<string>,
+    classtype: string,
+    inputs: PromptNodeConnections<Record<string, PromptNodeConnection>> | undefined,
+    stateInputs: PromptNodeConnections<Record<string, never>> | undefined,
+    state: never | unknown,
+    outputs: PromptNodeConnections<Record<string, PromptNodeConnection>> | undefined,
+}
+
 export type PromptNodeTypeGuardFunction<T extends AbstractPromptNodeType = never> = (obj: AbstractPromptNodeType | undefined) => obj is T;
 
 /**

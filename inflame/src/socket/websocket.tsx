@@ -1,5 +1,8 @@
 import {useEffect, useState} from "react";
 
+/**
+ * Waits until server send back a hello
+ */
 const handleHandshake = (ws: WebSocket) => {
     return new Promise<void>((res) => {
         ws.addEventListener("open", () => {

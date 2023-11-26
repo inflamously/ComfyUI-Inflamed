@@ -1,6 +1,8 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {socketSlice, socketSliceName} from "./socket/socket-slice.ts";
 import {nodesSlice, nodesSliceName} from "./data-nodes/nodes.slice.ts";
+import {promptsSlice, promptsSliceName} from "./prompt/prompt-workflow/prompts.slice.ts";
+import {useDispatch} from "react-redux";
 
 // TODO: Could enable to combine state for X reducer.
 // const testReducerHandler = () => (state, action) => {
@@ -16,6 +18,7 @@ const store = configureStore({
     reducer: combineReducers({
         [socketSliceName]: socketSlice.reducer,
         [nodesSliceName]: nodesSlice.reducer,
+        [promptsSliceName]: promptsSlice.reducer,
     }),
     middleware: (
         getDefaultMiddleware
@@ -23,5 +26,6 @@ const store = configureStore({
 })
 
 export type AppState = ReturnType<typeof store.getState>;
+export const useAppDispatch: () => typeof store.dispatch = useDispatch;
 
 export default store;

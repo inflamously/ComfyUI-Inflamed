@@ -1,26 +1,31 @@
-import {Prompt} from "../../+state/prompt/prompt.ts";
+import {Prompt} from "../../+state/prompt/prompt.model.ts";
 import {createPromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
 import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image.node.ts";
 import PreviewImageNode from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
-import {promptToPromptDto} from "../../api/mapper/prompt-to-prompt-dto.mapper.ts";
 import {useEffect, useState} from "react";
-import {PromptDTO} from "../../api/dto/prompt-node.dto.ts";
 import {useSelector} from "react-redux";
-import {AppState} from "../../+state/inflame-store.ts";
+import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
 import {socketStateSelectors} from "../../+state/socket/socket-selectors.ts";
+import {createPromptWithWorkflow} from "../../+state/prompt/prompt-workflow/prompts.thunk.ts";
+import {promptsSelectors} from "../../+state/prompt/prompt-workflow/prompts.selectors.ts";
 
-export const useDebugImagePrompt = (): [(Prompt | null), (PromptDTO | null)] => {
-    const [prompt, setPrompt] = useState<Prompt | null>(null)
-    const [promptDto, setPromptDto] = useState<PromptDTO | null>(null)
+export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
     const socket = useSelector(
         (state: AppState) => socketStateSelectors.selectById(state, "main")
     )
+    const [promptId, setPromptId] = useState<number | null>(null);
+    const prompt = useSelector(
+        (state: AppState) => promptId !== null ? promptsSelectors.selectPromptById(state, promptId) : undefined
+    );
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (!socket) {
             console.warn("DebugImagePrompt: Socket initialization failed!");
             return;
         }
+
+        // Create nodes manually
 
         const loadImage = LoadImageNode({
             id: "1",
@@ -50,10 +55,9 @@ export const useDebugImagePrompt = (): [(Prompt | null), (PromptDTO | null)] => 
             })
         }
 
-        setPrompt(customPrompt)
-        setPromptDto(promptToPromptDto({socket, prompt: customPrompt}))
-    }, [socket, setPrompt, setPromptDto])
+        dispatch(createPromptWithWorkflow(customPrompt))
+    }, [socket, dispatch])
 
 
-    return [prompt, promptDto]
+    return [prompt]
 }

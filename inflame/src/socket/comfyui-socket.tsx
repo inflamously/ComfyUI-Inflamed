@@ -1,11 +1,11 @@
 import {useCallback} from "react";
-import {ComfyuiEventStatus, WS_COMFYUI_STATE} from "./comfy-state.ts";
+import {ComfyuiEventStatus, WS_COMFYUI_STATE} from "./comfyui-socket-state.ts";
 import useWebsocket from "./websocket.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {socketSliceActions} from "../+state/socket/socket-slice.ts";
 import {socketStateSelectors} from "../+state/socket/socket-selectors.ts";
 import {AppState} from "../+state/inflame-store.ts";
-import {SOCKET_MAIN} from "../+state/socket/socket-names.ts";
+import {SOCKET_MAIN} from "../+state/socket/comfyui-socket.model.ts";
 
 const useComfyuiSocket = () => {
     const dispatch = useDispatch()
@@ -23,7 +23,7 @@ const useComfyuiSocket = () => {
             switch (messageData.type) {
                 case WS_COMFYUI_STATE.STATUS: {
                     const statusData = messageData.data as ComfyuiEventStatus
-                    // Incase of sid we have a new client
+                    // In case of sid we have a new client
                     if (statusData.sid && !socketState) {
                         dispatch(socketSliceActions.createSocketState({
                             name: SOCKET_MAIN,

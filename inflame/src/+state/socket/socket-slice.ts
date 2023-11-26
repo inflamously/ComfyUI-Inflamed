@@ -5,7 +5,7 @@ export const socketAdapter = createEntityAdapter<ComfyuiSocket>({
     selectId: (state) => state.name,
 })
 
-export const socketSliceName = "comfyuiSocket"
+export const socketSliceName = "sockets"
 
 export const socketSlice = createSlice({
     name: socketSliceName,
