@@ -16,7 +16,7 @@ const DebugImagePrompt = () => {
 
     const handleInvokePrompt = useCallback(async () => {
         const promptDto = debugPrompt[1]
-        if (promptDto !== null) {
+        if (promptDto) {
             const result = await dispatch(promptWorkflowThunk.postPrompt(promptDto))
             console.log(result.error);
         }
