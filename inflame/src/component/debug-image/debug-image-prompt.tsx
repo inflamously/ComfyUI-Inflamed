@@ -3,23 +3,24 @@ import {useCallback} from "react";
 import Fileuploader from "../file/fileuploader.tsx";
 import {socketStateSelectors} from "../../+state/socket/socket-selectors.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {SOCKET_MAIN} from "../../+state/socket/socket-names.ts";
+import {SOCKET_MAIN} from "../../+state/socket/comfyui-socket.model.ts";
 import {AppState} from "../../+state/inflame-store.ts";
 import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
-import promptWorkflowThunk from "../../+state/prompt/prompt-workflow/prompt-workflow.thunk.ts";
+import promptWorkflowThunk from "../../+state/prompt/prompt-workflow/prompts-workflow.thunk.ts";
 import {useDebugImagePrompt} from "./debug-image-prompt.ts";
 
 const DebugImagePrompt = () => {
-    const [prompt, promptDto] = useDebugImagePrompt();
+    const debugPrompt = useDebugImagePrompt();
     const socketState = useSelector((state: AppState) => socketStateSelectors.selectById(state, SOCKET_MAIN))
     const dispatch: ThunkDispatch<AppState, never, AnyAction> = useDispatch()
 
     const handleInvokePrompt = useCallback(async () => {
+        const promptDto = debugPrompt[1]
         if (promptDto !== null) {
             const result = await dispatch(promptWorkflowThunk.postPrompt(promptDto))
             console.log(result.error);
         }
-    }, [socketState, prompt, dispatch])
+    }, [debugPrompt, dispatch])
 
     return (
         <Box p={4}>

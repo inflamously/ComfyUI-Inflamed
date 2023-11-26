@@ -1,4 +1,4 @@
-import {Prompt} from "../../+state/prompt/prompt.ts";
+import {Prompt} from "../../+state/prompt/prompt.model.ts";
 import {createPromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
 import PreviewImageNode, {nodeTypePreviewImage} from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
 import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image.node.ts";
