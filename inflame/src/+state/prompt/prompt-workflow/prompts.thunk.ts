@@ -1,11 +1,26 @@
 import {AppState} from "../../inflame-store.ts";
 import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
-import {Prompt} from "../prompt.model.ts";
 import {promptsSliceActions} from "./prompts.slice.ts";
+import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
+import {promptsSelectors} from "./prompts.selectors.ts";
 
-export const createPromptWithWorkflow = (prompt: Prompt) => (dispatch: ThunkDispatch<AppState, undefined, AnyAction>, getState: () => AppState) => {
+const createPromptWithWorkflow = (props: {
+    nodes: AbstractPromptNode[]
+}) => (dispatch: ThunkDispatch<AppState, undefined, AnyAction>, getState: () => AppState) => {
+    const {nodes} = props;
 
-    dispatch(promptsSliceActions.createPrompt(prompt));
+    dispatch(promptsSliceActions.createNewPrompt());
+    const prompt = promptsSelectors.selectPromptsByNewest(getState());
+    if (!prompt) {
+        throw new Error("Prompt creation failed.")
+    }
 
-    console.log(getState());
+    dispatch(promptsSliceActions.updatePrompt({
+        clientId: prompt.clientId,
+        nodes,
+    }))
+}
+
+export const promptsThunk = {
+    createPromptWithWorkflow
 }

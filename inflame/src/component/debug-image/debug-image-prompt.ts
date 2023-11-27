@@ -1,13 +1,12 @@
-import {Prompt} from "../../+state/prompt/prompt.model.ts";
-import {createPromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
 import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image.node.ts";
 import PreviewImageNode from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
 import {socketStateSelectors} from "../../+state/socket/socket-selectors.ts";
-import {createPromptWithWorkflow} from "../../+state/prompt/prompt-workflow/prompts.thunk.ts";
 import {promptsSelectors} from "../../+state/prompt/prompt-workflow/prompts.selectors.ts";
+import {promptsThunk} from "../../+state/prompt/prompt-workflow/prompts.thunk.ts";
+import {Prompt} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
 
 export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
     const socket = useSelector(
@@ -46,16 +45,12 @@ export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
             images: loadImage.outputs?.image
         }
 
-        const customPrompt: Prompt = {
-            workflow: createPromptWorkflow({
-                nodes: [
-                    loadImage,
-                    previewImage,
-                ]
-            })
-        }
-
-        dispatch(createPromptWithWorkflow(customPrompt))
+        dispatch(promptsThunk.createPromptWithWorkflow({
+            nodes: [
+                loadImage,
+                previewImage,
+            ]
+        }))
     }, [socket, dispatch])
 
 

@@ -1,5 +1,7 @@
 import {createEntityAdapter} from "@reduxjs/toolkit";
-import {PromptData} from "../prompt.model.ts";
+import {Prompt} from "./prompt.model.ts";
 
-export const promptsEntityAdapter = createEntityAdapter<PromptData>()
-export type PromptsEntity = ReturnType<typeof promptsEntityAdapter.getInitialState>;
+export const promptsEntityAdapter = createEntityAdapter<Prompt>({
+    selectId: (prompt) => prompt.clientId,
+})
+export type PromptsEntityAdapterType = ReturnType<typeof promptsEntityAdapter.getInitialState>;

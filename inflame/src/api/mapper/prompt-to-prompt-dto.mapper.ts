@@ -1,7 +1,7 @@
-import {Prompt} from "../../+state/prompt/prompt.model.ts";
 import {PromptDTO} from "../dto/prompt-node.dto.ts";
 import {workflowToWorkflowDtoMapper} from "./workflow-to-workflow-dto.mapper.ts";
 import {ComfyuiSocket} from "../../+state/socket/comfyui-socket.model.ts";
+import {Prompt} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
 
 export const promptToPromptDto = (props: {
     socket: ComfyuiSocket,

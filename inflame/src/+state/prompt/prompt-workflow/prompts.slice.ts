@@ -1,16 +1,16 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Prompt, PromptData} from "../prompt.model.ts";
-import {PromptsEntity, promptsEntityAdapter} from "./prompts.entity.ts";
+import {PromptsEntityAdapterType, promptsEntityAdapter} from "./prompts.entity.ts";
+import {generatePromptId} from "./prompts.utils.ts";
+import {Prompt} from "./prompt.model.ts";
+import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
 
 export type PromptState = {
-    // workflow: PromptWorkflow,
-    // workflows: EntityState<PromptWorkflow>
-    entities: PromptsEntity
+    items: PromptsEntityAdapterType
 }
 
 
 const INITIAL_STATE: PromptState = {
-    entities: promptsEntityAdapter.getInitialState(),
+    items: promptsEntityAdapter.getInitialState(),
 }
 
 export const promptsSliceName = "prompts"
@@ -19,18 +19,32 @@ export const promptsSlice = createSlice({
     name: promptsSliceName,
     initialState: INITIAL_STATE,
     reducers: {
-        createPrompt: (state, action: PayloadAction<Prompt>) => {
-            const { payload } = action
-            const promptStored = {
-                workflow: payload.workflow.getNodes()
-            } satisfies PromptData
-            promptsEntityAdapter.addOne(state.entities, promptStored)
+        createNewPrompt: (state) => {
+            promptsEntityAdapter.addOne(state.items, {
+                clientId: generatePromptId().toString(),
+                workflow: {
+                    nodes: []
+                }
+            })
         },
-        // createWorkflow: (state, action: PayloadAction<AbstractPromptNodeType[]>) => {
-        //     workflows.addOne(state.workflows, createPromptWorkflow({
-        //         nodes: action.payload
-        //     }))
-        // }
+        updatePrompt: (state, action: PayloadAction<{
+            clientId: string,
+            nodes: AbstractPromptNode[]
+        }>) => {
+            const { clientId, nodes } = action.payload
+            const prompt = state.items.entities[clientId]
+            if (prompt) {
+                const newPrompt: Prompt = {
+                    ...prompt,
+                    workflow: {
+                        nodes
+                    }
+                }
+                promptsEntityAdapter.setOne(state.items, newPrompt)
+            } else {
+                return state
+            }
+        }
     },
     extraReducers: () => {
     }

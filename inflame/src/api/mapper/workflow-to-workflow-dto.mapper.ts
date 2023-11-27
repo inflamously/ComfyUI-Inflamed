@@ -1,7 +1,7 @@
 import {PromptNodeDTO, PromptNodeInputsDTO, PromptWorkflowDTO} from "../dto/prompt-node.dto.ts";
-import {PromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
 import {unsetInputsValidator} from "../../validators/nodes.validators.ts";
 import {nodeConnectionToPromptNodeInputDto} from "../../+state/prompt/prompt-nodes/prompt-node-connection.utils.ts";
+import {PromptWorkflow} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
 
 
 
@@ -15,7 +15,7 @@ export const workflowToWorkflowDtoMapper = (workflow: PromptWorkflow): PromptWor
     }
 
     return Object.fromEntries(
-        workflow.getNodes().map((node) => {
+        workflow.nodes.map((node) => {
             // TODO: Evaluate if syntax is preferred?
             if (!unsetInputsValidator(node)) {
                 throw new Error(`Unused inputs detected at node type "${node.classtype}" !`);

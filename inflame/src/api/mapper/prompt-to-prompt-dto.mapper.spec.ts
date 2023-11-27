@@ -1,10 +1,10 @@
-import {Prompt} from "../../+state/prompt/prompt.model.ts";
-import {createPromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
 import PreviewImageNode, {nodeTypePreviewImage} from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
 import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image.node.ts";
 import {PromptDTO} from "../dto/prompt-node.dto.ts";
 import {promptToPromptDto} from "./prompt-to-prompt-dto.mapper.ts";
 import {ComfyuiSocket} from "../../+state/socket/comfyui-socket.model.ts";
+import {Prompt} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
+import {getNodeFromWorkflow} from "../../+state/prompt/prompt-workflow/prompts.utils.ts";
 
 describe('Mapper for converting a full prompt into a dto object that can be passed to /prompt', function () {
     it('should convert a simple prompt object', () => {
@@ -14,7 +14,8 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
         }
 
         const prompt: Prompt = {
-            workflow: createPromptWorkflow({
+            clientId: "1234",
+            workflow: {
                 nodes: [
                     LoadImageNode({
                         id: "1",
@@ -30,10 +31,10 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
                         }
                     })
                 ]
-            })
+            }
         }
 
-        prompt.workflow.getNode("2", nodeTypePreviewImage).inputs = {
+        getNodeFromWorkflow(prompt.workflow, "2", nodeTypePreviewImage).inputs = {
             images: {
                 kind: "link",
                 id: "1",
@@ -74,7 +75,8 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
         }
 
         const prompt: Prompt = {
-            workflow: createPromptWorkflow({
+            clientId: "1234",
+            workflow: {
                 nodes: [
                     LoadImageNode({
                         id: "1",
@@ -90,10 +92,10 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
                         }
                     })
                 ]
-            })
-        } satisfies Prompt
+            }
+        }
 
-        prompt.workflow.getNode("2", nodeTypePreviewImage).inputs = {
+        getNodeFromWorkflow(prompt.workflow, "2", nodeTypePreviewImage).inputs = {
             images: {
                 kind: "link",
                 id: "1",
