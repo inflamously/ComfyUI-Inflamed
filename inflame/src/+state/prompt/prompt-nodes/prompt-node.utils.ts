@@ -37,17 +37,14 @@ export const calculateStateInputs = <
     if (stateInputs) {
         const calculatedInputs = stateInputs(calculatePathsForObject(state) as State)
 
-        if (result) {
-            result = {
-                ...result,
-                ...calculatedInputs
-            }
-        } else {
-            result = {
-                ...calculatedInputs
-            };
+        result = result ? {
+            ...result,
+            ...calculatedInputs
+        } : {
+            ...calculatedInputs
         }
     }
+    
     return result
 }
 

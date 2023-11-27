@@ -1,7 +1,7 @@
 import {workflowToWorkflowDtoMapper} from "./workflow-to-workflow-dto.mapper.ts";
 import PromptNodeLoadImage from "../../+state/prompt/prompt-nodes/load-image.node.ts";
 import PromptNodePreviewImage from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
-import {createPromptWorkflow} from "../../+state/prompt/prompt-workflow/create-prompt-workflow.ts";
+import {PromptWorkflow} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
 
 describe('Mapper for workflow conversion to DTO', () => {
     it('should map workflow to dto', () => {
@@ -29,12 +29,12 @@ describe('Mapper for workflow conversion to DTO', () => {
             images: loadImageNode.outputs?.image
         }
 
-        const workflow = createPromptWorkflow({
+        const workflow: PromptWorkflow = {
             nodes: [
                 loadImageNode,
                 previewImageNode
             ]
-        })
+        }
 
         const workflowDto = workflowToWorkflowDtoMapper(workflow)
         expect(workflowDto).toEqual(
