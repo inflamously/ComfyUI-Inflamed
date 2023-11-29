@@ -20,3 +20,8 @@ export type DataNode<InputModel> = {
     input: DataNodeInputInfo<InputModel>
     output: DataNodeOutputInfo[]
 }
+
+export type DataNodeLink = {
+    type: "input" | "output",
+    index: number,
+}
