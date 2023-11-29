@@ -4,9 +4,10 @@ import {
     PromptNodeTypeGuard,
 } from "./prompt-node.ts";
 import {BindValueLink, BindValueStateInput, BindValueString} from "./prompt-node-connection-value.ts";
+import {DataNodeLink} from "../../data-nodes/data-node.model.ts";
 
 type NodeLoadImageState = {
-    images: string[],
+    images: DataNodeLink | [], // TODO: Remove array on finish
     currentImage: string,
 }
 

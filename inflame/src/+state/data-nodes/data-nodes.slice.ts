@@ -7,29 +7,25 @@ import {sortObjectByItsProperties} from "../../utils/object.utils.ts";
  */
 
 export type NodesSliceState = {
-    dataNodes: Record<string, AbstractDataNode>,
+    nodes: Record<string, AbstractDataNode>,
 }
 
 const INITIAL_STATE: NodesSliceState = {
-    dataNodes: {},
+    nodes: {},
 }
 
-export const nodesSliceName = "nodes"
+export const nodesSliceName = "dataNodes"
 
-// TODO: Rename?
 export const nodesSlice = createSlice({
     name: nodesSliceName,
     initialState: INITIAL_STATE,
     reducers: {
-        updateDataNodeCollection:
-            (state, action: PayloadAction<Record<string, AbstractDataNode>>) => {
-                let nodes = action.payload ?? {}
-                nodes = sortObjectByItsProperties(nodes)
-                state.dataNodes = nodes
-            },
+        updateDataNodeCollection: (state, action: PayloadAction<Record<string, AbstractDataNode>>) => {
+            state.nodes = sortObjectByItsProperties(action.payload ?? {})
+        },
     },
 })
 
-export const nodeSliceActions = {
+export const nodesSliceActions = {
     ...nodesSlice.actions
 }

@@ -9,6 +9,8 @@ const createPromptWithWorkflow = (props: {
 }) => (dispatch: ThunkDispatch<AppState, undefined, AnyAction>, getState: () => AppState) => {
     const {nodes} = props;
 
+    // TODO: When do I query dataNodes into prompt nodes?
+
     dispatch(promptsSliceActions.createNewPrompt());
     const prompt = promptsSelectors.selectPromptsByNewest(getState());
     if (!prompt) {
