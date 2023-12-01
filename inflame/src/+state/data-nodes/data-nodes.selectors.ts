@@ -6,12 +6,11 @@ const selectDataNodesState = (state: AppState): NodesSliceState => {
     return state.dataNodes
 }
 
-const selectNodes = createSelector(
+const selectDataNodes = createSelector(
     selectDataNodesState,
-    (state) => state.nodes
+    (state) => Object.keys(state.nodes).length > 0 ? state.nodes : undefined
 )
 
 export const dataNodesSelectors = {
-    selectDataNodesState,
-    selectNodes,
+    selectDataNodes
 }

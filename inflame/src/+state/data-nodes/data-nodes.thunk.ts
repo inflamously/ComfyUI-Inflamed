@@ -16,25 +16,24 @@ const queryDataNodes = createAsyncThunk<
     async (refresh, {
         dispatch, getState, rejectWithValue
     }) => {
-        const result = await Api.getObjectInfo({
-            transformer: (data) => {
-                return mapObjectNodesDtoToDataNodeCollection(data)
+        const nodes = dataNodesSelectors.selectDataNodes(getState());
+        if (refresh || !nodes) {
+            const result = await Api.getObjectInfo({
+                transformer: (data) => {
+                    return mapObjectNodesDtoToDataNodeCollection(data)
+                }
+            })
+
+            if (result.error) {
+                console.error(result.error)
+                return rejectWithValue(null);
             }
-        })
 
-        if (result.error) {
-            console.error(result.error)
-            return rejectWithValue(null);
-        }
-
-        const currentNodes = dataNodesSelectors.selectNodes(getState())
-
-        if (result.value) {
-            if (refresh || Object.keys(currentNodes).length >= 0) {
+            if (result.value) {
                 dispatch(nodesSliceActions.updateDataNodeCollection(result.value.nodes))
+            } else {
+                throw new Error("API /object_info failed to provide any nodes")
             }
-        } else {
-            throw new Error("API /object_info failed to provide any nodes")
         }
     }
 )
