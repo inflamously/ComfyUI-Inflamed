@@ -50,7 +50,7 @@ export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
                 loadImage,
                 previewImage,
             ]
-        }))
+        })).catch((error) => console.error(error))
     }, [socket, dispatch])
 
 
