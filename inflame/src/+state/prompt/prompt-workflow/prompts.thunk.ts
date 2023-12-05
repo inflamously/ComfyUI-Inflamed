@@ -5,6 +5,7 @@ import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
 import {promptsSelectors} from "./prompts.selectors.ts";
 import {dataNodesThunk} from "../../data-nodes/data-nodes.thunk.ts";
 import {dataNodesSelectors} from "../../data-nodes/data-nodes.selectors.ts";
+import {mergeDataNodeIntoPromptNode} from "../prompt-nodes/prompt-node.utils.ts";
 
 const createPromptWithWorkflow = (props: {
     nodes: AbstractPromptNode[]
@@ -17,19 +18,31 @@ const createPromptWithWorkflow = (props: {
 
     const dataNodes = dataNodesSelectors.selectDataNodes(getState())
 
-    console.log(dataNodes);
-
-    // TODO:
-
-    dispatch(promptsSliceActions.createNewPrompt());
+    dispatch(promptsSliceActions.createPrompt());
     const prompt = promptsSelectors.selectPromptsByNewest(getState());
     if (!prompt) {
         throw new Error("Prompt creation failed.")
     }
 
+    let updatedNodes = nodes;
+
+    if (dataNodes) {
+        // TODO: Extract mapper functions
+        updatedNodes = mergeDataNodeIntoPromptNode(nodes, dataNodes, {
+            "LoadImage": (node, dataNode) => {
+                const data: unknown = dataNode.input.required["image"]
+                if (Array.isArray(data)) {
+                    node.state["images"] = data[0];
+                }
+
+                return node;
+            },
+        })
+    }
+
     dispatch(promptsSliceActions.updatePrompt({
         clientId: prompt.clientId,
-        nodes,
+        nodes: updatedNodes,
     }))
 }
 

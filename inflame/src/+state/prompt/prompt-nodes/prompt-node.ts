@@ -38,7 +38,7 @@ export type PromptNode<
     id: Readonly<string>,
     classtype: string,
     inputs: PromptNodeInputs<Inputs, StateInputs>,
-    state: Readonly<State>,
+    state: Readonly<Partial<State>>,
     outputs: Readonly<Outputs>,
 }
 

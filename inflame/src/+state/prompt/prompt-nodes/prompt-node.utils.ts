@@ -3,6 +3,7 @@ import {isConnectionOfLink} from "./prompt-node-connection.utils.ts";
 import {PromptNodeConnection} from "./prompt-node-connection.ts";
 import structuredClone from "@ungap/structured-clone";
 import set from 'lodash/set'
+import {AbstractDataNode} from "../../data-nodes/data-node.model.ts";
 
 export const calculatePathsForObject = (tree: Record<string, unknown>) => {
     const statePaths = structuredClone(tree)
@@ -89,4 +90,30 @@ export const updateNodeId = (node: AbstractPromptNode, id: string) => {
     }
 
     return node
+}
+
+type PromptNodeDataMapperFunc = (
+    node: Readonly<AbstractPromptNode>,
+    dataNode: Readonly<AbstractDataNode>
+) => AbstractPromptNode
+
+export const mergeDataNodeIntoPromptNode = (
+    nodes: AbstractPromptNode[],
+    dataNodes: Record<string, AbstractDataNode>,
+    mergeFunc: Record<string, PromptNodeDataMapperFunc>
+) => {
+     return nodes.map((node) => {
+        if (!dataNodes) {
+            return node
+        }
+
+        const nodeClass = node.classtype
+        const dataNode = dataNodes[nodeClass]
+        if (!dataNode) {
+            console.error(`Node's classtype ${nodeClass} was not found in DataNodes.`)
+            return node
+        }
+
+        return mergeFunc[nodeClass]?.(structuredClone(node), dataNode) ?? node;
+    })
 }

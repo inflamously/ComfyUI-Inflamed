@@ -7,10 +7,11 @@ import {socketStateSelectors} from "../../+state/socket/socket-selectors.ts";
 import {promptsSelectors} from "../../+state/prompt/prompt-workflow/prompts.selectors.ts";
 import {promptsThunk} from "../../+state/prompt/prompt-workflow/prompts.thunk.ts";
 import {Prompt} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
+import {SOCKET_MAIN} from "../../+state/socket/comfyui-socket.model.ts";
 
 export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
     const socket = useSelector(
-        (state: AppState) => socketStateSelectors.selectById(state, "main")
+        (state: AppState) => socketStateSelectors.selectById(state, SOCKET_MAIN)
     )
     const [promptId] = useState<number | null>(null);
     const prompt = useSelector(
@@ -25,11 +26,11 @@ export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
         }
 
         // Create nodes manually
-
         const loadImage = LoadImageNode({
             id: "1",
             initialState: {
-                images: [], // TODO: need images
+                images: [],
+                allowUpload: true,
                 currentImage: "example.png"
             }
         })

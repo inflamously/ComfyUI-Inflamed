@@ -4,10 +4,10 @@ import {
     PromptNodeTypeGuard,
 } from "./prompt-node.ts";
 import {BindValueLink, BindValueStateInput, BindValueString} from "./prompt-node-connection-value.ts";
-import {DataNodeLink} from "../../data-nodes/data-node.model.ts";
 
 type NodeLoadImageState = {
-    images: DataNodeLink | [], // TODO: Remove array on finish
+    images: string[],
+    allowUpload: boolean,
     currentImage: string,
 }
 
@@ -57,10 +57,10 @@ const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
                     },
                     image: {
                         kind: "state",
-                        propertyPath: state.currentImage, // TODO: Retrieve from state above.
+                        propertyPath: state.currentImage ?? "", // TODO: Retrieve from state above.
                     },
                 }
-            }
+            },
         },
     );
 }
