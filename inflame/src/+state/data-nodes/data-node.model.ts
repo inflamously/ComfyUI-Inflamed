@@ -1,14 +1,18 @@
+export type AbstractDataNode = Omit<DataNode<unknown>, "input"> & {
+    input: {
+        required: Record<string, unknown>
+    },
+}
+
 type DataNodeInputInfo<InputModel> = {
-    [key in keyof InputModel]: InputModel[key]
+    required: { // TODO: Map to better model.
+        [key in keyof InputModel]: InputModel[key]
+    }
 }
 
 type DataNodeOutputInfo = {
     label: string
     type: string // TODO: Fix with typescript typing
-}
-
-export type AbstractDataNode = Omit<DataNode<unknown>, "input"> & {
-    input: Record<string, unknown>,
 }
 
 export type DataNode<InputModel> = {
@@ -22,6 +26,8 @@ export type DataNode<InputModel> = {
 }
 
 export type DataNodeLink = {
-    type: "input" | "output",
-    index: number,
+    input: {
+        name: string,
+        index: number
+    }
 }

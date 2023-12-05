@@ -19,7 +19,7 @@ export const promptsSlice = createSlice({
     name: promptsSliceName,
     initialState: INITIAL_STATE,
     reducers: {
-        createNewPrompt: (state) => {
+        createPrompt: (state) => {
             promptsEntityAdapter.addOne(state.items, {
                 clientId: generatePromptId().toString(),
                 workflow: {

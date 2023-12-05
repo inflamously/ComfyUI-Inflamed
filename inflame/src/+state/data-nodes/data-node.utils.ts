@@ -18,4 +18,3 @@ export const createDataNodeCollection = (nodes: Record<string, AbstractDataNode>
         }
     }
 }
-
