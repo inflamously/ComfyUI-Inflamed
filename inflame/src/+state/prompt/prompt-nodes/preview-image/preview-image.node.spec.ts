@@ -1,6 +1,6 @@
-import PromptNodeLoadImage from "./load-image.node.ts";
+import PromptNodeLoadImage from "../load-image/load-image.node.ts";
 import PromptNodePreviewImage, {nodeTypePreviewImage} from "./preview-image.node.ts";
-import {AbstractPromptNode} from "./prompt-node.ts";
+import {AbstractPromptNode} from "../prompt-node.ts";
 
 describe('should test node parameters and typings indirectly', function () {
     it('instantiates previewimage node', () => {
@@ -8,6 +8,7 @@ describe('should test node parameters and typings indirectly', function () {
             id: "2",
             initialState: {
                 currentImage: "",
+                allowUpload: true,
                 images: []
             }
         })

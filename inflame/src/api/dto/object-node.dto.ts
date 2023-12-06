@@ -3,7 +3,9 @@ export type ObjectNodesDTO = {
 } | Array<ObjectNodeDTO>
 
 export type ObjectNodeDTO = {
-    input: Record<string, unknown> // TODO: Is it typeable?
+    input: {
+        required: Record<string, unknown>
+    },
     output: Array<string>,
     output_is_list: Array<boolean>,
     output_name: Array<string>,

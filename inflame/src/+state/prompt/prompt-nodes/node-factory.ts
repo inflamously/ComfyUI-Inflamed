@@ -1,5 +1,5 @@
-import PromptNodeLoadImage from "./load-image.node.ts";
-import PromptNodePreviewImage from "./preview-image.node.ts";
+import PromptNodeLoadImage from "./load-image/load-image.node.ts";
+import PromptNodePreviewImage from "./preview-image/preview-image.node.ts";
 
 const nodeMap = {
     LoadImage: PromptNodeLoadImage,

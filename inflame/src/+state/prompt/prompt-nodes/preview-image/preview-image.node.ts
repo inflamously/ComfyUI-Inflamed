@@ -4,8 +4,8 @@ import {
     createPromptNode,
     PromptNodeFields,
     PromptNodeTypeGuard
-} from "./prompt-node.ts";
-import {BindValueLink} from "./prompt-node-connection-value.ts";
+} from "../prompt-node.ts";
+import {BindValueLink} from "../prompt-node-connection-value.ts";
 
 type NodePreviewImageState = {
     images: string[] // TODO: Typings?

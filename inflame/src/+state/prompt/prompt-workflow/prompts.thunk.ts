@@ -6,6 +6,7 @@ import {promptsSelectors} from "./prompts.selectors.ts";
 import {dataNodesThunk} from "../../data-nodes/data-nodes.thunk.ts";
 import {dataNodesSelectors} from "../../data-nodes/data-nodes.selectors.ts";
 import {mergeDataNodeIntoPromptNode} from "../prompt-nodes/prompt-node.utils.ts";
+import {LoadImageDataNodeMerger} from "../prompt-nodes/load-image/load-image-data-node.mapper.ts";
 
 const createPromptWithWorkflow = (props: {
     nodes: AbstractPromptNode[]
@@ -29,14 +30,7 @@ const createPromptWithWorkflow = (props: {
     if (dataNodes) {
         // TODO: Extract mapper functions
         updatedNodes = mergeDataNodeIntoPromptNode(nodes, dataNodes, {
-            "LoadImage": (node, dataNode) => {
-                const data: unknown = dataNode.input.required["image"]
-                if (Array.isArray(data)) {
-                    node.state["images"] = data[0];
-                }
-
-                return node;
-            },
+            "LoadImage": LoadImageDataNodeMerger,
         })
     }
 

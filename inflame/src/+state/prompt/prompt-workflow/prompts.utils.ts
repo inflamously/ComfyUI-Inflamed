@@ -1,6 +1,5 @@
 import {AbstractPromptNode, PromptNodeTypeGuardFunction} from "../prompt-nodes/prompt-node.ts";
 import {PromptWorkflow} from "./prompt.model.ts";
-import structuredClone from "@ungap/structured-clone";
 import {UUIDGenerator} from "../../../utils/generators.ts";
 
 /**
@@ -14,11 +13,12 @@ export const generatePromptId = () => {
     return promptUUIDGenerator.next().value
 }
 
-export const pushNodeToWorkflow = (workflow: PromptWorkflow, nodes: AbstractPromptNode[]) => {
-    const newNodes = structuredClone(workflow?.nodes)
-
-    // TODO: Validation and pushing of new nodes...
-}
+// TODO: Implement pushNodeToWorkflow
+// export const pushNodeToWorkflow = (workflow: PromptWorkflow, nodes: AbstractPromptNode[]) => {
+//     const newNodes = structuredClone(workflow?.nodes)
+//
+//     // TODO: Validation and pushing of new nodes...
+// }
 
 export const getNodeFromWorkflow = <T extends AbstractPromptNode>(
     workflow: PromptWorkflow,

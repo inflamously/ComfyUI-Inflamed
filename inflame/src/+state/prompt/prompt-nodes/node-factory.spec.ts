@@ -7,6 +7,7 @@ describe('testing out the node factory for creating various nodes', () => {
             id: "1",
             initialState: {
                 images: [],
+                allowUpload: true,
                 currentImage: ""
             }
         })

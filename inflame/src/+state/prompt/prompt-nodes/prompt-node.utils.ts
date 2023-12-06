@@ -92,7 +92,7 @@ export const updateNodeId = (node: AbstractPromptNode, id: string) => {
     return node
 }
 
-type PromptNodeDataMapperFunc = (
+export type PromptDataNodeMergerFunc = (
     node: Readonly<AbstractPromptNode>,
     dataNode: Readonly<AbstractDataNode>
 ) => AbstractPromptNode
@@ -100,7 +100,7 @@ type PromptNodeDataMapperFunc = (
 export const mergeDataNodeIntoPromptNode = (
     nodes: AbstractPromptNode[],
     dataNodes: Record<string, AbstractDataNode>,
-    mergeFunc: Record<string, PromptNodeDataMapperFunc>
+    mergeFunc: Record<string, PromptDataNodeMergerFunc>
 ) => {
      return nodes.map((node) => {
         if (!dataNodes) {
