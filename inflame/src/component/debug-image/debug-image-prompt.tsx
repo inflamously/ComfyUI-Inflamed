@@ -1,19 +1,24 @@
 import {Box, Button, Text} from "@chakra-ui/react";
-import {useCallback} from "react";
+import {useCallback, useEffect} from "react";
 import Fileuploader from "../file/fileuploader.tsx";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {AppState} from "../../+state/inflame-store.ts";
-import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
-import promptWorkflowThunk from "../../+state/prompt/prompt-workflow/prompts-workflow.thunk.ts";
 import {useDebugImagePrompt} from "./debug-image-prompt.ts";
 import {promptToPromptDto} from "../../api/mapper/prompt-to-prompt-dto.mapper.ts";
 import {SOCKET_MAIN} from "../../+state/socket/comfyui-socket.model.ts";
 import {socketStateSelectors} from "../../+state/socket/socket-selectors.ts";
+import {comfyApi} from "../../api/comfy.api.ts";
 
 const DebugImagePrompt = () => {
     const debugPrompt = useDebugImagePrompt();
     const socket = useSelector((state: AppState) => socketStateSelectors.selectById(state, SOCKET_MAIN))
-    const dispatch: ThunkDispatch<AppState, never, AnyAction> = useDispatch()
+    const [postPrompt, result] = comfyApi.usePostPrompt()
+
+
+    useEffect(() => {
+        console.log("Call Result", result.status)
+    }, [result.status])
+
 
     const handleInvokePrompt = useCallback(async () => {
         const prompt = debugPrompt[0]
@@ -22,12 +27,17 @@ const DebugImagePrompt = () => {
                 socket,
                 prompt
             });
+
             if (promptDto) {
-                const result = await dispatch(promptWorkflowThunk.postPrompt(promptDto))
-                console.log(result.error);
+                const res = await postPrompt(promptDto)
+                if ('data' in res) {
+                    console.log("Data", res.data)
+                } else if ('error' in res) {
+                    console.error("Error", res.error)
+                }
             }
         }
-    }, [socket, debugPrompt, dispatch])
+    }, [socket, debugPrompt, postPrompt])
 
     return (
         <Box p={4}>

@@ -26,6 +26,7 @@ export type PromptNodeDTO = {
     class_type: string
 }
 
+// TODO: Rename to proper type
 export type PromptNodeResultDTO = {
     prompt_id: string,
     "number": number,
