@@ -40,7 +40,10 @@ export const promptsSlice = createSlice({
                         nodes
                     }
                 }
-                promptsEntityAdapter.setOne(state.items, newPrompt)
+                promptsEntityAdapter.updateOne(state.items, {
+                    id: prompt.clientId,
+                    changes: newPrompt
+                })
             } else {
                 return state
             }
