@@ -33,6 +33,7 @@ describe('test the creation of a workflow based on nodes', function () {
             // Work with abstract type
             expect(node.state).toEqual({
                 currentImage: "test.png",
+                allowUpload: true,
                 images: ["test.png"]
             })
         }

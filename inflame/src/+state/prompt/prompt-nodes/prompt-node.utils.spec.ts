@@ -57,6 +57,7 @@ describe('Various utils functions collected applied to prompt nodes', function (
             },
             state: {
                 currentImage: "test.png",
+                allowUpload: true,
                 images: ["test.png", "test-2.png"]
             }
         })
@@ -90,6 +91,7 @@ describe('Various utils functions collected applied to prompt nodes', function (
             },
             state: {
                 currentImage: "",
+                allowUpload: true,
                 images: []
             }
         })
@@ -138,6 +140,7 @@ describe('Various utils functions collected applied to prompt nodes', function (
             },
             state: {
                 currentImage: "test.png",
+                allowUpload: true,
                 images: ["test.png", "test-2.png"]
             }
         })
@@ -182,6 +185,7 @@ describe('Various utils functions collected applied to prompt nodes', function (
             },
             state: {
                 currentImage: "test.png",
+                allowUpload: true,
                 images: ["test.png", "test-2.png"]
             }
         })

@@ -30,6 +30,7 @@ describe('should test node parameters and typings indirectly', function () {
         })
         expect(node.state).toEqual({
             currentImage: "test.png",
+            allowUpload: true,
             images: ["test.png"],
         })
     })
