@@ -13,22 +13,19 @@ const createPromptWithWorkflow = (props: {
 }) => async (dispatch: ThunkDispatch<AppState, undefined, AnyAction>, getState: () => AppState) => {
     const {nodes} = props;
 
-    // TODO: When do I query dataNodes into prompt nodes?
-
     await dispatch(dataNodesThunk.queryDataNodes(false))
 
     const dataNodes = dataNodesSelectors.selectDataNodes(getState())
 
     dispatch(promptsSliceActions.createPrompt());
+
     const prompt = promptsSelectors.selectPromptsByNewest(getState());
     if (!prompt) {
         throw new Error("Prompt creation failed.")
     }
 
     let updatedNodes = nodes;
-
     if (dataNodes) {
-        // TODO: Extract mapper functions
         updatedNodes = mergeDataNodeIntoPromptNode(nodes, dataNodes, {
             "LoadImage": LoadImageDataNodeMerger,
         })
