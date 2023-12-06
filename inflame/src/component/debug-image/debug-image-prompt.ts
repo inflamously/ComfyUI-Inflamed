@@ -1,5 +1,5 @@
-import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image.node.ts";
-import PreviewImageNode from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
+import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image/load-image.node.ts";
+import PreviewImageNode from "../../+state/prompt/prompt-nodes/preview-image/preview-image.node.ts";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";

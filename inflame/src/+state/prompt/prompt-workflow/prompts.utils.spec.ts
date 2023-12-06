@@ -1,6 +1,6 @@
 import {getNodeFromWorkflow} from "./prompts.utils.ts";
-import PromptNodeLoadImage, {nodeTypeLoadImage} from "../prompt-nodes/load-image.node.ts";
-import PromptNodePreviewImage, {nodeTypePreviewImage} from "../prompt-nodes/preview-image.node.ts";
+import PromptNodeLoadImage, {nodeTypeLoadImage} from "../prompt-nodes/load-image/load-image.node.ts";
+import PromptNodePreviewImage, {nodeTypePreviewImage} from "../prompt-nodes/preview-image/preview-image.node.ts";
 import {PromptWorkflow} from "./prompt.model.ts";
 
 describe('test the creation of a workflow based on nodes', function () {
@@ -11,6 +11,7 @@ describe('test the creation of a workflow based on nodes', function () {
                     id: "1",
                     initialState: {
                         images: ["test.png"],
+                        allowUpload: true,
                         currentImage: "test.png",
                     }
                 }),
@@ -44,6 +45,7 @@ describe('test the creation of a workflow based on nodes', function () {
                     id: "1",
                     initialState: {
                         images: [],
+                        allowUpload: true,
                         currentImage: "",
                     }
                 }),

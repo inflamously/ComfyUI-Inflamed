@@ -1,6 +1,6 @@
 import {calculatePathsForObject, updateNodeId, updateNodeState} from "./prompt-node.utils.ts";
-import PromptNodeLoadImage from "./load-image.node.ts";
-import PromptNodePreviewImage from "./preview-image.node.ts";
+import PromptNodeLoadImage from "./load-image/load-image.node.ts";
+import PromptNodePreviewImage from "./preview-image/preview-image.node.ts";
 
 describe('Various utils functions collected applied to prompt nodes', function () {
     it('should calculate state inputs (predefined inside of PromptNodeLoadImage) and put them under inputs', () => {
@@ -8,6 +8,7 @@ describe('Various utils functions collected applied to prompt nodes', function (
             id: "2",
             initialState: {
                 currentImage: "test.png",
+                allowUpload: true,
                 images: ["test.png", "test-2.png"]
             }
         })
@@ -29,6 +30,7 @@ describe('Various utils functions collected applied to prompt nodes', function (
             id: "2",
             initialState: {
                 currentImage: "test.png",
+                allowUpload: true,
                 images: ["test.png", "test-2.png"]
             }
         })
@@ -61,6 +63,7 @@ describe('Various utils functions collected applied to prompt nodes', function (
 
         const nodeWithNewState = updateNodeState(node, {
             images: [],
+            allowUpload: true,
             currentImage: ""
         })
 
@@ -97,6 +100,7 @@ describe('Various utils functions collected applied to prompt nodes', function (
             id: "2",
             initialState: {
                 currentImage: "test.png",
+                allowUpload: true,
                 images: ["test.png", "test-2.png"]
             }
         })

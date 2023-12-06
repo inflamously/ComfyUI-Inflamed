@@ -3,7 +3,7 @@ import {ObjectNodeDTO} from "../api/dto/object-node.dto.ts";
 import {MOCK_OBJECT_NODE_DTO} from "../api/mapper/mocks/mock-object-node-dto.ts";
 import {createDataNodeCollection} from "../+state/data-nodes/data-node.utils.ts";
 import {DataNode} from "../+state/data-nodes/data-node.model.ts";
-import PreviewImageNode from "../+state/prompt/prompt-nodes/preview-image.node.ts";
+import PreviewImageNode from "../+state/prompt/prompt-nodes/preview-image/preview-image.node.ts";
 
 describe('tests various api validators functions', function () {
     let node: ObjectNodeDTO;

@@ -1,5 +1,5 @@
-import PreviewImageNode, {nodeTypePreviewImage} from "../../+state/prompt/prompt-nodes/preview-image.node.ts";
-import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image.node.ts";
+import PreviewImageNode, {nodeTypePreviewImage} from "../../+state/prompt/prompt-nodes/preview-image/preview-image.node.ts";
+import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image/load-image.node.ts";
 import {PromptDTO} from "../dto/prompt-node.dto.ts";
 import {promptToPromptDto} from "./prompt-to-prompt-dto.mapper.ts";
 import {ComfyuiSocket} from "../../+state/socket/comfyui-socket.model.ts";
@@ -21,6 +21,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
                         id: "1",
                         initialState: {
                             images: ["test.png"],
+                            allowUpload: true,
                             currentImage: "test.png",
                         }
                     }),
@@ -82,6 +83,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
                         id: "1",
                         initialState: {
                             images: ["test.png"],
+                            allowUpload: true,
                             currentImage: "test.png",
                         }
                     }),

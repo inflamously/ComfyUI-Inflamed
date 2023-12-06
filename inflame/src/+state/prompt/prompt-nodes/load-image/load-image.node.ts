@@ -2,8 +2,8 @@ import {
     createPromptNode,
     PromptNodeFields,
     PromptNodeTypeGuard,
-} from "./prompt-node.ts";
-import {BindValueLink, BindValueStateInput, BindValueString} from "./prompt-node-connection-value.ts";
+} from "../prompt-node.ts";
+import {BindValueLink, BindValueStateInput, BindValueString} from "../prompt-node-connection-value.ts";
 
 type NodeLoadImageState = {
     images: string[],
