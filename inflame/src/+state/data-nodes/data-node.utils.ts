@@ -1,5 +1,7 @@
 import {AbstractDataNode} from "./data-node.model.ts";
 
+// TODO: Replace with plain object and define node stuff in utils
+
 export type DataNodeCollection = {
     nodes: Record<string, AbstractDataNode>,
     node: <NodeType = never>(predicate: number | string) =>

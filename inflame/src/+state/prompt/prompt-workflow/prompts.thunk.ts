@@ -3,17 +3,17 @@ import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
 import {promptsSliceActions} from "./prompts.slice.ts";
 import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
 import {promptsSelectors} from "./prompts.selectors.ts";
-import {dataNodesThunk} from "../../data-nodes/data-nodes.thunk.ts";
 import {dataNodesSelectors} from "../../data-nodes/data-nodes.selectors.ts";
 import {mergeDataNodeIntoPromptNode} from "../prompt-nodes/prompt-node.utils.ts";
 import {LoadImageDataNodeMerger} from "../prompt-nodes/load-image/load-image-data-node.mapper.ts";
+import {comfyApi} from "../../../api/comfy.api.ts";
 
 const createPromptWithWorkflow = (props: {
     nodes: AbstractPromptNode[]
 }) => async (dispatch: ThunkDispatch<AppState, undefined, AnyAction>, getState: () => AppState) => {
     const {nodes} = props;
 
-    await dispatch(dataNodesThunk.queryDataNodes(false))
+    await dispatch(comfyApi.GetObjectInfoQuery())
 
     const dataNodes = dataNodesSelectors.selectDataNodes(getState())
 
@@ -35,6 +35,8 @@ const createPromptWithWorkflow = (props: {
         clientId: prompt.clientId,
         nodes: updatedNodes,
     }))
+
+    return promptsSelectors.selectPromptById(getState(), prompt.clientId)
 }
 
 export const promptsThunk = {
