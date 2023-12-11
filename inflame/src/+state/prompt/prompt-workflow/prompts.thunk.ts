@@ -31,12 +31,12 @@ const createPromptWithWorkflow = (props: {
         })
     }
 
-    dispatch(promptsSliceActions.updatePrompt({
+    dispatch(promptsSliceActions.updatePromptNodes({
         clientId: prompt.clientId,
         nodes: updatedNodes,
     }))
 
-    return promptsSelectors.selectPromptById(getState(), prompt.clientId)
+    return promptsSelectors.selectPromptByClientId(getState(), prompt.clientId)
 }
 
 export const promptsThunk = {

@@ -2,13 +2,13 @@ import PreviewImageNode, {nodeTypePreviewImage} from "../../+state/prompt/prompt
 import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image/load-image.node.ts";
 import {PromptDTO} from "../dto/prompt-node.dto.ts";
 import {promptToPromptDto} from "./prompt-to-prompt-dto.mapper.ts";
-import {ComfyuiSocket} from "../../+state/socket/comfyui-socket.model.ts";
+import {GenericSocket} from "../../+state/socket/socket.model.ts";
 import {Prompt} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
 import {getNodeFromWorkflow} from "../../+state/prompt/prompt-workflow/prompts.utils.ts";
 
 describe('Mapper for converting a full prompt into a dto object that can be passed to /prompt', function () {
     it('should convert a simple prompt object', () => {
-        const socket: ComfyuiSocket = {
+        const socket: GenericSocket = {
             name: "main",
             clientId: "test-123"
         }
@@ -70,7 +70,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
     })
 
     it('should convert object and output proper json', () => {
-        const socket: ComfyuiSocket = {
+        const socket: GenericSocket = {
             name: "main",
             clientId: "test-123"
         }

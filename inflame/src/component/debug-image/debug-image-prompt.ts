@@ -3,14 +3,14 @@ import PreviewImageNode from "../../+state/prompt/prompt-nodes/preview-image/pre
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
-import {socketStateSelectors} from "../../+state/socket/socket-selectors.ts";
+import {socketStateSelectors} from "../../+state/socket/socket.selectors.ts";
 import {promptsThunk} from "../../+state/prompt/prompt-workflow/prompts.thunk.ts";
 import {Prompt} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
-import {SOCKET_MAIN} from "../../+state/socket/comfyui-socket.model.ts";
+import {SOCKET_MAIN} from "../../+state/socket/socket.model.ts";
 
 export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
     const socket = useSelector(
-        (state: AppState) => socketStateSelectors.selectById(state, SOCKET_MAIN)
+        (state: AppState) => socketStateSelectors.selectSocketById(state, SOCKET_MAIN)
     )
     const [prompt, setPrompt] = useState<Prompt | undefined>();
     const dispatch = useAppDispatch();

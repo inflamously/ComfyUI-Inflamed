@@ -1,13 +1,17 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {PromptsEntityAdapterType, promptsEntityAdapter} from "./prompts.entity.ts";
+import {PromptsEntityAdapterType, promptsEntityAdapter} from "./prompts-entity.ts";
 import {generatePromptId} from "./prompts.utils.ts";
 import {Prompt} from "./prompt.model.ts";
 import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
+import {registerNewSocketEventHandler} from "../../socket/socket-event-handler.listener.ts";
+
+type PromptAction<Type extends Record<string, unknown>> = PayloadAction<{
+    clientId: string
+} & Type>
 
 export type PromptState = {
     items: PromptsEntityAdapterType
 }
-
 
 const INITIAL_STATE: PromptState = {
     items: promptsEntityAdapter.getInitialState(),
@@ -27,11 +31,25 @@ export const promptsSlice = createSlice({
                 }
             })
         },
-        updatePrompt: (state, action: PayloadAction<{
-            clientId: string,
-            nodes: AbstractPromptNode[]
+        updatePromptRemoteId: (state, action: PromptAction<{ remoteId: string }>) => {
+            const {clientId, remoteId} = action.payload
+            if (!clientId) {
+                return state;
+            }
+
+            const prompt = state.items.entities[clientId]
+            if (prompt) {
+                prompt.remoteId = remoteId
+            }
+        },
+        updatePromptNodes: (state, action: PromptAction<{
+            nodes: readonly AbstractPromptNode[] | AbstractPromptNode[]
         }>) => {
-            const { clientId, nodes } = action.payload
+            const {clientId, nodes} = action.payload
+            if (!clientId) {
+                return state;
+            }
+
             const prompt = state.items.entities[clientId]
             if (prompt) {
                 const newPrompt: Prompt = {
@@ -51,6 +69,10 @@ export const promptsSlice = createSlice({
     },
     extraReducers: () => {
     }
+})
+
+registerNewSocketEventHandler((action, api) => {
+    console.log("PromptsSliceHandler", action, api.getState())
 })
 
 export const promptsSliceActions = {
