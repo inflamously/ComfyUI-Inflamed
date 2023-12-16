@@ -6,11 +6,11 @@ import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
 import {socketStateSelectors} from "../../+state/socket/socket.selectors.ts";
 import {promptsThunk} from "../../+state/prompt/prompt-workflow/prompts.thunk.ts";
 import {Prompt} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
-import {SOCKET_MAIN} from "../../+state/socket/socket.model.ts";
+import {COMFYUI_SOCKET} from "../../socket/comfyui/comfyui-socket.tsx";
 
 export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
     const socket = useSelector(
-        (state: AppState) => socketStateSelectors.selectSocketById(state, SOCKET_MAIN)
+        (state: AppState) => socketStateSelectors.selectSocketById(state, COMFYUI_SOCKET)
     )
     const [prompt, setPrompt] = useState<Prompt | undefined>();
     const dispatch = useAppDispatch();

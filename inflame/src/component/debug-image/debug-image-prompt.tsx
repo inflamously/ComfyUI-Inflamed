@@ -5,15 +5,15 @@ import {useSelector} from "react-redux";
 import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
 import {useDebugImagePrompt} from "./debug-image-prompt.ts";
 import {promptToPromptDto} from "../../api/mapper/prompt-to-prompt-dto.mapper.ts";
-import {SOCKET_MAIN} from "../../+state/socket/socket.model.ts";
 import {socketStateSelectors} from "../../+state/socket/socket.selectors.ts";
 import {comfyApi} from "../../api/comfy.api.ts";
-import {isPromptResultDTO} from "../../api/prompt-node-dto.utils.ts";
+import {isPromptResultDTO} from "../../api/api-dto.utils.ts";
 import {promptsSliceActions} from "../../+state/prompt/prompt-workflow/prompts.slice.ts";
+import {COMFYUI_SOCKET} from "../../socket/comfyui/comfyui-socket.tsx";
 
 const DebugImagePrompt = () => {
     const debugPrompt = useDebugImagePrompt();
-    const socket = useSelector((state: AppState) => socketStateSelectors.selectSocketById(state, SOCKET_MAIN))
+    const socket = useSelector((state: AppState) => socketStateSelectors.selectSocketById(state, COMFYUI_SOCKET))
     const [postPrompt, result] = comfyApi.usePostPrompt()
     const dispatch = useAppDispatch()
 
@@ -34,14 +34,14 @@ const DebugImagePrompt = () => {
         });
 
         if (promptDto) {
-            const res = await postPrompt(promptDto)
-            if ('data' in res && isPromptResultDTO(res.data)) {
+            const response = await postPrompt(promptDto)
+            if ('data' in response && isPromptResultDTO(response.data)) {
                 dispatch(promptsSliceActions.updatePromptRemoteId({
                     clientId: prompt.clientId,
-                    remoteId: res.data.prompt_id,
+                    remoteId: response.data.prompt_id,
                 }))
-            } else if ('error' in res) {
-                console.error("Error", res.error)
+            } else if ('error' in response) {
+                console.error("Error", response.error)
             }
         }
     }, [dispatch, socket, debugPrompt, postPrompt])
