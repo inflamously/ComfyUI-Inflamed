@@ -8,13 +8,6 @@ const socketEventHandlerListener = createListenerMiddleware({
     }
 })
 
-socketEventHandlerListener.startListening({
-    actionCreator: socketSliceActions.socketEvent,
-    effect: (action) => {
-        console.log("Socket Event!", action)
-    }
-})
-
 export const socketEventHandlerMiddleware = socketEventHandlerListener.middleware;
 
 export const registerNewSocketEventHandler = (effect: ListenerEffect<AnyAction, unknown, ThunkDispatch<unknown, unknown, AnyAction>>) => {
