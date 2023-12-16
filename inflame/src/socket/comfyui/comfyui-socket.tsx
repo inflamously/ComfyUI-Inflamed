@@ -1,11 +1,25 @@
 import {useCallback} from "react";
 import {ComfyuiEventStatus, WS_COMFYUI_STATE} from "./comfyui-socket-state.ts";
-import useWebsocket from "./websocket.tsx";
+import useWebsocket from "../websocket.tsx";
 import {useSelector} from "react-redux";
-import {socketSliceActions} from "../+state/socket/socket-slice.ts";
-import {socketStateSelectors} from "../+state/socket/socket.selectors.ts";
-import {AppState, useAppDispatch} from "../+state/inflame-store.ts";
-import {SOCKET_MAIN} from "../+state/socket/socket.model.ts";
+import {socketSliceActions} from "../../+state/socket/socket-slice.ts";
+import {socketStateSelectors} from "../../+state/socket/socket.selectors.ts";
+import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
+import {SOCKET_MAIN} from "../../+state/socket/socket.model.ts";
+
+type ComfyuiMessageEvent = { type: string } & MessageEvent
+
+const isComfyuiMessage = (ev: MessageEvent): ev is ComfyuiMessageEvent => {
+    let messageData: Record<string, unknown> | null = null
+    try {
+        messageData = JSON.parse(ev.data);
+    } catch (e) {
+        console.error(e);
+        return true;
+    }
+
+    return messageData !== null && "type" in messageData && "data" in messageData;
+}
 
 const useComfyuiSocket = () => {
     const dispatch = useAppDispatch()
@@ -13,25 +27,15 @@ const useComfyuiSocket = () => {
         (state: AppState) => socketStateSelectors.selectSocketById(state, "main")
     )
 
-    const handleMessage = useCallback((ev: MessageEvent) => {
+    const handleWebsocketMessage = useCallback((ev: MessageEvent) => {
         if (!ev || !ev.data) {
-            return;
+            return true;
         }
 
-        let messageData: Record<string, unknown> | null = null
-        try {
-            messageData = JSON.parse(ev.data);
-        } catch (e) {
-            console.error(e);
-        }
-        if (!messageData) {
-            return;
-        }
-
-        if ("type" in messageData) {
-            switch (messageData.type) {
+        if (isComfyuiMessage(ev)) {
+            switch (ev.type) {
                 case WS_COMFYUI_STATE.STATUS: {
-                    const statusData = messageData.data as ComfyuiEventStatus
+                    const statusData = ev.data as ComfyuiEventStatus
                     // In case of sid we have a new client
                     if (statusData.sid && !socketState) {
                         dispatch(socketSliceActions.createSocket({
@@ -40,7 +44,7 @@ const useComfyuiSocket = () => {
                         }))
 
                         // TODO: Edit or remove
-                        dispatch(socketSliceActions.socketEvent(""))
+                        dispatch(socketSliceActions.socketEvent({}))
                     }
                     break;
                 }
@@ -48,8 +52,11 @@ const useComfyuiSocket = () => {
                     break;
                 }
                 default:
-                    throw new Error(`Message type not implemented "${messageData.type}"`)
+                    throw new Error(`Message type not implemented "${ev.type}"`)
             }
+        } else {
+            console.warn(`Invalid websocket message received. ${JSON.stringify(ev)}`)
+            return;
         }
     }, [dispatch, socketState])
 
@@ -57,7 +64,7 @@ const useComfyuiSocket = () => {
     // Afterwards use clientId to connect to message pool
     useWebsocket({
         url: `ws://localhost:8188/ws${socketState ? `?clientId=${socketState.clientId}` : ""}`,
-        onMessage: handleMessage
+        onMessage: handleWebsocketMessage
     })
 }
 
