@@ -1,5 +1,11 @@
-import {AnyAction, createListenerMiddleware, ListenerEffect, ThunkDispatch} from "@reduxjs/toolkit";
-import {socketSliceActions} from "./socket-slice.ts";
+import {
+    ActionCreatorWithoutPayload, ActionCreatorWithPayload,
+    ActionCreatorWithPreparedPayload,
+    AnyAction,
+    createListenerMiddleware,
+    ListenerEffect, PayloadAction,
+    ThunkDispatch
+} from "@reduxjs/toolkit";
 
 const socketEventHandlerListener = createListenerMiddleware({
     onError: (error, errorInfo) => {
@@ -10,9 +16,16 @@ const socketEventHandlerListener = createListenerMiddleware({
 
 export const socketEventHandlerMiddleware = socketEventHandlerListener.middleware;
 
-export const registerNewSocketEventHandler = (effect: ListenerEffect<AnyAction, unknown, ThunkDispatch<unknown, unknown, AnyAction>>) => {
+export const addSocketEventHandler = <
+    OriginalPayload,
+    PreparedPayload,
+    Payload,
+>(
+    action: ActionCreatorWithPreparedPayload<[payload: OriginalPayload], PreparedPayload> | ActionCreatorWithoutPayload | ActionCreatorWithPayload<Payload>,
+    effect: ListenerEffect<PayloadAction<PreparedPayload> | PayloadAction<undefined> | PayloadAction<Payload>, unknown, ThunkDispatch<unknown, unknown, AnyAction>>
+) => {
     socketEventHandlerListener.startListening({
-        actionCreator: socketSliceActions.socketEvent,
+        actionCreator: action,
         effect,
     })
 }

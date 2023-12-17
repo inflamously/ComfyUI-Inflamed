@@ -22,4 +22,4 @@ type ComfyuiExecutedMessage = {
     data: ComfyuiExecutedDTO
 }
 
-type ComfyuiMessage = ComfyuiStatusMessage | ComfyuiExecutedMessage
+type ComfyuiSocketMessage = ComfyuiStatusMessage | ComfyuiExecutedMessage
