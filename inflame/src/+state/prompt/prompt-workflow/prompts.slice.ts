@@ -5,6 +5,7 @@ import {Prompt} from "./prompt.model.ts";
 import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
 import {addSocketEventHandler} from "../../socket/socket-event-handler.listener.ts";
 import {comfyuiSocketActions} from "../../socket/comfyui-socket/comfyui-socket.actions.ts";
+import {promptsSelectors} from "./prompts.selectors.ts";
 
 type PromptAction<Type extends Record<string, unknown>> = PayloadAction<{
     clientId: string
@@ -75,9 +76,9 @@ export const promptsSlice = createSlice({
 /**
  * Socket Handling
  */
-addSocketEventHandler(comfyuiSocketActions.statusEvent, (action) => {
+addSocketEventHandler(comfyuiSocketActions.statusEvent, () => {
     // TODO: Reactivate on need
-    console.log(action);
+    // console.log(action);
 })
 
 addSocketEventHandler(comfyuiSocketActions.executionStart, (action) => {
@@ -93,7 +94,29 @@ addSocketEventHandler(comfyuiSocketActions.executing, (action) => {
     console.log(action)
 })
 
-addSocketEventHandler(comfyuiSocketActions.executed, (action) => {
+addSocketEventHandler(comfyuiSocketActions.executed, (action, api) => {
+//     {
+//     "type": "comfyuiSocket/executed",
+//     "payload": {
+//         "node": "2",
+//         "output": {
+//             "images": [
+//                 {
+//                     "filename": "ComfyUI_temp_pvtvs_00001_.png",
+//                     "subfolder": "",
+//                     "type": "temp"
+//                 }
+//             ]
+//         },
+//         "prompt_id": "f960a73c-8aba-49bd-b9d2-a51d81377b5d"
+//     }
+// }
+    // TODO: Proper mapping and validation
+    const { payload } = action
+    if (payload.node) {
+        const prompt = promptsSelectors.selectPromptByRemoteId(api.getState(), payload.prompt_id)
+        console.log(prompt)
+    }
     console.log(action)
 })
 
