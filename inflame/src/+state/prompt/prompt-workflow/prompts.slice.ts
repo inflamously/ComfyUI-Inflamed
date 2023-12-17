@@ -73,9 +73,9 @@ export const promptsSlice = createSlice({
 })
 
 addSocketEventHandler(comfyuiSocketActions.statusEvent, (action, api) => {
-    if (action.payload && "queue" in action.payload) {
-        console.log("PromptsSliceHandler", action.payload?.queue, api.getState())
-    }
+    // if (action.payload && "queue" in action.payload) {
+    //     console.log("PromptsSliceHandler", action.payload?.queue, api.getState())
+    // }
 })
 
 export const promptsSliceActions = {

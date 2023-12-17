@@ -1,9 +1,7 @@
 import {
-    ActionCreatorWithoutPayload, ActionCreatorWithPayload,
-    ActionCreatorWithPreparedPayload,
     AnyAction,
     createListenerMiddleware,
-    ListenerEffect, PayloadAction,
+    ListenerEffect, PayloadAction, PayloadActionCreator, PrepareAction,
     ThunkDispatch
 } from "@reduxjs/toolkit";
 
@@ -16,13 +14,9 @@ const socketEventHandlerListener = createListenerMiddleware({
 
 export const socketEventHandlerMiddleware = socketEventHandlerListener.middleware;
 
-export const addSocketEventHandler = <
-    OriginalPayload,
-    PreparedPayload,
-    Payload,
->(
-    action: ActionCreatorWithPreparedPayload<[payload: OriginalPayload], PreparedPayload> | ActionCreatorWithoutPayload | ActionCreatorWithPayload<Payload>,
-    effect: ListenerEffect<PayloadAction<PreparedPayload> | PayloadAction<undefined> | PayloadAction<Payload>, unknown, ThunkDispatch<unknown, unknown, AnyAction>>
+export const addSocketEventHandler = <Payload>(
+    action: PayloadActionCreator<Payload, string, PrepareAction<Payload>>,
+    effect: ListenerEffect<PayloadAction<Payload>, unknown, ThunkDispatch<unknown, unknown, AnyAction>>
 ) => {
     socketEventHandlerListener.startListening({
         actionCreator: action,
