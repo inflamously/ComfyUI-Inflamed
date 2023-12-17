@@ -4,7 +4,7 @@ import {generatePromptId} from "./prompts.utils.ts";
 import {Prompt} from "./prompt.model.ts";
 import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
 import {addSocketEventHandler} from "../../socket/socket-event-handler.listener.ts";
-import {comfyuiSocketActions} from "../../socket/comfyui/comfyui-socket.actions.ts";
+import {comfyuiSocketActions} from "../../socket/comfyui-socket/comfyui-socket.actions.ts";
 
 type PromptAction<Type extends Record<string, unknown>> = PayloadAction<{
     clientId: string
@@ -72,10 +72,29 @@ export const promptsSlice = createSlice({
     }
 })
 
-addSocketEventHandler(comfyuiSocketActions.statusEvent, (action, api) => {
-    // if (action.payload && "queue" in action.payload) {
-    //     console.log("PromptsSliceHandler", action.payload?.queue, api.getState())
-    // }
+/**
+ * Socket Handling
+ */
+addSocketEventHandler(comfyuiSocketActions.statusEvent, (action) => {
+    // TODO: Reactivate on need
+    console.log(action);
+})
+
+addSocketEventHandler(comfyuiSocketActions.executionStart, (action) => {
+    // TODO: Handle loading state?
+    console.log(action)
+})
+
+addSocketEventHandler(comfyuiSocketActions.executionCached, (action) => {
+    console.log(action)
+})
+
+addSocketEventHandler(comfyuiSocketActions.executing, (action) => {
+    console.log(action)
+})
+
+addSocketEventHandler(comfyuiSocketActions.executed, (action) => {
+    console.log(action)
 })
 
 export const promptsSliceActions = {
