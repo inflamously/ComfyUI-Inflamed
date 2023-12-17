@@ -3,7 +3,8 @@ import {PromptsEntityAdapterType, promptsEntityAdapter} from "./prompts-entity.t
 import {generatePromptId} from "./prompts.utils.ts";
 import {Prompt} from "./prompt.model.ts";
 import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
-import {registerNewSocketEventHandler} from "../../socket/socket-event-handler.listener.ts";
+import {addSocketEventHandler} from "../../socket/socket-event-handler.listener.ts";
+import {comfyuiSocketActions} from "../../socket/comfyui/comfyui-socket.actions.ts";
 
 type PromptAction<Type extends Record<string, unknown>> = PayloadAction<{
     clientId: string
@@ -71,8 +72,10 @@ export const promptsSlice = createSlice({
     }
 })
 
-registerNewSocketEventHandler((action, api) => {
-    console.log("PromptsSliceHandler", action, api.getState())
+addSocketEventHandler(comfyuiSocketActions.statusEvent, (action, api) => {
+    if (action.payload && "queue" in action.payload) {
+        console.log("PromptsSliceHandler", action.payload?.queue, api.getState())
+    }
 })
 
 export const promptsSliceActions = {

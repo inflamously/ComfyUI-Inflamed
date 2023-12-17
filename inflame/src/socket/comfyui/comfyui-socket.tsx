@@ -6,11 +6,12 @@ import {socketStateSelectors} from "../../+state/socket/socket.selectors.ts";
 import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
 import {isMessageEvent, isOfMessageEventString} from "../websocket.utils.ts";
 import {isSidPresent} from "./comfyui-socket.utils.ts";
+import {comfyuiSocketActions} from "../../+state/socket/comfyui/comfyui-socket.actions.ts";
 
 export const COMFYUI_SOCKET = "comfyui-socket"
 
-const isComfyuiMessage = (eventData: unknown): eventData is ComfyuiMessage => {
-    return eventData != null && (eventData as ComfyuiMessage)?.type !== undefined && (eventData as ComfyuiMessage)?.data !== undefined
+const isComfyuiMessage = (eventData: unknown): eventData is ComfyuiSocketMessage => {
+    return eventData != null && (eventData as ComfyuiSocketMessage)?.type !== undefined && (eventData as ComfyuiSocketMessage)?.data !== undefined
 }
 
 const useComfyuiSocket = () => {
@@ -46,8 +47,7 @@ const useComfyuiSocket = () => {
                         clientId: message.data.sid
                     }))
 
-                    // TODO: Edit or remove
-                    dispatch(socketSliceActions.socketEvent({}))
+                    dispatch(comfyuiSocketActions.statusEvent(message.data))
                 }
                 break;
             }

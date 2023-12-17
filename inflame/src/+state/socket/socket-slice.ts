@@ -1,4 +1,4 @@
-import {createAction, createSlice, EntityState, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, EntityState, PayloadAction} from "@reduxjs/toolkit";
 import {socketEntityAdapter} from "./socket-entity.ts";
 import {GenericSocket} from "./socket.model.ts";
 
@@ -27,13 +27,6 @@ export const socketSlice = createSlice({
     extraReducers: () => {}
 })
 
-const socketEvent = createAction(`${socketSliceName}/socketEvent`, (x: unknown) => {
-    return {
-        payload: x
-    }
-})
-
 export const socketSliceActions = {
     ...socketSlice.actions,
-    socketEvent
 };
