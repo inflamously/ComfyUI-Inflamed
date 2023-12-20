@@ -1,16 +1,16 @@
 import {AppState} from "../../inflame-store.ts";
 import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
 import {promptsSliceActions} from "./prompts.slice.ts";
-import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
 import {promptsSelectors} from "./prompts.selectors.ts";
 import {dataNodesSelectors} from "../../data-nodes/data-nodes.selectors.ts";
-import {mergeDataNodeIntoPromptNode} from "../prompt-nodes/prompt-node.utils.ts";
-import {LoadImageDataNodeMerger} from "../prompt-nodes/load-image/load-image-data-node.mapper.ts";
 import {comfyApi} from "../../../api/comfy.api.ts";
+import {AbstractPromptNode} from "../../../prompt-nodes/prompt-node.ts";
+import {LoadImageDataNodeMerger} from "../../data-nodes/prompt-nodes-data-node-merger/load-image-data-node.mapper.ts";
+import {mergeDataNodeIntoPromptNode} from "../../data-nodes/prompt-nodes-data-node-merger/prompt-node-merge.utils.ts";
 
 const createPromptWithWorkflow = (props: {
     nodes: AbstractPromptNode[]
-}) => async (dispatch: ThunkDispatch<AppState, undefined, AnyAction>, getState: () => AppState) => {
+}) => async (dispatch: ThunkDispatch<AppState, unknown, AnyAction>, getState: () => AppState) => {
     const {nodes} = props;
 
     await dispatch(comfyApi.GetObjectInfoQuery())
@@ -40,5 +40,5 @@ const createPromptWithWorkflow = (props: {
 }
 
 export const promptsThunk = {
-    createPromptWithWorkflow
+    createPromptWithWorkflow,
 }

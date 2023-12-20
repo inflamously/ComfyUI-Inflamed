@@ -26,15 +26,13 @@ const executing = createListenerPreparedAction('comfyuiSocket/executing', (paylo
 
 const executed = createListenerPreparedAction('comfyuiSocket/executed', (payload: ComfyuiExecutedDTO) => {
     return {
-        payload,
+        payload
     }
 })
 
 const statusEvent = createListenerPreparedAction("comfyuiSocket/statusEvent", (payload: ComfyuiStatusWithSidDTO | ComfyuiStatusDTO) => {
     return {
-        payload: {
-            queued: payload?.status?.exec_info?.queue_remaining
-        }
+        payload
     }
 })
 

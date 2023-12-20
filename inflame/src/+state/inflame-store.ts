@@ -5,6 +5,9 @@ import {promptsSlice, promptsSliceName} from "./prompt/prompt-workflow/prompts.s
 import {useDispatch} from "react-redux";
 import {comfyApi} from "../api/comfy.api.ts";
 import {socketEventHandlerMiddleware} from "./socket/socket-event-handler.listener.ts";
+import {promptWorkflowUpdateListenerMiddleware} from "./prompt/prompt-workflow/prompt-workflow-update.listener.ts";
+import {subscribePromptSocketEventMapper} from "./prompt/prompt-workflow/prompts-socket-event-mapper.ts";
+import {subscribePreviewImageNodeUpdate} from "./prompt/preview-image-pipeline-update.ts";
 
 const store = configureStore({
     devTools: true,
@@ -17,10 +20,15 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
             .concat(comfyApi.middleware)
-            .prepend(socketEventHandlerMiddleware),
+            .prepend(socketEventHandlerMiddleware)
+            .prepend(promptWorkflowUpdateListenerMiddleware)
 })
 
 export type AppState = ReturnType<typeof store.getState>;
 export const useAppDispatch: () => typeof store.dispatch = useDispatch;
+
+// Listeners
+subscribePromptSocketEventMapper();
+subscribePreviewImageNodeUpdate();
 
 export default store;

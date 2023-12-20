@@ -1,7 +1,7 @@
 import {PromptNodeDTO, PromptNodeInputsDTO, PromptWorkflowDTO} from "../dto/prompt-node.dto.ts";
 import {unsetInputsValidator} from "../../validators/nodes.validators.ts";
-import {nodeConnectionToPromptNodeInputDto} from "../../+state/prompt/prompt-nodes/prompt-node-connection.utils.ts";
 import {PromptWorkflow} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
+import {nodeConnectionToPromptNodeInputDto} from "./node-connection-to-prompt-node-input-dto.mapper.ts";
 
 
 
