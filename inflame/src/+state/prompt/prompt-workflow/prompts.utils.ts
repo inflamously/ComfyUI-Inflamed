@@ -1,6 +1,6 @@
-import {AbstractPromptNode, PromptNodeTypeGuardFunction} from "../prompt-nodes/prompt-node.ts";
 import {PromptWorkflow} from "./prompt.model.ts";
 import {UUIDGenerator} from "../../../utils/generators.ts";
+import {AbstractPromptNode, PromptNodeTypeGuardFunction} from "../../../prompt-nodes/prompt-node.ts";
 
 /**
  * Generator that increments numbers from 1..N

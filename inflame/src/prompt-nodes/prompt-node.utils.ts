@@ -1,9 +1,7 @@
+import {PromptNodeConnection} from "./prompt-node-connection.ts";
+import {set} from "lodash";
 import {AbstractPromptNode, PromptNode} from "./prompt-node.ts";
 import {isConnectionOfLink} from "./prompt-node-connection.utils.ts";
-import {PromptNodeConnection} from "./prompt-node-connection.ts";
-import structuredClone from "@ungap/structured-clone";
-import set from 'lodash/set'
-import {AbstractDataNode} from "../../data-nodes/data-node.model.ts";
 
 export const calculatePathsForObject = (tree: Record<string, unknown>) => {
     const statePaths = structuredClone(tree)
@@ -45,7 +43,7 @@ export const calculateStateInputs = <
             ...calculatedInputs
         }
     }
-    
+
     return result
 }
 
@@ -68,7 +66,7 @@ export const updateNodeState = <
 /**
  * This intentionally changes original object since IDs are referenced and must change in all other objects. Connections are REF made.
  */
-const updateIdsInConnectionMap = (connections: Record<string, PromptNodeConnection>, id: string) => {
+export const updateIdsInConnectionMap = (connections: Record<string, PromptNodeConnection>, id: string) => {
     if (connections) {
         Object.keys(connections).forEach((k) => {
             const connection = connections[k];
@@ -90,30 +88,4 @@ export const updateNodeId = (node: AbstractPromptNode, id: string) => {
     }
 
     return node
-}
-
-export type PromptDataNodeMergerFunc = (
-    node: Readonly<AbstractPromptNode>,
-    dataNode: Readonly<AbstractDataNode>
-) => AbstractPromptNode
-
-export const mergeDataNodeIntoPromptNode = (
-    nodes: AbstractPromptNode[],
-    dataNodes: Record<string, AbstractDataNode>,
-    mergeFunc: Record<string, PromptDataNodeMergerFunc>
-) => {
-     return nodes.map((node) => {
-        if (!dataNodes) {
-            return node
-        }
-
-        const nodeClass = node.classtype
-        const dataNode = dataNodes[nodeClass]
-        if (!dataNode) {
-            console.error(`Node's classtype ${nodeClass} was not found in DataNodes.`)
-            return node
-        }
-
-        return mergeFunc[nodeClass]?.(structuredClone(node), dataNode) ?? node;
-    })
 }

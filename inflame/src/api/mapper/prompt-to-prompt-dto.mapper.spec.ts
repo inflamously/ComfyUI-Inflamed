@@ -1,5 +1,5 @@
-import PreviewImageNode, {nodeTypePreviewImage} from "../../+state/prompt/prompt-nodes/preview-image/preview-image.node.ts";
-import LoadImageNode from "../../+state/prompt/prompt-nodes/load-image/load-image.node.ts";
+import PreviewImageNode, {nodeTypePreviewImage} from "../../prompt-nodes/preview-image/preview-image.node.ts";
+import LoadImageNode from "../../prompt-nodes/load-image/load-image.node.ts";
 import {PromptDTO} from "../dto/prompt-node.dto.ts";
 import {promptToPromptDto} from "./prompt-to-prompt-dto.mapper.ts";
 import {GenericSocket} from "../../+state/socket/socket.model.ts";

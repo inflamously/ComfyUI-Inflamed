@@ -1,4 +1,4 @@
-import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
+import {AbstractPromptNode} from "../../../prompt-nodes/prompt-node.ts";
 
 export type Prompt = {
     clientId: string,
