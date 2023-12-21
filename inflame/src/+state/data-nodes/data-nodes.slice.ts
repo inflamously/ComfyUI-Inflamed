@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {sortObjectByItsProperties} from "../../utils/object.utils.ts";
+import {sortObjectByItsProperties} from "../../utilities/object.utils.ts";
 import {AbstractDataNode} from "@inflame/models";
 
 /**
