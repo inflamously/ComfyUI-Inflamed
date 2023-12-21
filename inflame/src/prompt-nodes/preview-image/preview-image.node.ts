@@ -5,7 +5,7 @@ import {
     PromptNodeFields,
     PromptNodeTypeGuard
 } from "../prompt-node.ts";
-import {BindValueLink} from "../prompt-node-connection-value.ts";
+import {BindValueLink} from "@inflame/models";
 
 type NodePreviewImageState = {
     images: string[] // TODO: Typings?

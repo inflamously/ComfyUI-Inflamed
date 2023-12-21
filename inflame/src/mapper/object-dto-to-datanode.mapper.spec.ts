@@ -4,7 +4,7 @@ import {
     RESULT_MOCK_ABSTRACT_PROMPT_NODE,
     RESULT_MOCK_DATA_NODE
 } from "./mocks/mock-object-node-dto.ts";
-import {ObjectNodeDTO} from "../dto/object-node.dto.ts";
+import {ObjectNodeDTO} from "@inflame/models";
 
 describe('Mappers for converting API object_info dtos to specific app types', function () {
     let node: ObjectNodeDTO

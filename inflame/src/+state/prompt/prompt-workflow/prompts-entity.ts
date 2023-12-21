@@ -1,5 +1,5 @@
 import {createEntityAdapter} from "@reduxjs/toolkit";
-import {Prompt} from "./prompt.model.ts";
+import {Prompt} from "@inflame/models";
 
 export const promptsEntityAdapter = createEntityAdapter<Prompt>({
     selectId: (prompt) => prompt.clientId,

@@ -3,11 +3,11 @@ import {socketSlice, socketSliceName} from "./socket/socket-slice.ts";
 import {nodesSlice, nodesSliceName} from "./data-nodes/data-nodes.slice.ts";
 import {promptsSlice, promptsSliceName} from "./prompt/prompt-workflow/prompts.slice.ts";
 import {useDispatch} from "react-redux";
-import {comfyApi} from "../api/comfy.api.ts";
 import {socketEventHandlerMiddleware} from "./socket/socket-event-handler.listener.ts";
 import {promptWorkflowUpdateListenerMiddleware} from "./prompt/prompt-workflow/prompt-workflow-update.listener.ts";
 import {subscribePromptSocketEventMapper} from "./prompt/prompt-workflow/prompts-socket-event-mapper.ts";
 import {subscribePreviewImageNodeUpdate} from "./prompt/preview-image-pipeline-update.ts";
+import {comfyApi} from "./api/comfy-api.slice.ts";
 
 const store = configureStore({
     devTools: true,

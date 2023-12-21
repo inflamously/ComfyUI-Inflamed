@@ -1,7 +1,5 @@
-import {
-    PromptNodeConnection,
-} from "./prompt-node-connection.ts";
 import {calculateStateInputs} from "./prompt-node.utils.ts";
+import {PromptNodeConnection} from "@inflame/models";
 
 export type PromptNodeConfig<
     State,

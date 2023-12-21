@@ -1,4 +1,4 @@
-import {PromptNodeConnection} from "./prompt-node-connection.ts";
+import {PromptNodeConnection} from "./prompt-node-connection.model.ts";
 import {set} from "lodash";
 import {AbstractPromptNode, PromptNode} from "./prompt-node.ts";
 import {isConnectionOfLink} from "./prompt-node-connection.utils.ts";

@@ -7,7 +7,7 @@ import {
     ThunkDispatch
 } from "@reduxjs/toolkit";
 import {AppState} from "../../inflame-store.ts";
-import {Prompt} from "./prompt.model.ts";
+import {Prompt} from "@inflame/models";
 
 export type PipelineNodeUpdateSource = {
     nodes?: Array<string>,

@@ -1,11 +1,11 @@
-import {AbstractPromptNode} from "../../prompt-nodes/prompt-node.ts";
-import {PromptNodeConnection} from "../../prompt-nodes/prompt-node-connection.ts";
-import {PromptNodeValueDTO} from "../dto/prompt-node.dto.ts";
+import {PromptNodeValueDTO} from "../+state/api/dto/prompt-node.dto.ts";
+import {AbstractPromptNode} from "../prompt-nodes/prompt-node.ts";
+import {PromptNodeConnection} from "../prompt-nodes/prompt-node-connection.model.ts";
 import {
     isConnectionOfLink,
     isConnectionOfStateInput,
     isConnectionOfString
-} from "../../prompt-nodes/prompt-node-connection.utils.ts";
+} from "../prompt-nodes/prompt-node-connection.utils.ts";
 
 export const nodeConnectionToPromptNodeInputDto = (node: AbstractPromptNode, key: string, connection: PromptNodeConnection): [string, PromptNodeValueDTO] | [string, unknown] => {
     let nodeValue: PromptNodeValueDTO = undefined

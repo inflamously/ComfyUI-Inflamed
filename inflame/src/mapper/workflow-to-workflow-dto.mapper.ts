@@ -1,9 +1,6 @@
-import {PromptNodeDTO, PromptNodeInputsDTO, PromptWorkflowDTO} from "../dto/prompt-node.dto.ts";
-import {unsetInputsValidator} from "../../validators/nodes.validators.ts";
-import {PromptWorkflow} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
 import {nodeConnectionToPromptNodeInputDto} from "./node-connection-to-prompt-node-input-dto.mapper.ts";
-
-
+import {PromptNodeDTO, PromptNodeInputsDTO, PromptWorkflow, PromptWorkflowDTO} from "@inflame/models";
+import {unsetInputsValidator} from "./validators/nodes.validators.ts";
 
 /**
  * Converts workflow to dto using nodes in their respective order given from .getNodes()

@@ -1,8 +1,8 @@
 import {promptsEntityAdapter, PromptsEntityAdapterType} from "./prompts-entity.ts";
 import {createSelector} from "@reduxjs/toolkit";
-import {Prompt} from "./prompt.model.ts";
 import {PromptState} from "./prompts.slice.ts";
 import {AppState} from "../../inflame-store.ts";
+import {Prompt} from "@inflame/models";
 
 // Selects the proper slice
 const selectPromptsState = (state: AppState) => state.prompts;

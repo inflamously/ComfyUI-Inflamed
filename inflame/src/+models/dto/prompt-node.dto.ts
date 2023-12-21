@@ -1,10 +1,9 @@
 import {NodeErrorMapDTO} from "./error.dto.ts";
-import {Digit} from "../../utils/literal-types.ts";
 
 export type PromptNodeValueLinkDTO = [string, number]
 export type PromptNodeValueDTO = string | number | PromptNodeValueLinkDTO | undefined
 
-type PromptIds = `${Digit}${Digit}${Digit}${Digit}`
+type PromptIds = string
 
 /**
  * Workflow for invoking prompts
