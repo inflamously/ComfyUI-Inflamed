@@ -1,13 +1,13 @@
 import {useCallback} from "react";
 import useWebsocket from "../websocket.tsx";
 import {useSelector} from "react-redux";
-import {socketSliceActions} from "../../+state/socket/socket-slice.ts";
-import {socketStateSelectors} from "../../+state/socket/socket.selectors.ts";
-import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
 import {isMessageEvent, isOfMessageEventString} from "../websocket.utils.ts";
 import {isSidPresent} from "./comfyui-socket.utils.ts";
-import {comfyuiSocketActions} from "../../+state/socket/comfyui-socket/comfyui-socket.actions.ts";
 import {ComfyuiSocketMessages} from "@inflame/models";
+import {AppState, useAppDispatch} from "../../../+state/inflame-store.ts";
+import {socketStateSelectors} from "../../../+state/socket/socket.selectors.ts";
+import {socketSliceActions} from "../../../+state/socket/socket-slice.ts";
+import {comfyuiSocketActions} from "../../../+state/socket/comfyui-socket/comfyui-socket.actions.ts";
 
 export const COMFYUI_SOCKET = "comfyui-socket"
 
