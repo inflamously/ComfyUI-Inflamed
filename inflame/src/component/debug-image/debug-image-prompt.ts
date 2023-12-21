@@ -5,8 +5,8 @@ import {useSelector} from "react-redux";
 import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
 import {socketStateSelectors} from "../../+state/socket/socket.selectors.ts";
 import {COMFYUI_SOCKET} from "../../socket/comfyui/comfyui-socket.tsx";
-import {Prompt} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
 import {promptsThunk} from "../../+state/prompt/prompt-workflow/prompts.thunk.ts";
+import {Prompt} from "@inflame/models";
 
 export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
     const socket = useSelector(

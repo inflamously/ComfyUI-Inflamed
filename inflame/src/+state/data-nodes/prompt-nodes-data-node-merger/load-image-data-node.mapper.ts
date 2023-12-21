@@ -1,6 +1,5 @@
-import {AbstractPromptNode} from "../../../prompt-nodes/prompt-node.ts";
 import {PromptDataNodeMergerFunc} from "./prompt-node-merge.utils.ts";
-import {AbstractDataNode} from "@inflame/models";
+import {AbstractDataNode, AbstractPromptNode} from "@inflame/models";
 
 export const LoadImageDataNodeMerger: PromptDataNodeMergerFunc = (
     node: AbstractPromptNode,

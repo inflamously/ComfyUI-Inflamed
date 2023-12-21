@@ -1,4 +1,4 @@
-import {ObjectNodeDTO} from "../../dto/object-node.dto.ts";
+import {ObjectNodeDTO} from "@inflame/models";
 
 export const MOCK_OBJECT_NODE_DTO: ObjectNodeDTO = {
     input: {
