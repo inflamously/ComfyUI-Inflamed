@@ -9,12 +9,12 @@ import {
 import {AppState} from "../../inflame-store.ts";
 import {Prompt} from "@inflame/models";
 
-export type PipelineNodeUpdateSource = {
+type PipelineNodeUpdateSource = {
     nodes?: Array<string>,
     appendix?: Record<string, unknown>
 }
 
-export type PipelineNodeUpdatePayload = {
+type PipelineNodeUpdatePayload = {
     source: PipelineNodeUpdateSource,
     target: Prompt
 }
