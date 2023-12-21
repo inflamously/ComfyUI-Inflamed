@@ -1,3 +1,5 @@
+import {ErrorAction, ErrorMessage, ErrorState} from "@inflame/models";
+
 export const ErrorStateActionReset = "_state.reset"
 
 export const errorReducer = (
