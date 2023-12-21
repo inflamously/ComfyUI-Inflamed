@@ -1,11 +1,5 @@
-export type AbstractDataNode = Omit<DataNode<unknown>, "input"> & {
-    input: {
-        required: Record<string, unknown>
-    },
-}
-
 type DataNodeInputInfo<InputModel> = {
-    required: { // TODO: Map to better model.
+    required: {
         [key in keyof InputModel]: InputModel[key]
     }
 }
@@ -13,6 +7,12 @@ type DataNodeInputInfo<InputModel> = {
 type DataNodeOutputInfo = {
     label: string
     type: string // TODO: Fix with typescript typing
+}
+
+export type AbstractDataNode = Omit<DataNode<unknown>, "input"> & {
+    input: {
+        required: Record<string, unknown>
+    },
 }
 
 export type DataNode<InputModel> = {

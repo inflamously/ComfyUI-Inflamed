@@ -1,21 +1,3 @@
-type ErrorAction = {
-    type: string,
-    payload?: {
-        additionalMessage?: string
-    }
-};
-
-type ErrorState = {
-    invalid: boolean,
-    message: string | null,
-    additionalMessage: string | null,
-}
-
-type ErrorMessage = {
-    type: string,
-    message: string | null
-}
-
 export const ErrorStateActionReset = "_state.reset"
 
 export const errorReducer = (

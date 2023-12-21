@@ -1,4 +1,4 @@
-import {PromptResultDTO} from "./dto/prompt-node.dto.ts";
+import {PromptResultDTO} from "@inflame/models";
 
 export const isPromptResultDTO = (obj: unknown): obj is PromptResultDTO => {
     return obj !== undefined &&

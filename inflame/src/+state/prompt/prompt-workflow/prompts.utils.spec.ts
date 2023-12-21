@@ -1,7 +1,7 @@
 import {getNodeFromWorkflow} from "./prompts.utils.ts";
-import {PromptWorkflow} from "./prompt.model.ts";
 import PromptNodeLoadImage, {nodeTypeLoadImage} from "../../../prompt-nodes/load-image/load-image.node.ts";
 import PromptNodePreviewImage, {nodeTypePreviewImage} from "../../../prompt-nodes/preview-image/preview-image.node.ts";
+import {PromptWorkflow} from "@inflame/models";
 
 describe('test the creation of a workflow based on nodes', function () {
     it('should create workflow and acquire node', () => {

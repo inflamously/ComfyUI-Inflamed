@@ -4,12 +4,12 @@ import Fileuploader from "../file/fileuploader.tsx";
 import {useSelector} from "react-redux";
 import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
 import {useDebugImagePrompt} from "./debug-image-prompt.ts";
-import {promptToPromptDto} from "../../api/mapper/prompt-to-prompt-dto.mapper.ts";
 import {socketStateSelectors} from "../../+state/socket/socket.selectors.ts";
-import {comfyApi} from "../../api/comfy.api.ts";
-import {isPromptResultDTO} from "../../api/api-dto.utils.ts";
 import {COMFYUI_SOCKET} from "../../socket/comfyui/comfyui-socket.tsx";
 import {promptsSliceActions} from "../../+state/prompt/prompt-workflow/prompts.slice.ts";
+import {comfyApi} from "../../+state/api/comfy-api.slice.ts";
+import {isPromptResultDTO} from "../../+state/api/api-dto.utils.ts";
+import {promptToPromptDto} from "../../mapper/prompt-to-prompt-dto.mapper.ts";
 
 const DebugImagePrompt = () => {
     const debugPrompt = useDebugImagePrompt();

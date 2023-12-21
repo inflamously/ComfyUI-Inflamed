@@ -1,17 +1,17 @@
-import {PromptNodeConnection} from "./prompt-node-connection.ts";
 import {
     BindValueAssigned,
     BindValueLink,
     BindValueStateInput,
-    BindValueString
-} from "./prompt-node-connection-value.ts";
+    BindValueString,
+    PromptNodeConnection
+} from "@inflame/models";
 
 export const isConnectionOfLink = (obj: PromptNodeConnection): obj is BindValueAssigned<BindValueLink> => {
     return obj !== undefined && obj !== null && obj.kind === "link";
 }
 
 export const isConnectionOfStateInput = (obj: PromptNodeConnection): obj is BindValueAssigned<BindValueStateInput> => {
-    return obj != undefined && obj != null && obj.kind === "state";
+    return obj != undefined && true && obj.kind === "state";
 }
 
 export const isConnectionOfString = (obj: PromptNodeConnection): obj is BindValueAssigned<BindValueString> => {

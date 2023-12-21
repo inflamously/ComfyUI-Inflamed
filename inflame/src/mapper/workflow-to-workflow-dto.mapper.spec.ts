@@ -1,7 +1,7 @@
 import {workflowToWorkflowDtoMapper} from "./workflow-to-workflow-dto.mapper.ts";
-import PromptNodeLoadImage from "../../prompt-nodes/load-image/load-image.node.ts";
-import PromptNodePreviewImage from "../../prompt-nodes/preview-image/preview-image.node.ts";
-import {PromptWorkflow} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
+import PromptNodeLoadImage from "../prompt-nodes/load-image/load-image.node.ts";
+import PromptNodePreviewImage from "../prompt-nodes/preview-image/preview-image.node.ts";
+import {PromptWorkflow} from "@inflame/models";
 
 describe('Mapper for workflow conversion to DTO', () => {
     it('should map workflow to dto', () => {

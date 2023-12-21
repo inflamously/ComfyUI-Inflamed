@@ -1,10 +1,8 @@
-import PreviewImageNode, {nodeTypePreviewImage} from "../../prompt-nodes/preview-image/preview-image.node.ts";
-import LoadImageNode from "../../prompt-nodes/load-image/load-image.node.ts";
-import {PromptDTO} from "../dto/prompt-node.dto.ts";
+import {GenericSocket, Prompt, PromptDTO} from "@inflame/models";
 import {promptToPromptDto} from "./prompt-to-prompt-dto.mapper.ts";
-import {GenericSocket} from "../../+state/socket/socket.model.ts";
-import {Prompt} from "../../+state/prompt/prompt-workflow/prompt.model.ts";
-import {getNodeFromWorkflow} from "../../+state/prompt/prompt-workflow/prompts.utils.ts";
+import LoadImageNode from "../prompt-nodes/load-image/load-image.node.ts";
+import PreviewImageNode, {nodeTypePreviewImage} from "../prompt-nodes/preview-image/preview-image.node.ts";
+import {getNodeFromWorkflow} from "../+state/prompt/prompt-workflow/prompts.utils.ts";
 
 describe('Mapper for converting a full prompt into a dto object that can be passed to /prompt', function () {
     it('should convert a simple prompt object', () => {

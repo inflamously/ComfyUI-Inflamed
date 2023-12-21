@@ -1,5 +1,5 @@
 import {AbstractPromptNode} from "../../../prompt-nodes/prompt-node.ts";
-import {AbstractDataNode} from "../data-node.model.ts";
+import {AbstractDataNode} from "@inflame/models";
 
 export type PromptDataNodeMergerFunc = (
     node: Readonly<AbstractPromptNode>,
