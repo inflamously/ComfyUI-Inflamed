@@ -1,5 +1,6 @@
 import {calculateStateInputs} from "./prompt-node.utils.ts";
-import {PromptNodeConnection} from "@inflame/models";
+import {PromptNode, PromptNodeConnection, PromptNodeFields} from "@inflame/models";
+import {AbstractPromptNode} from "@inflame/models";
 
 export type PromptNodeConfig<
     State,
@@ -9,35 +10,6 @@ export type PromptNodeConfig<
     inputs?: Inputs,
     // TODO: Convert type to Record<string (key of state), string (key of state)>
     stateInputs?: (state: State) => StateInputs // Defines inputs which are bound to state and or are of special use cases.
-}
-
-/**
- * Object which declares a node's ID and its initialState which can be passed into it
- */
-export type PromptNodeFields<State> = {
-    id: string,
-    initialState: State
-}
-
-export type PromptNodeInputs<
-    Inputs,
-    StateInputs
-> = Inputs | Readonly<StateInputs> | undefined
-
-/**
- * Foundation of PromptNode
- */
-export type PromptNode<
-    State,
-    Inputs extends Record<string, PromptNodeConnection>,
-    Outputs extends Record<string, PromptNodeConnection>,
-    StateInputs extends Record<string, PromptNodeConnection>
-> = {
-    id: Readonly<string>,
-    classtype: string,
-    inputs: PromptNodeInputs<Inputs, StateInputs>,
-    state: Readonly<Partial<State>>,
-    outputs: Readonly<Outputs>,
 }
 
 /**
@@ -75,17 +47,6 @@ export const createPromptNode = <
         state: initialState,
         outputs: outputs ?? {} as Outputs,
     }
-}
-
-/**
- * Abstract node type that can be use in arrays, containers and contexts where its inner details do not matter.
- */
-export type AbstractPromptNode = {
-    id: Readonly<string>,
-    classtype: string,
-    inputs: Record<string, PromptNodeConnection> | undefined,
-    state: Record<string, unknown>,
-    outputs: Record<string, PromptNodeConnection> | undefined,
 }
 
 export type PromptNodeTypeGuardFunction<T extends AbstractPromptNode = never> = (obj: AbstractPromptNode | undefined) => obj is T;

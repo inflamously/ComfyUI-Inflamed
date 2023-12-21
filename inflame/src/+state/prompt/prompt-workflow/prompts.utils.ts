@@ -1,5 +1,5 @@
-import {AbstractPromptNode, PromptNodeTypeGuardFunction} from "../../../prompt-nodes/prompt-node.ts";
-import {PromptWorkflow} from "@inflame/models";
+import {PromptNodeTypeGuardFunction} from "../../../prompt-nodes/prompt-node.ts";
+import {AbstractPromptNode, PromptWorkflow} from "@inflame/models";
 
 export const UUIDGenerator = () => {
     const generator = function* () {

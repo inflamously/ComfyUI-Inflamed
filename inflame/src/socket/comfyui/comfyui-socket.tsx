@@ -7,7 +7,7 @@ import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
 import {isMessageEvent, isOfMessageEventString} from "../websocket.utils.ts";
 import {isSidPresent} from "./comfyui-socket.utils.ts";
 import {comfyuiSocketActions} from "../../+state/socket/comfyui-socket/comfyui-socket.actions.ts";
-import {ComfyuiSocketMessages} from "./dto/comfyui-message.model.ts";
+import {ComfyuiSocketMessages} from "@inflame/models";
 
 export const COMFYUI_SOCKET = "comfyui-socket"
 

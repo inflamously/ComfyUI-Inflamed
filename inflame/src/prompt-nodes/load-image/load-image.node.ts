@@ -1,9 +1,8 @@
 import {
     createPromptNode,
-    PromptNodeFields,
     PromptNodeTypeGuard,
 } from "../prompt-node.ts";
-import {BindValueLink, BindValueStateInput, BindValueString} from "@inflame/models";
+import {BindValueLink, BindValueStateInput, BindValueString, PromptNodeFields} from "@inflame/models";
 
 type NodeLoadImageState = {
     images: string[],

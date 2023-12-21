@@ -1,7 +1,5 @@
 import {workflowToWorkflowDtoMapper} from "./workflow-to-workflow-dto.mapper.ts";
-import {GenericSocket} from "../+state/socket/socket.model.ts";
-import {Prompt} from "../+state/prompt/prompt-workflow/prompt.model.ts";
-import {PromptDTO} from "../+state/api/dto/prompt-node.dto.ts";
+import {GenericSocket, Prompt, PromptDTO} from "@inflame/models";
 
 export const promptToPromptDto = (props: {
     socket: GenericSocket,

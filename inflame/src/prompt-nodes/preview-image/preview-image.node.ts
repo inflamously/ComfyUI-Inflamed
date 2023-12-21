@@ -1,11 +1,8 @@
-// TODO: How to avoid external changes before cloning with method below?
-
 import {
     createPromptNode,
-    PromptNodeFields,
     PromptNodeTypeGuard
 } from "../prompt-node.ts";
-import {BindValueLink} from "@inflame/models";
+import {BindValueLink, PromptNodeFields} from "@inflame/models";
 
 type NodePreviewImageState = {
     images: string[] // TODO: Typings?

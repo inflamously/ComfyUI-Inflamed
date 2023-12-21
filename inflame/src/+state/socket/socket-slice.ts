@@ -1,6 +1,6 @@
 import {createSlice, EntityState, PayloadAction} from "@reduxjs/toolkit";
 import {socketEntityAdapter} from "./socket-entity.ts";
-import {GenericSocket} from "./socket.model.ts";
+import {GenericSocket} from "@inflame/models";
 
 export type SocketSliceState = {
     items: EntityState<GenericSocket>,

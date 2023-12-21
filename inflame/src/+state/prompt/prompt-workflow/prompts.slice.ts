@@ -1,8 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PromptsEntityAdapterType, promptsEntityAdapter} from "./prompts-entity.ts";
 import {generatePromptId} from "./prompts.utils.ts";
-import {AbstractPromptNode} from "../../../prompt-nodes/prompt-node.ts";
-import {Prompt} from "@inflame/models";
+import {AbstractPromptNode, Prompt} from "@inflame/models";
 
 type PromptAction<Type extends Record<string, unknown>> = PayloadAction<{
     clientId: string

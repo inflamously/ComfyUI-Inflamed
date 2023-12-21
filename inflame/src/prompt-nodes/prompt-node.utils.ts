@@ -1,7 +1,6 @@
-import {PromptNodeConnection} from "./prompt-node-connection.model.ts";
 import {set} from "lodash";
-import {AbstractPromptNode, PromptNode} from "./prompt-node.ts";
 import {isConnectionOfLink} from "./prompt-node-connection.utils.ts";
+import {AbstractPromptNode, PromptNode, PromptNodeConnection} from "@inflame/models";
 
 export const calculatePathsForObject = (tree: Record<string, unknown>) => {
     const statePaths = structuredClone(tree)

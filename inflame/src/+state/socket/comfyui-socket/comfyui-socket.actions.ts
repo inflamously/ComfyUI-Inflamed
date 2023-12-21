@@ -4,33 +4,39 @@ import {
     ComfyuiExecutingDTO,
     ComfyuiExecutionCachedDTO,
     ComfyuiExecutionStartDTO, ComfyuiStatusDTO, ComfyuiStatusWithSidDTO
-} from "../../../socket/comfyui/dto/comfyui-message.model.ts";
+} from "@inflame/models";
 
-const executionCached = createListenerPreparedAction("comfyuiSocket/executionCached", (payload: ComfyuiExecutionCachedDTO) => {
+
+const executionCached = createListenerPreparedAction("comfyuiSocket/executionCached",
+        (payload: ComfyuiExecutionCachedDTO) => {
     return {
         payload
     }
 })
 
-const executionStart = createListenerPreparedAction(`comfyuiSocket/executionStart`, (payload: ComfyuiExecutionStartDTO) => {
+const executionStart = createListenerPreparedAction(`comfyuiSocket/executionStart`,
+    (payload: ComfyuiExecutionStartDTO) => {
     return {
         payload,
     }
 })
 
-const executing = createListenerPreparedAction('comfyuiSocket/executing', (payload: ComfyuiExecutingDTO) => {
+const executing = createListenerPreparedAction('comfyuiSocket/executing',
+    (payload: ComfyuiExecutingDTO) => {
     return {
         payload
     }
 })
 
-const executed = createListenerPreparedAction('comfyuiSocket/executed', (payload: ComfyuiExecutedDTO) => {
+const executed = createListenerPreparedAction('comfyuiSocket/executed',
+    (payload: ComfyuiExecutedDTO) => {
     return {
         payload
     }
 })
 
-const statusEvent = createListenerPreparedAction("comfyuiSocket/statusEvent", (payload: ComfyuiStatusWithSidDTO | ComfyuiStatusDTO) => {
+const statusEvent = createListenerPreparedAction("comfyuiSocket/statusEvent",
+    (payload: ComfyuiStatusWithSidDTO | ComfyuiStatusDTO) => {
     return {
         payload
     }
