@@ -32,10 +32,4 @@ describe('Mappers for converting API object_info dtos to specific app types', fu
             RESULT_MOCK_DATA_NODE
         )
     })
-
-        it('allow me to retrieve a specific node with index', () => {
-        expect(mapObjectNodesDtoToDataNodeCollection([node, node]).node(0)).toEqual(
-            RESULT_MOCK_ABSTRACT_PROMPT_NODE
-        )
-    })
 });

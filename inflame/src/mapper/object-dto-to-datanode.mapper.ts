@@ -1,7 +1,6 @@
-import {AbstractDataNode, ObjectNodeDTO, ObjectNodesDTO} from "@inflame/models";
-import {createDataNodeCollection, DataNodeCollection} from "../+state/data-nodes/data-node.utils.ts";
+import {AbstractDataNode, DataNodeCollection, ObjectNodeDTO, ObjectNodesDTO} from "@inflame/models";
+import {createDataNodeCollection} from "../+state/data-nodes/data-node.utils.ts";
 import {noEqualNamesValidator} from "./validators/nodes.validators.ts";
-
 
 export const mapObjectNodesDtoToDataNodeCollection = (dtoNodes: ObjectNodesDTO): DataNodeCollection => {
     if (!noEqualNamesValidator(dtoNodes)) {

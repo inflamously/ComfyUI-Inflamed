@@ -25,6 +25,10 @@ export type DataNode<InputModel> = {
     output: DataNodeOutputInfo[]
 }
 
+export type DataNodeCollection = {
+    nodes: Record<string, AbstractDataNode>,
+}
+
 export type DataNodeLink = {
     input: {
         name: string,
