@@ -1,6 +1,4 @@
-export const noEqualNamesValidator = (input: {
-    [name: string]: { name: string }
-} | Array<{ name: string }>): boolean => {
+export const noEqualNamesValidator = (input: Record<string, { name: string }> | Array<{ name: string }>): boolean => {
     const names: string[] = []
 
     for (const [key, value] of Object.entries(input)) {
