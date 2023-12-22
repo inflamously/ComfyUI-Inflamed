@@ -1,0 +1,178 @@
+{
+  "name": "inflame-comfyui",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "comfyui",
+      "items": [
+        {
+          "type": "http",
+          "name": "history",
+          "seq": 4,
+          "request": {
+            "url": "{{SERVER_URL}}/history/601331ef-d927-4ab4-99ae-4b941631baae",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "object_info",
+          "seq": 2,
+          "request": {
+            "url": "{{SERVER_URL}}/object_info",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "prompt",
+          "seq": 1,
+          "request": {
+            "url": "{{SERVER_URL}}/prompt",
+            "method": "POST",
+            "headers": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n    \"client_id\": \"9f31f345524c4e4ca0ea1a5481372362\",\n    \"prompt\": {\n        \"3\": {\n            \"inputs\": {\n                \"seed\": 81342415954818,\n                \"steps\": 40,\n                \"cfg\": 8,\n                \"sampler_name\": \"dpmpp_3m_sde_gpu\",\n                \"scheduler\": \"karras\",\n                \"denoise\": 1,\n                \"model\": [\n                    \"4\",\n                    0\n                ],\n                \"positive\": [\n                    \"6\",\n                    0\n                ],\n                \"negative\": [\n                    \"7\",\n                    0\n                ],\n                \"latent_image\": [\n                    \"5\",\n                    0\n                ]\n            },\n            \"class_type\": \"KSampler\"\n        },\n        \"4\": {\n            \"inputs\": {\n                \"ckpt_name\": \"anythingfurry_1.safetensors\"\n            },\n            \"class_type\": \"CheckpointLoaderSimple\"\n        },\n        \"5\": {\n            \"inputs\": {\n                \"width\": 768,\n                \"height\": 768,\n                \"batch_size\": 1\n            },\n            \"class_type\": \"EmptyLatentImage\"\n        },\n        \"6\": {\n            \"inputs\": {\n                \"text\": \"beautiful scenery nature glass bottle landscape, , purple galaxy bottle,\",\n                \"clip\": [\n                    \"4\",\n                    1\n                ]\n            },\n            \"class_type\": \"CLIPTextEncode\"\n        },\n        \"7\": {\n            \"inputs\": {\n                \"text\": \"text, watermark\",\n                \"clip\": [\n                    \"4\",\n                    1\n                ]\n            },\n            \"class_type\": \"CLIPTextEncode\"\n        },\n        \"8\": {\n            \"inputs\": {\n                \"samples\": [\n                    \"3\",\n                    0\n                ],\n                \"vae\": [\n                    \"4\",\n                    2\n                ]\n            },\n            \"class_type\": \"VAEDecode\"\n        },\n        \"9\": {\n            \"inputs\": {\n                \"filename_prefix\": \"ComfyUI\",\n                \"images\": [\n                    \"8\",\n                    0\n                ]\n            },\n            \"class_type\": \"SaveImage\"\n        }\n    },\n    \"extra_data\": {\n        \"extra_pnginfo\": {\n            \"workflow\": {\n                \"last_node_id\": 10,\n                \"last_link_id\": 9,\n                \"nodes\": [\n                    {\n                        \"id\": 7,\n                        \"type\": \"CLIPTextEncode\",\n                        \"pos\": [\n                            413,\n                            389\n                        ],\n                        \"size\": {\n                            \"0\": 425.27801513671875,\n                            \"1\": 180.6060791015625\n                        },\n                        \"flags\": {},\n                        \"order\": 3,\n                        \"mode\": 0,\n                        \"inputs\": [\n                            {\n                                \"name\": \"clip\",\n                                \"type\": \"CLIP\",\n                                \"link\": 5\n                            }\n                        ],\n                        \"outputs\": [\n                            {\n                                \"name\": \"CONDITIONING\",\n                                \"type\": \"CONDITIONING\",\n                                \"links\": [\n                                    6\n                                ],\n                                \"slot_index\": 0\n                            }\n                        ],\n                        \"properties\": {\n                            \"Node name for S&R\": \"CLIPTextEncode\"\n                        },\n                        \"widgets_values\": [\n                            \"text, watermark\"\n                        ]\n                    },\n                    {\n                        \"id\": 6,\n                        \"type\": \"CLIPTextEncode\",\n                        \"pos\": [\n                            415,\n                            186\n                        ],\n                        \"size\": {\n                            \"0\": 422.84503173828125,\n                            \"1\": 164.31304931640625\n                        },\n                        \"flags\": {},\n                        \"order\": 2,\n                        \"mode\": 0,\n                        \"inputs\": [\n                            {\n                                \"name\": \"clip\",\n                                \"type\": \"CLIP\",\n                                \"link\": 3\n                            }\n                        ],\n                        \"outputs\": [\n                            {\n                                \"name\": \"CONDITIONING\",\n                                \"type\": \"CONDITIONING\",\n                                \"links\": [\n                                    4\n                                ],\n                                \"slot_index\": 0\n                            }\n                        ],\n                        \"properties\": {\n                            \"Node name for S&R\": \"CLIPTextEncode\"\n                        },\n                        \"widgets_values\": [\n                            \"beautiful scenery nature glass bottle landscape, , purple galaxy bottle,\"\n                        ]\n                    },\n                    {\n                        \"id\": 8,\n                        \"type\": \"VAEDecode\",\n                        \"pos\": [\n                            1209,\n                            188\n                        ],\n                        \"size\": {\n                            \"0\": 210,\n                            \"1\": 46\n                        },\n                        \"flags\": {},\n                        \"order\": 5,\n                        \"mode\": 0,\n                        \"inputs\": [\n                            {\n                                \"name\": \"samples\",\n                                \"type\": \"LATENT\",\n                                \"link\": 7\n                            },\n                            {\n                                \"name\": \"vae\",\n                                \"type\": \"VAE\",\n                                \"link\": 8\n                            }\n                        ],\n                        \"outputs\": [\n                            {\n                                \"name\": \"IMAGE\",\n                                \"type\": \"IMAGE\",\n                                \"links\": [\n                                    9\n                                ],\n                                \"slot_index\": 0\n                            }\n                        ],\n                        \"properties\": {\n                            \"Node name for S&R\": \"VAEDecode\"\n                        }\n                    },\n                    {\n                        \"id\": 4,\n                        \"type\": \"CheckpointLoaderSimple\",\n                        \"pos\": [\n                            27,\n                            474\n                        ],\n                        \"size\": {\n                            \"0\": 315,\n                            \"1\": 98\n                        },\n                        \"flags\": {},\n                        \"order\": 0,\n                        \"mode\": 0,\n                        \"outputs\": [\n                            {\n                                \"name\": \"MODEL\",\n                                \"type\": \"MODEL\",\n                                \"links\": [\n                                    1\n                                ],\n                                \"slot_index\": 0\n                            },\n                            {\n                                \"name\": \"CLIP\",\n                                \"type\": \"CLIP\",\n                                \"links\": [\n                                    3,\n                                    5\n                                ],\n                                \"slot_index\": 1\n                            },\n                            {\n                                \"name\": \"VAE\",\n                                \"type\": \"VAE\",\n                                \"links\": [\n                                    8\n                                ],\n                                \"slot_index\": 2\n                            }\n                        ],\n                        \"properties\": {\n                            \"Node name for S&R\": \"CheckpointLoaderSimple\"\n                        },\n                        \"widgets_values\": [\n                            \"anythingfurry_1.safetensors\"\n                        ]\n                    },\n                    {\n                        \"id\": 5,\n                        \"type\": \"EmptyLatentImage\",\n                        \"pos\": [\n                            473,\n                            609\n                        ],\n                        \"size\": {\n                            \"0\": 315,\n                            \"1\": 106\n                        },\n                        \"flags\": {},\n                        \"order\": 1,\n                        \"mode\": 0,\n                        \"outputs\": [\n                            {\n                                \"name\": \"LATENT\",\n                                \"type\": \"LATENT\",\n                                \"links\": [\n                                    2\n                                ],\n                                \"slot_index\": 0\n                            }\n                        ],\n                        \"properties\": {\n                            \"Node name for S&R\": \"EmptyLatentImage\"\n                        },\n                        \"widgets_values\": [\n                            768,\n                            768,\n                            1\n                        ]\n                    },\n                    {\n                        \"id\": 3,\n                        \"type\": \"KSampler\",\n                        \"pos\": [\n                            863,\n                            186\n                        ],\n                        \"size\": {\n                            \"0\": 315,\n                            \"1\": 262\n                        },\n                        \"flags\": {},\n                        \"order\": 4,\n                        \"mode\": 0,\n                        \"inputs\": [\n                            {\n                                \"name\": \"model\",\n                                \"type\": \"MODEL\",\n                                \"link\": 1\n                            },\n                            {\n                                \"name\": \"positive\",\n                                \"type\": \"CONDITIONING\",\n                                \"link\": 4\n                            },\n                            {\n                                \"name\": \"negative\",\n                                \"type\": \"CONDITIONING\",\n                                \"link\": 6\n                            },\n                            {\n                                \"name\": \"latent_image\",\n                                \"type\": \"LATENT\",\n                                \"link\": 2\n                            }\n                        ],\n                        \"outputs\": [\n                            {\n                                \"name\": \"LATENT\",\n                                \"type\": \"LATENT\",\n                                \"links\": [\n                                    7\n                                ],\n                                \"slot_index\": 0\n                            }\n                        ],\n                        \"properties\": {\n                            \"Node name for S&R\": \"KSampler\"\n                        },\n                        \"widgets_values\": [\n                            81342415954818,\n                            \"randomize\",\n                            40,\n                            8,\n                            \"dpmpp_3m_sde_gpu\",\n                            \"karras\",\n                            1\n                        ]\n                    },\n                    {\n                        \"id\": 9,\n                        \"type\": \"SaveImage\",\n                        \"pos\": [\n                            1450,\n                            195\n                        ],\n                        \"size\": {\n                            \"0\": 210,\n                            \"1\": 270\n                        },\n                        \"flags\": {},\n                        \"order\": 6,\n                        \"mode\": 0,\n                        \"inputs\": [\n                            {\n                                \"name\": \"images\",\n                                \"type\": \"IMAGE\",\n                                \"link\": 9\n                            }\n                        ],\n                        \"properties\": {},\n                        \"widgets_values\": [\n                            \"ComfyUI\"\n                        ]\n                    }\n                ],\n                \"links\": [\n                    [\n                        1,\n                        4,\n                        0,\n                        3,\n                        0,\n                        \"MODEL\"\n                    ],\n                    [\n                        2,\n                        5,\n                        0,\n                        3,\n                        3,\n                        \"LATENT\"\n                    ],\n                    [\n                        3,\n                        4,\n                        1,\n                        6,\n                        0,\n                        \"CLIP\"\n                    ],\n                    [\n                        4,\n                        6,\n                        0,\n                        3,\n                        1,\n                        \"CONDITIONING\"\n                    ],\n                    [\n                        5,\n                        4,\n                        1,\n                        7,\n                        0,\n                        \"CLIP\"\n                    ],\n                    [\n                        6,\n                        7,\n                        0,\n                        3,\n                        2,\n                        \"CONDITIONING\"\n                    ],\n                    [\n                        7,\n                        3,\n                        0,\n                        8,\n                        0,\n                        \"LATENT\"\n                    ],\n                    [\n                        8,\n                        4,\n                        2,\n                        8,\n                        1,\n                        \"VAE\"\n                    ],\n                    [\n                        9,\n                        8,\n                        0,\n                        9,\n                        0,\n                        \"IMAGE\"\n                    ]\n                ],\n                \"groups\": [],\n                \"config\": {},\n                \"extra\": {},\n                \"version\": 0.4\n            }\n        }\n    }\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "ws",
+          "seq": 3,
+          "request": {
+            "url": "{{SERVER_URL}}/ws",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "view",
+          "seq": 5,
+          "request": {
+            "url": "{{SERVER_URL}}/",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        }
+      ]
+    }
+  ],
+  "activeEnvironmentUid": "YRDID4OcRcHU8h9NmphSL",
+  "environments": [
+    {
+      "variables": [
+        {
+          "name": "SERVER_URL",
+          "value": "http://localhost:8188",
+          "enabled": true,
+          "secret": false,
+          "type": "text"
+        }
+      ],
+      "name": "comfyui-local"
+    }
+  ]
+}
