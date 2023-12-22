@@ -1,10 +1,12 @@
 import {ObjectNodesDTO, PromptDTO, PromptResultDTO} from "@inflame/models";
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"; // https://redux-toolkit.js.org/rtk-query/usage-with-typescript#createapi -> The React-specific entry point for RTK Query...
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+
+const comfyApiSliceURL = 'http://localhost:8188/'
 
 const comfyApiRtk = createApi({
     reducerPath: 'comfyApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8188/",
+        baseUrl: comfyApiSliceURL,
     }),
     endpoints: (builder) => {
         return {
@@ -27,10 +29,12 @@ const comfyApiRtk = createApi({
     }
 })
 
+// TODO: One day proper rename / refactor?
 export const comfyApi = {
     reducer: comfyApiRtk.reducer,
     name: comfyApiRtk.reducerPath,
     middleware: comfyApiRtk.middleware,
+    url: comfyApiSliceURL,
     GetObjectInfoQuery: comfyApiRtk.endpoints?.getObjectInfo.initiate,
     useGetObjectInfoQuery: comfyApiRtk.useGetObjectInfoQuery,
     usePostPrompt: comfyApiRtk.usePostPromptMutation,

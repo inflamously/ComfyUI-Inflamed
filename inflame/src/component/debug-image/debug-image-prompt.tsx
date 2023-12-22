@@ -1,21 +1,26 @@
-import {Box, Button, Text} from "@chakra-ui/react";
+import {Box, Button, Image, Text} from "@chakra-ui/react";
 import {useCallback, useEffect} from "react";
 import Fileuploader from "../file/fileuploader.tsx";
 import {useSelector} from "react-redux";
 import {useDebugImagePrompt} from "./debug-image-prompt.ts";
 import {socketStateSelectors} from "@inflame/state";
 import {promptsSliceActions} from "@inflame/state";
-import {comfyApi} from "../../+state/api/comfy-api.slice.ts";
-import {isPromptResultDTO} from "../../+state/api/api-guards.utils.ts";
+import {comfyApi} from "@inflame/state";
+import {isPromptResultDTO} from "@inflame/state";
 import {promptToPromptDto} from "../../mapper/prompt-to-prompt-dto.mapper.ts";
 import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.tsx";
 import {AppState, useAppDispatch} from "@inflame/state";
+import {useGetViewImage} from "../resources/comfyui-api/view-image-download.hooks.ts";
 
 const DebugImagePrompt = () => {
     const debugPrompt = useDebugImagePrompt();
     const socket = useSelector((state: AppState) => socketStateSelectors.selectSocketById(state, COMFYUI_SOCKET))
     const [postPrompt, result] = comfyApi.usePostPrompt()
     const dispatch = useAppDispatch()
+    const [_, url] = useGetViewImage({
+        type: "input",
+        filename: "example.png"
+    })
 
     useEffect(() => {
         console.log("Call Result", result.status)
@@ -48,6 +53,10 @@ const DebugImagePrompt = () => {
 
     return (
         <Box p={4}>
+            <Box pb={4}>
+                <Image src={url} width={128} height={128}></Image>
+                <p>"example.png" image from "input" folder on server</p>
+            </Box>
             <Box pb={4}>
                 <Fileuploader fileTypes={[
                     "image/jpeg", "image/png"
