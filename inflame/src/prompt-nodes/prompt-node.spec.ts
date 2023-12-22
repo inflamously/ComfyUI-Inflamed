@@ -1,5 +1,5 @@
-import {createPromptNode, PromptNodeFields} from "./prompt-node.ts";
-import {BindValueLink} from "./prompt-node-connection-value.model.ts";
+import {createPromptNode} from "./prompt-node.ts";
+import {BindValueLink, PromptNodeFields} from "@inflame/models";
 
 type TestNodeInputs = {
     testInput: BindValueLink

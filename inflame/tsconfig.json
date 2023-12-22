@@ -20,7 +20,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@inflame/models": ["./src/+models"]
+      "@inflame/models": ["./src/+models"],
+      "@inflame/state": ["./src/+state"],
     }
   },
   "include": ["src"],

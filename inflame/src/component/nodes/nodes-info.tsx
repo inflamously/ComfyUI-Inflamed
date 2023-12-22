@@ -1,4 +1,4 @@
-import {useAppDispatch} from "../../+state/inflame-store.ts";
+import {useAppDispatch} from "@inflame/state";
 import {useEffect} from "react";
 import {nodesSliceActions} from "../../+state/data-nodes/data-nodes.slice.ts";
 import {comfyApi} from "../../+state/api/comfy-api.slice.ts";

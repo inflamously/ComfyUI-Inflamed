@@ -2,14 +2,14 @@ import {Box, Button, Text} from "@chakra-ui/react";
 import {useCallback, useEffect} from "react";
 import Fileuploader from "../file/fileuploader.tsx";
 import {useSelector} from "react-redux";
-import {AppState, useAppDispatch} from "../../+state/inflame-store.ts";
 import {useDebugImagePrompt} from "./debug-image-prompt.ts";
-import {socketStateSelectors} from "../../+state/socket/socket.selectors.ts";
-import {promptsSliceActions} from "../../+state/prompt/prompt-workflow/prompts.slice.ts";
+import {socketStateSelectors} from "@inflame/state";
+import {promptsSliceActions} from "@inflame/state";
 import {comfyApi} from "../../+state/api/comfy-api.slice.ts";
-import {isPromptResultDTO} from "../../+state/api/api-dto.utils.ts";
+import {isPromptResultDTO} from "../../+state/api/api-guards.utils.ts";
 import {promptToPromptDto} from "../../mapper/prompt-to-prompt-dto.mapper.ts";
 import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.tsx";
+import {AppState, useAppDispatch} from "@inflame/state";
 
 const DebugImagePrompt = () => {
     const debugPrompt = useDebugImagePrompt();

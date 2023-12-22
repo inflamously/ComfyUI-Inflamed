@@ -1,7 +1,6 @@
-import {AbstractPromptNode} from "../../../prompt-nodes/prompt-node.ts";
 import PromptNodeLoadImage from "../../../prompt-nodes/load-image/load-image.node.ts";
 import {mergeDataNodeIntoPromptNode} from "./prompt-node-merge.utils.ts";
-import {AbstractDataNode} from "@inflame/models";
+import {AbstractDataNode, AbstractPromptNode} from "@inflame/models";
 
 describe("", () => {
     it('should invoke merge func of given node when class fits datanode', () => {
