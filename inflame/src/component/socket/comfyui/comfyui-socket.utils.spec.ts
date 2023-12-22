@@ -1,5 +1,5 @@
 import {isSidPresent} from './comfyui-socket.utils';
-import {ComfyuiStatusDTO, ComfyuiStatusWithSidDTO} from './dto/comfyui-message.model.ts';
+import {ComfyuiStatusDTO, ComfyuiStatusWithSidDTO} from "@inflame/models";
 
 describe('Tests various utils functions', () => {
 
