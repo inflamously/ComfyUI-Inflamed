@@ -88,3 +88,11 @@ export const updateNodeId = (node: AbstractPromptNode, id: string) => {
 
     return node
 }
+
+export const findAbstractPromptNodeById = (id: string, workflow: PromptWorkflow): AbstractPromptNode | undefined => {
+    if (!workflow?.nodes || workflow.nodes.length <= 0) {
+        return undefined;
+    }
+
+    return workflow.nodes.find((node) => node.id === id);
+}
