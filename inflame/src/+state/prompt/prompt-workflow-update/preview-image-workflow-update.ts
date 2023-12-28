@@ -1,4 +1,4 @@
-import {addNodeToPromptWorkflowUpdateListener} from "@inflame/state";
+import {addNodeToPromptWorkflowUpdateListener} from "./prompt-workflow-update.listener.ts";
 import {findAbstractPromptNodeById} from "../../../prompt-nodes/prompt-node.utils.ts";
 
 export const subscribePreviewImageNodeUpdate = () => {

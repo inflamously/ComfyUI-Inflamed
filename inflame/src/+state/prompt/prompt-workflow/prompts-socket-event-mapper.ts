@@ -4,7 +4,7 @@
 import {addSocketEventHandler} from "../../socket/socket-event-handler.listener.ts";
 import {comfyuiSocketActions} from "../../socket/comfyui-socket/comfyui-socket.actions.ts";
 import {promptsSelectors} from "./prompts.selectors.ts";
-import {promptWorkflowUpdateListenerActions} from "./prompt-workflow-update.listener.ts";
+import {promptWorkflowUpdateListenerActions} from "../prompt-workflow-update/prompt-workflow-update.listener.ts";
 
 export const subscribePromptSocketEventMapper = () => {
     addSocketEventHandler(comfyuiSocketActions.statusEvent, () => {

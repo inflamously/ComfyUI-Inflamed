@@ -4,9 +4,9 @@ import {nodesSlice, nodesSliceName} from "./data-nodes/data-nodes.slice.ts";
 import {promptsSlice, promptsSliceName} from "./prompt/prompt-workflow/prompts.slice.ts";
 import {useDispatch} from "react-redux";
 import {socketEventHandlerMiddleware} from "./socket/socket-event-handler.listener.ts";
-import {promptWorkflowUpdateListenerMiddleware} from "./prompt/prompt-workflow/prompt-workflow-update.listener.ts";
+import {promptWorkflowUpdateListenerMiddleware} from "./prompt/prompt-workflow-update/prompt-workflow-update.listener.ts";
 import {subscribePromptSocketEventMapper} from "./prompt/prompt-workflow/prompts-socket-event-mapper.ts";
-import {subscribePreviewImageNodeUpdate} from "./prompt/workflow-update";
+import {subscribePreviewImageNodeUpdate} from "./prompt/prompt-workflow-update";
 import {comfyApi} from "./api/comfy-api.slice.ts";
 
 const store = configureStore({
