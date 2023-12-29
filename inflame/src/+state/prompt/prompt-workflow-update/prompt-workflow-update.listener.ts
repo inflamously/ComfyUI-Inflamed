@@ -7,17 +7,8 @@ import {
     ThunkDispatch
 } from "@reduxjs/toolkit";
 import {AppState} from "../../inflame-store.ts";
-import {Prompt} from "@inflame/models";
+import {PipelineNodeUpdatePayload} from "@inflame/models";
 
-type PipelineNodeUpdateSource = {
-    nodes?: Array<string>,
-    appendix?: Record<string, unknown>
-}
-
-type PipelineNodeUpdatePayload = {
-    source: PipelineNodeUpdateSource,
-    target: Prompt
-}
 
 // TODO: Error handling
 const promptWorkflowUpdateListener = createListenerMiddleware()

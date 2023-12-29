@@ -4,8 +4,13 @@ import {
 } from "../prompt-node.ts";
 import {BindValueLink, PromptNodeFields} from "@inflame/models";
 
+type PreviewImage = {
+    name: string,
+    path: string,
+}
+
 type NodePreviewImageState = {
-    images: string[] // TODO: Typings?
+    images: PreviewImage[] // TODO: Typings?
 }
 
 type NodePreviewImageInputs = {
