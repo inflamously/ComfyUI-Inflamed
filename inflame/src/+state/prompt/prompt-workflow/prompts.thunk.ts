@@ -24,6 +24,7 @@ const createPromptWithWorkflow = (props: {
         throw new Error("Prompt creation failed.")
     }
 
+    // TODO: Rewrite to use Listener instead to acquire data instead of function of function for each node.
     let updatedNodes = nodes;
     if (dataNodes) {
         updatedNodes = mergeDataNodeIntoPromptNode(nodes, dataNodes, {

@@ -25,6 +25,9 @@ export const subscribePromptSocketEventMapper = () => {
         console.log(action)
     })
 
+    /**
+     * On a node's data output
+     */
     addSocketEventHandler(comfyuiSocketActions.executed, (action, api) => {
         // TODO: Proper mapping and validation
         const {payload} = action
