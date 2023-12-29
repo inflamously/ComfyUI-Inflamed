@@ -41,7 +41,7 @@ export const promptsSlice = createSlice({
             }
         },
         updatePromptNodes: (state, action: PromptAction<{
-            nodes: (readonly AbstractPromptNode[]) | AbstractPromptNode[]
+            nodes: readonly AbstractPromptNode[]
         }>) => {
             const {clientId, nodes} = action.payload
             if (!clientId) {
