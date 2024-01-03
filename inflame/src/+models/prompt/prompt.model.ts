@@ -7,5 +7,5 @@ export type Prompt = {
 }
 
 export type PromptWorkflow = {
-    nodes: Readonly<AbstractPromptNode[]>
+    nodes: AbstractPromptNode[]
 }

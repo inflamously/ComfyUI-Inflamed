@@ -4,4 +4,4 @@ type PromptNodeConnectionBindType = BindValueLink | BindValueString | BindValueA
 
 // Defines an object which stores node links to other nodes
 // export type PromptNodeLinkObject = Record<string, Readonly<PromptNodeBindTypes | undefined>>;
-export type PromptNodeConnection = Readonly<PromptNodeConnectionBindType | undefined>
+export type PromptNodeConnection = PromptNodeConnectionBindType | undefined
