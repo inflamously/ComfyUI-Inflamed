@@ -1,8 +1,8 @@
 import {AbstractDataNode, AbstractPromptNode} from "@inflame/models";
 
 export type PromptDataNodeMergerFunc = (
-    node: Readonly<AbstractPromptNode>,
-    dataNode: Readonly<AbstractDataNode>
+    node: AbstractPromptNode,
+    dataNode: AbstractDataNode
 ) => AbstractPromptNode
 
 export const mergeDataNodeIntoPromptNode = (
