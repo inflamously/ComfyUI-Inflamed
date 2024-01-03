@@ -5,8 +5,9 @@ import {
 import {BindValueLink, PromptNodeFields} from "@inflame/models";
 
 type PreviewImage = {
-    name: string,
+    filename: string,
     path: string,
+    meta: string[]
 }
 
 type NodePreviewImageState = {
@@ -25,7 +26,7 @@ export type PromptNodePreviewImageType = ReturnType<typeof PromptNodePreviewImag
 
 export const nodeTypePreviewImage = PromptNodeTypeGuard<PromptNodePreviewImageType>("PreviewImage");
 
-const PromptNodePreviewImage = (props: PromptNodeFields<NodePreviewImageState>) => {
+export const PromptNodePreviewImage = (props: PromptNodeFields<NodePreviewImageState>) => {
     return createPromptNode<
         NodePreviewImageState,
         NodePreviewImageInputs,
@@ -41,4 +42,3 @@ const PromptNodePreviewImage = (props: PromptNodeFields<NodePreviewImageState>) 
     )
 }
 
-export default PromptNodePreviewImage

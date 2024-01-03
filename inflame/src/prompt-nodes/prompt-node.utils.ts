@@ -1,6 +1,8 @@
 import {set} from "lodash";
 import {isConnectionOfLink} from "./prompt-node-connection.utils.ts";
 import {AbstractPromptNode, PromptNode, PromptNodeConnection, PromptWorkflow} from "@inflame/models";
+import structuredClone from "@ungap/structured-clone";
+import {updateObject} from "../core/object.utils.ts";
 
 export const calculatePathsForObject = (tree: Record<string, unknown>) => {
     const statePaths = structuredClone(tree)
@@ -63,7 +65,7 @@ export const updateNodeState = <
 }
 
 /**
- * This intentionally changes original object since IDs are referenced and must change in all other objects. Connections are REF made.
+ * This intentionally changes original object since IDs are referenced and must change in all other objects. Connections are made by Reference.
  */
 export const updateIdsInConnectionMap = (connections: Record<string, PromptNodeConnection>, id: string) => {
     if (connections) {
@@ -95,4 +97,13 @@ export const findAbstractPromptNodeById = (id: string, workflow: PromptWorkflow)
     }
 
     return workflow.nodes.find((node) => node.id === id);
+}
+
+
+export const replaceNodesInWorkflow = (workflow: PromptWorkflow, nodes: Array<AbstractPromptNode>) => {
+    return updateObject(workflow, (newWorkflow) => {
+        newWorkflow.nodes = newWorkflow.nodes.map((workflowNode) =>
+            nodes.find((newNode) => workflowNode?.id === newNode.id) ?? workflowNode
+        )
+    })
 }

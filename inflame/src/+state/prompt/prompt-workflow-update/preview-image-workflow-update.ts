@@ -1,14 +1,14 @@
 import {addNodeToPromptWorkflowUpdateListener} from "./prompt-workflow-update.listener.ts";
-import {findAbstractPromptNodeById} from "../../../prompt-nodes/prompt-node.utils.ts";
+import {findAbstractPromptNodeById, replaceNodesInWorkflow} from "../../../prompt-nodes/prompt-node.utils.ts";
 import {
     hasSingleNode,
-    sourceAppendixMatchType,
     sourceContainNodes,
     sourceIncludesAppendix
 } from "./prompt-workflow-update.utils.ts";
 import {AbstractPromptNode} from "@inflame/models";
 import {updateObject} from "../../../core/object.utils.ts";
 import {nodeTypePreviewImage} from "../../../prompt-nodes/preview-image/preview-image.node.ts";
+import {promptsSliceActions} from "../prompt-workflow/prompts.slice.ts";
 
 export const subscribePreviewImageNodeUpdate = () => {
     addNodeToPromptWorkflowUpdateListener((action, api) => {
@@ -19,16 +19,6 @@ export const subscribePreviewImageNodeUpdate = () => {
                 console.error("Acquire source did not contain an appendix.")
                 return;
             }
-
-            // "appendix": {
-            //         "images": [
-            //             {
-            //                 "filename": "ComfyUI_temp_bkcgz_00001_.png",
-            //                 "subfolder": "",
-            //                 "type": "temp"
-            //             }
-            //         ]
-            //     }
 
             const existingNodes: Array<AbstractPromptNode | undefined> = source.nodes
                 .map((id) => findAbstractPromptNodeById(id, target.workflow))
@@ -49,30 +39,30 @@ export const subscribePreviewImageNodeUpdate = () => {
             }
 
             const previewImageNode = updateObject(node, (newNode) => {
-                if (!sourceAppendixMatchType(source.appendix, {
-                        images: [{
-                            filename: undefined,
-                            subfolder: undefined,
-                            type: undefined
-                        }]
-                    }
-                )) {
+                if (!Array.isArray(source.appendix.images)) {
                     return;
                 }
 
+                // TODO: What model should I choose?
                 newNode.state.images = source.appendix.images.map((item) => {
                     return {
-                        name: item.filename as string,
-                        path: item.type as string
+                        filename: item.filename,
+                        path: "",
+                        meta: [
+                            item.type,
+                        ]
                     }
                 })
             })
 
-            console.log(previewImageNode);
+            console.log("Workflow before", target.workflow)
+            const newWorkflow = replaceNodesInWorkflow(target.workflow, [previewImageNode])
+            console.log("Workflow after", newWorkflow)
 
-            // api.dispatch(promptsSliceActions.updatePromptNodes({
-            //     nodes
-            // }))
+            api.dispatch(promptsSliceActions.updatePromptNodes({
+                nodes: newWorkflow.nodes,
+                clientId: target.clientId
+            }))
         }
     );
 }

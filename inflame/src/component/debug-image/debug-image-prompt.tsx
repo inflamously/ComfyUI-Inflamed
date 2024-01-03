@@ -34,7 +34,7 @@ const DebugImagePrompt = () => {
         }
 
         const promptDto = promptToPromptDto({
-            socket,
+            clientId: socket.clientId,
             prompt
         });
 

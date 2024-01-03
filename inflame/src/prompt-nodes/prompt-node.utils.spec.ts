@@ -1,9 +1,10 @@
 import {
-    calculatePathsForObject, updateNodeId,
+    calculatePathsForObject, replaceNodesInWorkflow, updateNodeId,
     updateNodeState
 } from "./prompt-node.utils.ts";
-import PromptNodeLoadImage from "./load-image/load-image.node.ts";
-import PromptNodePreviewImage from "./preview-image/preview-image.node.ts";
+import {PromptNodeLoadImage} from "./load-image/load-image.node.ts";
+import {PromptNodePreviewImage} from "./preview-image/preview-image.node.ts";
+import {PromptWorkflow} from "@inflame/models";
 
 describe('Various utils functions collected applied to prompt nodes', function () {
     it('should calculate state inputs (predefined inside of PromptNodeLoadImage) and put them under inputs', () => {
@@ -238,4 +239,53 @@ describe('Various utils functions collected applied to prompt nodes', function (
         })
     })
 
+    it('should replace a workflows node', () => {
+        const nodeLoadImage = PromptNodeLoadImage({
+            id: "1",
+            initialState: {
+                currentImage: "",
+                allowUpload: true,
+                images: []
+            }
+        })
+
+        const nodePreviewImage = PromptNodePreviewImage({
+            id: "2",
+            initialState: {
+                images: []
+            }
+        })
+
+        const workflow: PromptWorkflow = {
+            nodes: [
+                nodeLoadImage,
+                nodePreviewImage,
+            ]
+        }
+
+        const newNodePreviewImage = PromptNodePreviewImage({
+            id: "2",
+            initialState: {
+                images: [
+                    {
+                        filename: "abc.png",
+                        path: "",
+                        meta: []
+                    }
+                ]
+            }
+        })
+
+        expect(workflow.nodes).toEqual([
+            nodeLoadImage,
+            nodePreviewImage
+        ])
+
+        const newWorkflow = replaceNodesInWorkflow(workflow, [newNodePreviewImage])
+
+        expect(newWorkflow.nodes).toEqual([
+            nodeLoadImage,
+            newNodePreviewImage,
+        ])
+    })
 });
