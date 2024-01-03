@@ -1,5 +1,3 @@
-import LoadImageNode from "../../prompt-nodes/load-image/load-image.node.ts";
-import PreviewImageNode from "../../prompt-nodes/preview-image/preview-image.node.ts";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {AppState, useAppDispatch} from "@inflame/state";
@@ -7,6 +5,8 @@ import {socketStateSelectors} from "@inflame/state";
 import {promptsThunk} from "@inflame/state";
 import {Prompt} from "@inflame/models";
 import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.tsx";
+import {PromptNodePreviewImage} from "../../prompt-nodes/preview-image/preview-image.node.ts";
+import {PromptNodeLoadImage} from "../../prompt-nodes/load-image/load-image.node.ts";
 
 export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
     const socket = useSelector(
@@ -22,7 +22,7 @@ export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
         }
 
         // Create nodes manually
-        const loadImage = LoadImageNode({
+        const loadImage = PromptNodeLoadImage({
             id: "1",
             initialState: {
                 images: [],
@@ -31,7 +31,7 @@ export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
             }
         })
 
-        const previewImage = PreviewImageNode({
+        const previewImage = PromptNodePreviewImage({
             id: "2",
             initialState: {
                 images: []

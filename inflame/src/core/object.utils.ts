@@ -1,5 +1,4 @@
 import structuredClone from "@ungap/structured-clone";
-import {Mutable} from "@inflame/models";
 
 export const sortObjectByItsProperties = <Any>(obj: Record<string, Any>) => {
     const entries = Object.entries(obj);
@@ -37,7 +36,7 @@ export const sameKeys = <T extends Record<string, unknown>>(a: T, b: T): boolean
     return true;
 }
 
-export const updateObject = <T extends Record<string, unknown>>(object: T, update: (newObject: Mutable<T>) => void) => {
+export const updateObject = <T extends Record<string, unknown>>(object: T, update: (newObject: T) => void): T => {
     const newObject = structuredClone(object)
     update(newObject)
     return newObject

@@ -25,7 +25,7 @@ export type PromptNodeLoadImageType = ReturnType<typeof PromptNodeLoadImage>
 
 export const nodeTypeLoadImage = PromptNodeTypeGuard<PromptNodeLoadImageType>("LoadImage")
 
-const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
+export const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
     const {
         id
     } = props
@@ -63,5 +63,3 @@ const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
         },
     );
 }
-
-export default PromptNodeLoadImage
