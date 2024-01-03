@@ -6,12 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import {AppState} from "../inflame-store.ts";
 
-const socketEventHandlerListener = createListenerMiddleware({
-    onError: (error, errorInfo) => {
-        console.error(error);
-        console.error(errorInfo);
-    }
-})
+const socketEventHandlerListener = createListenerMiddleware()
 
 export const socketEventHandlerMiddleware = socketEventHandlerListener.middleware;
 
