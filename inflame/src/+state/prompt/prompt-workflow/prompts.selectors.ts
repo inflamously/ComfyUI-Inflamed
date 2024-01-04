@@ -37,10 +37,10 @@ const selectPromptsByNewest = createSelector(
 )
 
 export const promptsSelectors = {
+    selectPrompts,
     selectPromptsState,
     selectPromptsStateItems,
     selectPromptByClientId,
     selectPromptByRemoteId,
-    selectPrompts,
     selectPromptsByNewest,
 };

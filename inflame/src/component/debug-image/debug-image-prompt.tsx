@@ -22,13 +22,15 @@ const DebugImagePrompt = () => {
         filename: "example.png"
     })
 
+    // const [_, generatedImageUrl] = useGetViewImage({})
+
     useEffect(() => {
         console.log("Call Result", result.status)
     }, [result.status])
 
 
     const handleInvokePrompt = useCallback(async () => {
-        const prompt = debugPrompt[0]
+        const prompt = debugPrompt
         if (!prompt || !socket) {
             return;
         }
@@ -65,6 +67,10 @@ const DebugImagePrompt = () => {
             <Box>
                 <Text pb={4}>Custom Prompt</Text>
                 <Button onClick={handleInvokePrompt}>Invoke</Button>
+            </Box>
+            <Box>
+                <Text pb={4}>{debugPrompt?.clientId}</Text>
+                <Text pb={4}>{JSON.stringify(debugPrompt?.workflow.nodes[1]?.state)}</Text>
             </Box>
         </Box>
     )
