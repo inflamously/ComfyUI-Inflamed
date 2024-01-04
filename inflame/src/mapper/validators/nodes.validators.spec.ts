@@ -1,8 +1,8 @@
 import {noEqualNamesValidator, unsetInputsValidator} from "./nodes.validators.ts";
 import {MOCK_OBJECT_NODE_DTO} from "../mocks/mock-object-node-dto.ts";
 import {createDataNodeCollection} from "../../+state/data-nodes/data-node.utils.ts";
-import PreviewImageNode from "../../prompt-nodes/preview-image/preview-image.node.ts";
 import {DataNode, ObjectNodeDTO} from "@inflame/models";
+import {PromptNodePreviewImage} from "../../prompt-nodes/preview-image/preview-image.node.ts";
 
 
 describe('tests various api validators functions', function () {
@@ -29,10 +29,16 @@ describe('tests various api validators functions', function () {
     })
 
     it('should validate if given nodes where inputs are NOT set is valid', () => {
-        const previewImageNode = PreviewImageNode({
+        const previewImageNode = PromptNodePreviewImage({
             id: "1",
             initialState: {
-                images: ["test.png"]
+                images: [
+                    {
+                        path: "",
+                        filename: "test.png",
+                        meta: []
+                    }
+                ]
             }
         })
 
@@ -40,10 +46,16 @@ describe('tests various api validators functions', function () {
     })
 
     it('should validate if given nodes where inputs are properly set is valid', () => {
-        const previewImageNode = PreviewImageNode({
+        const previewImageNode = PromptNodePreviewImage({
             id: "1",
             initialState: {
-                images: ["test.png"]
+                images: [
+                    {
+                        path: "",
+                        filename: "test.png",
+                        meta: []
+                    }
+                ]
             }
         })
 
