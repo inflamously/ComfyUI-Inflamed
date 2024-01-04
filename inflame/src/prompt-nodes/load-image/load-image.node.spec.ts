@@ -1,4 +1,4 @@
-import PromptNodeLoadImage, {nodeTypeLoadImage} from "./load-image.node.ts";
+import {nodeTypeLoadImage, PromptNodeLoadImage} from "./load-image.node.ts";
 import {AbstractPromptNode} from "@inflame/models";
 
 describe('should test node parameters and typings indirectly', function () {

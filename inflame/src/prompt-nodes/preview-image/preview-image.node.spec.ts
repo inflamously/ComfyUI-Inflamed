@@ -1,6 +1,6 @@
-import PromptNodeLoadImage from "../load-image/load-image.node.ts";
-import PromptNodePreviewImage, {nodeTypePreviewImage} from "./preview-image.node.ts";
 import {AbstractPromptNode} from "@inflame/models";
+import {PromptNodeLoadImage} from "../load-image/load-image.node.ts";
+import {nodeTypePreviewImage, PromptNodePreviewImage} from "./preview-image.node.ts";
 
 describe('should test node parameters and typings indirectly', function () {
     it('instantiates previewimage node', () => {

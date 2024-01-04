@@ -1,8 +1,8 @@
 import {GenericSocket, Prompt, PromptDTO} from "@inflame/models";
 import {promptToPromptDto} from "./prompt-to-prompt-dto.mapper.ts";
-import LoadImageNode from "../prompt-nodes/load-image/load-image.node.ts";
-import PreviewImageNode, {nodeTypePreviewImage} from "../prompt-nodes/preview-image/preview-image.node.ts";
 import {getNodeFromWorkflow} from "../+state/prompt/prompt-workflow/prompts.utils.ts";
+import {PromptNodeLoadImage} from "../prompt-nodes/load-image/load-image.node.ts";
+import {nodeTypePreviewImage, PromptNodePreviewImage} from "../prompt-nodes/preview-image/preview-image.node.ts";
 
 describe('Mapper for converting a full prompt into a dto object that can be passed to /prompt', function () {
     it('should convert a simple prompt object', () => {
@@ -15,7 +15,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
             clientId: "1234",
             workflow: {
                 nodes: [
-                    LoadImageNode({
+                    PromptNodeLoadImage({
                         id: "1",
                         initialState: {
                             images: ["test.png"],
@@ -23,7 +23,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
                             currentImage: "test.png",
                         }
                     }),
-                    PreviewImageNode({
+                    PromptNodePreviewImage({
                         id: "2",
                         initialState: {
                             images: []
@@ -42,7 +42,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
         }
 
         const dto: PromptDTO = promptToPromptDto({
-            socket,
+            clientId: socket.clientId,
             prompt
         })
 
@@ -77,7 +77,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
             clientId: "1234",
             workflow: {
                 nodes: [
-                    LoadImageNode({
+                    PromptNodeLoadImage({
                         id: "1",
                         initialState: {
                             images: ["test.png"],
@@ -85,7 +85,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
                             currentImage: "test.png",
                         }
                     }),
-                    PreviewImageNode({
+                    PromptNodePreviewImage({
                         id: "2",
                         initialState: {
                             images: []
@@ -104,7 +104,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
         }
 
         const dto: PromptDTO = promptToPromptDto({
-            socket,
+            clientId: socket.clientId,
             prompt
         })
 
