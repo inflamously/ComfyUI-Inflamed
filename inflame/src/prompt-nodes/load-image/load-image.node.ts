@@ -2,40 +2,35 @@ import {
     createPromptNode,
     PromptNodeTypeGuard,
 } from "../prompt-node.ts";
-import {BindValueLink, BindValueStateInput, BindValueString, PromptNodeFields} from "@inflame/models";
+import {BindValueLink, BindValueStateInput, BindValueString, PromptNode, PromptNodeFields} from "@inflame/models";
+import {NodeTypeDefinition} from "@inflame/models";
 
-type NodeLoadImageState = {
-    images: string[],
-    allowUpload: boolean,
-    currentImage: string,
-}
+type NodeLoadImageTypeDefinition = NodeTypeDefinition<
+    {
+        images: string[],
+        allowUpload: boolean,
+        currentImage: string,
+    },
+    never,
+    {
+        image: BindValueLink,
+    },
+    {
+        "choose file to upload": BindValueString,
+        image: BindValueStateInput,
+    }
+>
 
-type NodeLoadImageInputs = never
-
-type NodeLoadImageOutputs = {
-    image: BindValueLink,
-}
-
-type NodeLoadImageStateInputs = {
-    "choose file to upload": BindValueString,
-    image: BindValueStateInput,
-}
-
-export type PromptNodeLoadImageType = ReturnType<typeof PromptNodeLoadImage>
+export type PromptNodeLoadImageType = PromptNode<NodeLoadImageTypeDefinition>
 
 export const nodeTypeLoadImage = PromptNodeTypeGuard<PromptNodeLoadImageType>("LoadImage")
 
-export const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageState>) => {
+export const PromptNodeLoadImage = (props: PromptNodeFields<NodeLoadImageTypeDefinition["state"]>) => {
     const {
         id
     } = props
 
-    return createPromptNode<
-        NodeLoadImageState,
-        NodeLoadImageInputs,
-        NodeLoadImageOutputs,
-        NodeLoadImageStateInputs
-    >(
+    return createPromptNode<NodeLoadImageTypeDefinition>(
         props,
         "LoadImage",
         undefined,

@@ -2,7 +2,7 @@ import {
     createPromptNode,
     PromptNodeTypeGuard
 } from "../prompt-node.ts";
-import {BindValueLink, PromptNodeFields} from "@inflame/models";
+import {BindValueLink, NodeTypeDefinition, PromptNode, PromptNodeFields} from "@inflame/models";
 
 type PreviewImage = {
     filename: string,
@@ -10,29 +10,23 @@ type PreviewImage = {
     meta: string[]
 }
 
-type NodePreviewImageState = {
-    images: PreviewImage[] // TODO: Typings?
-}
+type NodePreviewImageTypeDefinition = NodeTypeDefinition<
+    {
+        images: PreviewImage[] // TODO: Typings?
+    },
+    {
+        images: BindValueLink,
+    },
+    never,
+    never
+>
 
-type NodePreviewImageInputs = {
-    images: BindValueLink,
-}
-
-type NodePreviewImageOutputs = never
-
-type NodePreviewImageStateInputs = never
-
-export type PromptNodePreviewImageType = ReturnType<typeof PromptNodePreviewImage>
+export type PromptNodePreviewImageType = PromptNode<NodePreviewImageTypeDefinition>
 
 export const nodeTypePreviewImage = PromptNodeTypeGuard<PromptNodePreviewImageType>("PreviewImage");
 
-export const PromptNodePreviewImage = (props: PromptNodeFields<NodePreviewImageState>) => {
-    return createPromptNode<
-        NodePreviewImageState,
-        NodePreviewImageInputs,
-        NodePreviewImageOutputs,
-        NodePreviewImageStateInputs
-    >(
+export const PromptNodePreviewImage = (props: PromptNodeFields<NodePreviewImageTypeDefinition["state"]>) => {
+    return createPromptNode<NodePreviewImageTypeDefinition>(
         props,
         "PreviewImage",
         {
