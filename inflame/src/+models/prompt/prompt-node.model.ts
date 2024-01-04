@@ -1,4 +1,5 @@
 import {PromptNodeConnection} from "./prompt-node-connection.model.ts";
+import {BaseNodeTypeDefinition} from "./prompt-node-definition.model.ts";
 
 export type PromptNodeInputs<Inputs, StateInputs> = Inputs | StateInputs | undefined
 
@@ -13,17 +14,12 @@ export type PromptNodeFields<State> = {
 /**
  * Foundation of PromptNode
  */
-export type PromptNode<
-    State,
-    Inputs extends Record<string, PromptNodeConnection>,
-    Outputs extends Record<string, PromptNodeConnection>,
-    StateInputs extends Record<string, PromptNodeConnection>
-> = {
+export type PromptNode<NTD extends BaseNodeTypeDefinition> = {
     id: string,
     classtype: string,
-    inputs: PromptNodeInputs<Inputs, StateInputs>,
-    state: Partial<State>,
-    outputs: Outputs,
+    inputs: PromptNodeInputs<NTD["inputs"], NTD["stateInputs"]>,
+    state: Partial<NTD["state"]>,
+    outputs: NTD["outputs"],
 }
 
 /**

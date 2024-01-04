@@ -1,6 +1,7 @@
 import {calculateStateInputs} from "./prompt-node.utils.ts";
 import {PromptNode, PromptNodeConnection, PromptNodeFields} from "@inflame/models";
 import {AbstractPromptNode} from "@inflame/models";
+import {BaseNodeTypeDefinition} from "@inflame/models";
 
 export type PromptNodeConfig<
     State,
@@ -18,22 +19,17 @@ export type PromptNodeConfig<
  * Outputs: Defines available data points to be used for external nodes
  */
 // TODO: Check inputs and validate for ids
-export const createPromptNode = <
-    State extends Record<string, unknown>,
-    Inputs extends Record<string, PromptNodeConnection>,
-    Outputs extends Record<string, PromptNodeConnection>,
-    StateInputs extends Record<string, PromptNodeConnection>
->(
-    props: PromptNodeFields<State>,
+export const createPromptNode = <NTD extends BaseNodeTypeDefinition>(
+    props: PromptNodeFields<NTD["state"]>,
     classtype: string,
-    defaultInputs: [Inputs] extends [never] ? undefined : Inputs,
-    outputs: Outputs | undefined,
+    defaultInputs: [NTD["inputs"]] extends [never] ? undefined : NTD["inputs"],
+    outputs: NTD["outputs"] | undefined,
     config?: PromptNodeConfig<
-        State,
-        Inputs,
-        StateInputs
+        NTD["state"],
+        NTD["inputs"],
+        NTD["stateInputs"]
     >,
-): PromptNode<State, Inputs, Outputs, StateInputs> => {
+): PromptNode<NTD> => {
     // Properties configuring the node
     const {
         id,
@@ -45,7 +41,7 @@ export const createPromptNode = <
         classtype,
         inputs: calculateStateInputs(initialState, config?.inputs, defaultInputs, config?.stateInputs),
         state: initialState,
-        outputs: outputs ?? {} as Outputs,
+        outputs: outputs ?? {} as NTD["outputs"],
     }
 }
 
