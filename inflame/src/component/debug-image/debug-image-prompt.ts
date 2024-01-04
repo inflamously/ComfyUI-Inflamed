@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {AppState, useAppDispatch} from "@inflame/state";
+import {AppState, promptsSelectors, useAppDispatch} from "@inflame/state";
 import {socketStateSelectors} from "@inflame/state";
 import {promptsThunk} from "@inflame/state";
 import {Prompt} from "@inflame/models";
@@ -8,11 +8,12 @@ import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.tsx";
 import {PromptNodePreviewImage} from "../../prompt-nodes/preview-image/preview-image.node.ts";
 import {PromptNodeLoadImage} from "../../prompt-nodes/load-image/load-image.node.ts";
 
-export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
+export const useDebugImagePrompt = (): Prompt | undefined => {
     const socket = useSelector(
         (state: AppState) => socketStateSelectors.selectSocketById(state, COMFYUI_SOCKET)
     )
-    const [prompt, setPrompt] = useState<Prompt | undefined>();
+    const [promptId, setPromptId] = useState<string>("")
+    const prompt = useSelector((state: AppState) => promptsSelectors.selectPromptByClientId(state, promptId))
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -47,9 +48,10 @@ export const useDebugImagePrompt = (): [(Prompt | undefined)] => {
                 loadImage,
                 previewImage,
             ]
-        })).then((prompt) => setPrompt(prompt)).catch((error) => console.error(error))
+        })).then((prompt) => setPromptId(prompt?.clientId ?? ""))
+            .catch((error) => console.error(error))
     }, [socket, dispatch])
 
 
-    return [prompt]
+    return prompt
 }

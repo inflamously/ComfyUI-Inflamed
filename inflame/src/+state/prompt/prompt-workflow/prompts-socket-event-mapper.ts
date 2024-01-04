@@ -9,7 +9,7 @@ import {promptWorkflowUpdateListenerActions} from "../prompt-workflow-update/pro
 export const subscribePromptSocketEventMapper = () => {
     addSocketEventHandler(comfyuiSocketActions.statusEvent, () => {
         // TODO: Reactivate on need
-        // console.log(action);
+        console.log("comfyuiSocketActions.statusEvent: not implemented")
     })
 
     addSocketEventHandler(comfyuiSocketActions.executionStart, (action) => {
