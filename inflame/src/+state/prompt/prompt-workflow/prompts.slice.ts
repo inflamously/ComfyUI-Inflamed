@@ -65,7 +65,6 @@ export const promptsSlice = createSlice({
             }
         },
     },
-    extraReducers: {}
 })
 
 export const promptsSliceActions = {
