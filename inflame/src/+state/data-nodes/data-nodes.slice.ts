@@ -14,10 +14,8 @@ const INITIAL_STATE: NodesSliceState = {
     nodes: {},
 }
 
-export const nodesSliceName = "dataNodes"
-
 export const nodesSlice = createSlice({
-    name: nodesSliceName,
+    name: 'dataNodes',
     initialState: INITIAL_STATE,
     reducers: {
         updateDataNodeCollection: (state, action: PayloadAction<Record<string, AbstractDataNode>>) => {

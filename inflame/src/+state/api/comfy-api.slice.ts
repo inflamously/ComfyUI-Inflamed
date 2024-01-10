@@ -31,7 +31,7 @@ const comfyApiRtk = createApi({
 
 // TODO: One day proper rename / refactor?
 export const comfyApi = {
-    reducer: comfyApiRtk.reducer,
+    slice: comfyApiRtk,
     name: comfyApiRtk.reducerPath,
     middleware: comfyApiRtk.middleware,
     url: comfyApiSliceURL,

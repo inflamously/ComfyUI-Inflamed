@@ -14,10 +14,8 @@ const INITIAL_STATE: SocketSliceState = {
     events: {}
 }
 
-export const socketSliceName = "sockets"
-
 export const socketSlice = createSlice({
-    name: socketSliceName,
+    name: 'sockets',
     initialState: INITIAL_STATE,
     reducers: {
         createSocket: (state, action: PayloadAction<GenericSocket>) => {

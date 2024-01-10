@@ -1,4 +1,4 @@
-import {addNodeToPromptWorkflowUpdateListener} from "./prompt-workflow-update.listener.ts";
+import {nodeUpdate} from "./prompt-workflow-update.action.ts";
 import {findAbstractPromptNodeById, replaceNodesInWorkflow} from "../../../prompt-nodes/prompt-node.utils.ts";
 import {
     hasSingleNode,
@@ -9,10 +9,15 @@ import {AbstractPromptNode} from "@inflame/models";
 import {updateObject} from "../../../core/object.utils.ts";
 import {nodeTypePreviewImage} from "../../../prompt-nodes/preview-image/preview-image.node.ts";
 import {promptsSliceActions} from "../prompt-workflow/prompts.slice.ts";
+import {subscribeToStoreChange} from "../../inflame-store.listener.ts";
 
 export const subscribePreviewImageNodeUpdate = () => {
-    addNodeToPromptWorkflowUpdateListener((action, api) => {
-            const {source, target} = action.payload
+    subscribeToStoreChange(nodeUpdate, (action, api) => {
+            const {source, target} = action.payload ?? {}
+
+            if (!source || !target) {
+                return;
+            }
 
             if (!sourceContainNodes(source) ||
                 !sourceIncludesAppendix(source)) {

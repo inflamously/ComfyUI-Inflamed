@@ -1,25 +1,24 @@
 import {createPromptNode} from "./prompt-node.ts";
-import {BindValueLink, PromptNodeFields} from "@inflame/models";
+import {BindValueLink, NodeTypeDefinition, PromptNodeFields} from "@inflame/models";
 
-type TestNodeInputs = {
-    testInput: BindValueLink
-}
-
-type TestNodeState = {
-    testData: string
-}
-
-type TestNodeOutputs = {
-    testOutput: BindValueLink
-}
-
-type TestNodeStateInputs = never
+type TestNodeTypeDefinition = NodeTypeDefinition<
+    {
+        testData: string
+    },
+    {
+        testInput: BindValueLink
+    },
+    {
+        testOutput: BindValueLink
+    },
+    never
+>
 
 // TODO: Test some state inputs
-const TestNode = (props: PromptNodeFields<TestNodeState>) => {
+const TestNode = (props: PromptNodeFields<TestNodeTypeDefinition["state"]>) => {
     const {id} = props
 
-    return createPromptNode<TestNodeState, TestNodeInputs, TestNodeOutputs, TestNodeStateInputs>(
+    return createPromptNode<TestNodeTypeDefinition>(
         {
             id,
             initialState: {
