@@ -2,7 +2,7 @@ import {Box, Button, Image, Text} from "@chakra-ui/react";
 import {useCallback, useEffect} from "react";
 import Fileuploader from "../file/fileuploader.tsx";
 import {useSelector} from "react-redux";
-import {useDebugImagePrompt} from "./debug-image-prompt.ts";
+import {useDebugImagePrompt} from "./debug-image-prompt.hooks.ts";
 import {socketStateSelectors} from "@inflame/state";
 import {promptsSliceActions} from "@inflame/state";
 import {comfyApi} from "@inflame/state";
@@ -69,7 +69,8 @@ const DebugImagePrompt = () => {
                 <Button onClick={handleInvokePrompt}>Invoke</Button>
             </Box>
             <Box>
-                <Text pb={4}>{debugPrompt?.clientId}</Text>
+                <Text pb={4}>Client ID {debugPrompt?.clientId}</Text>
+                <Text pb={4}>Remote ID {debugPrompt?.remoteId}</Text>
                 <Text pb={4}>{JSON.stringify(debugPrompt?.workflow.nodes[1]?.state)}</Text>
             </Box>
         </Box>
