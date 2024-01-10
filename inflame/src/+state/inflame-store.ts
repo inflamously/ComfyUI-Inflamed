@@ -1,30 +1,33 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import {socketSlice, socketSliceName} from "./socket/socket-slice.ts";
-import {nodesSlice, nodesSliceName} from "./data-nodes/data-nodes.slice.ts";
-import {promptsSlice, promptsSliceName} from "./prompt/prompt-workflow/prompts.slice.ts";
+import {combineSlices, configureStore, Dispatch, UnknownAction} from "@reduxjs/toolkit";
+import {socketSlice} from "./socket/socket-slice.ts";
+import {nodesSlice} from "./data-nodes/data-nodes.slice.ts";
+import {promptsSlice} from "./prompt/prompt-workflow/prompts.slice.ts";
 import {useDispatch} from "react-redux";
-import {socketEventHandlerMiddleware} from "./socket/socket-event-handler.listener.ts";
-import {promptWorkflowUpdateListenerMiddleware} from "./prompt/prompt-workflow-update/prompt-workflow-update.listener.ts";
 import {subscribePromptSocketEventMapper} from "./prompt/prompt-workflow/prompts-socket-event-mapper.ts";
 import {subscribePreviewImageNodeUpdate} from "./prompt/prompt-workflow-update";
 import {comfyApi} from "./api/comfy-api.slice.ts";
+import {storeListenerMiddleware} from "./inflame-store.listener.ts";
+
+// This must be explicitely defined or else typescript just drops bombs on type system.
+const combinedReducer = combineSlices(
+    socketSlice,
+    nodesSlice,
+    promptsSlice,
+    comfyApi.slice
+)
 
 const store = configureStore({
     devTools: true,
-    reducer: combineReducers({
-        [socketSliceName]: socketSlice.reducer,
-        [nodesSliceName]: nodesSlice.reducer,
-        [promptsSliceName]: promptsSlice.reducer,
-        [comfyApi.name]: comfyApi.reducer,
-    }),
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware()
+    reducer: combinedReducer,
+    middleware: (defaultMiddleware) =>
+        defaultMiddleware()
             .concat(comfyApi.middleware)
-            .prepend(socketEventHandlerMiddleware)
-            .prepend(promptWorkflowUpdateListenerMiddleware)
+            .prepend(storeListenerMiddleware)
 })
 
-export type AppState = ReturnType<typeof store.getState>;
+export type AppState = ReturnType<typeof combinedReducer>;
+export type AppDispatch = Dispatch<UnknownAction>;
+
 export const useAppDispatch: () => typeof store.dispatch = useDispatch;
 
 // Listeners

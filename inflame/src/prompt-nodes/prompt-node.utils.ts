@@ -1,6 +1,11 @@
 import {set} from "lodash";
 import {isConnectionOfLink} from "./prompt-node-connection.utils.ts";
-import {AbstractPromptNode, PromptNode, PromptNodeConnection, PromptWorkflow} from "@inflame/models";
+import {
+    AbstractPromptNode, BaseNodeTypeDefinition,
+    PromptNode,
+    PromptNodeConnection,
+    PromptWorkflow
+} from "@inflame/models";
 import structuredClone from "@ungap/structured-clone";
 import {updateObject} from "../core/object.utils.ts";
 
@@ -49,15 +54,10 @@ export const calculateStateInputs = <
 }
 
 
-export const updateNodeState = <
-    State,
-    Inputs extends Record<string, PromptNodeConnection>,
-    Outputs extends Record<string, PromptNodeConnection>,
-    StateInputs extends Record<string, PromptNodeConnection>
->(
-    node: PromptNode<State, Inputs, Outputs, StateInputs>,
-    state: State
-): PromptNode<State, Inputs, Outputs, StateInputs> => {
+export const updateNodeState = <NTD extends BaseNodeTypeDefinition>(
+    node: PromptNode<NTD>,
+    state: NTD["state"]
+): PromptNode<NTD> => {
     return {
         ...node,
         state,

@@ -15,10 +15,8 @@ const INITIAL_STATE: PromptState = {
     items: promptsEntityAdapter.getInitialState(),
 }
 
-export const promptsSliceName = "prompts"
-
 export const promptsSlice = createSlice({
-    name: promptsSliceName,
+    name: 'prompts',
     initialState: INITIAL_STATE,
     reducers: {
         createPrompt: (state) => {
