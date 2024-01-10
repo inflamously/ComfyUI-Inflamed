@@ -44,14 +44,22 @@ export const useDebugImagePrompt = (): Prompt | undefined => {
         }
 
         dispatch(promptsThunk.createPromptWithWorkflow({
-            nodes: [
-                loadImage,
-                previewImage,
-            ]
-        })).then((prompt) => setPromptId(prompt?.clientId ?? ""))
-            .catch((error) => console.error(error))
+                nodes: [
+                    loadImage,
+                    previewImage,
+                ]
+            })
+        ).then(
+            (prompt) => setPromptId(prompt?.clientId ?? "")
+        ).catch(
+            (error) => console.error(error)
+        )
     }, [socket, dispatch])
 
 
     return prompt
+}
+
+export const useHistory = () => {
+
 }
