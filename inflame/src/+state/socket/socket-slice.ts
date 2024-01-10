@@ -3,7 +3,7 @@ import {socketEntityAdapter} from "./socket-entity.ts";
 import {GenericSocket} from "@inflame/models";
 
 export type SocketSliceState = {
-    items: EntityState<GenericSocket>,
+    items: EntityState<GenericSocket, string>,
     events: {
         [socketId: string]: Record<string, unknown>[]
     }
@@ -24,7 +24,6 @@ export const socketSlice = createSlice({
             socketEntityAdapter.addOne(state.items, action.payload)
         },
     },
-    extraReducers: () => {}
 })
 
 export const socketSliceActions = {
