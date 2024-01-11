@@ -19,10 +19,9 @@ const combinedReducer = combineSlices(
 const store = configureStore({
     devTools: true,
     reducer: combinedReducer,
-    middleware: (defaultMiddleware) =>
-        defaultMiddleware()
-            .concat(comfyApi.middleware)
-            .prepend(storeListenerMiddleware)
+    middleware: (defaultMiddleware) => defaultMiddleware()
+        .concat(comfyApi.middleware)
+        .prepend(storeListenerMiddleware)
 })
 
 export type AppState = ReturnType<typeof combinedReducer>;
