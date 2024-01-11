@@ -3,13 +3,13 @@ import {useCallback, useEffect} from "react";
 import Fileuploader from "../file/fileuploader.tsx";
 import {useSelector} from "react-redux";
 import {useDebugImagePrompt} from "./debug-image-prompt.hooks.ts";
-import {socketStateSelectors} from "@inflame/state";
+import {AppState, socketStateSelectors} from "@inflame/state";
 import {promptsSliceActions} from "@inflame/state";
 import {comfyApi} from "@inflame/state";
 import {isPromptResultDTO} from "@inflame/state";
 import {promptToPromptDto} from "../../mapper/prompt-to-prompt-dto.mapper.ts";
 import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.tsx";
-import {AppState, useAppDispatch} from "@inflame/state";
+import {useAppDispatch} from "@inflame/state";
 import {useGetViewImage} from "../resources/comfyui-api/view-image-download.hooks.ts";
 
 const DebugImagePrompt = () => {
