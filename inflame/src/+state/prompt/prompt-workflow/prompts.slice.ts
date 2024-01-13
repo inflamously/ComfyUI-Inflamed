@@ -1,7 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PromptsEntityAdapterType, promptsEntityAdapter} from "./prompts-entity.ts";
-import {generatePromptId} from "./prompts.utils.ts";
 import {AbstractPromptNode, Prompt} from "@inflame/models";
+import {dataStoreActions} from "../../data-store/data-store.ts";
+import {subscribeToStoreChange} from "../../inflame-store.listener.ts";
 
 type PromptAction<Type extends Record<string, unknown>> = PayloadAction<{
     clientId: string
@@ -19,9 +20,16 @@ export const promptsSlice = createSlice({
     name: 'prompts',
     initialState: INITIAL_STATE,
     reducers: {
-        createPrompt: (state) => {
+        createPrompt: (state, action: PayloadAction<string>) => {
+            const {payload} = action
+
+            if (!payload) {
+                console.error("Missing clientId for creation of a new prompt.")
+                return
+            }
+
             promptsEntityAdapter.addOne(state.items, {
-                clientId: generatePromptId().toString(),
+                clientId: payload,
                 workflow: {
                     nodes: []
                 }
@@ -63,8 +71,24 @@ export const promptsSlice = createSlice({
             }
         },
     },
+    extraReducers: (builder) => {
+        builder.addCase(dataStoreActions.initialize, (_, action) => {
+            const prompts = action.payload.prompts!
+            // Must delete remote id since we not longer have access after reload or refresh
+            for (const id of prompts.items.ids) {
+                delete prompts.items.entities[id]?.remoteId
+            }
+            return prompts
+        })
+    }
 })
 
 export const promptsSliceActions = {
     ...promptsSlice.actions
 }
+
+subscribeToStoreChange(promptsSliceActions.updatePromptNodes, (_, {dispatch, getState}) => {
+    dispatch(dataStoreActions.save({
+        prompts: getState().prompts
+    }))
+})

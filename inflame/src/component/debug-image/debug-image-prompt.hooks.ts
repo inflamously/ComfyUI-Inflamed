@@ -12,11 +12,16 @@ export const useDebugImagePrompt = (): Prompt | undefined => {
     const socket = useSelector(
         (state: AppState) => socketStateSelectors.selectSocketById(state, COMFYUI_SOCKET)
     )
-    const [promptId, setPromptId] = useState<string>("")
+    const [promptId] = useState<string>("debug-prompt")
     const prompt = useSelector((state: AppState) => promptsSelectors.selectPromptByClientId(state, promptId))
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        if (prompt) {
+            console.log("Debug prompt acquired")
+            return;
+        }
+
         if (!socket) {
             console.warn("DebugImagePrompt: Socket initialization failed!");
             return;
@@ -43,23 +48,16 @@ export const useDebugImagePrompt = (): Prompt | undefined => {
             images: loadImage.outputs?.image
         }
 
-        dispatch(promptsThunk.createPromptWithWorkflow({
+        dispatch(
+            promptsThunk.createPromptWithWorkflow({
+                clientId: promptId,
                 nodes: [
                     loadImage,
                     previewImage,
                 ]
             })
-        ).then(
-            (prompt) => setPromptId(prompt?.clientId ?? "")
-        ).catch(
-            (error) => console.error(error)
-        )
-    }, [socket, dispatch])
-
+        ).catch((error) => console.error(error))
+    }, [socket, dispatch, promptId])
 
     return prompt
-}
-
-export const useHistory = () => {
-
 }

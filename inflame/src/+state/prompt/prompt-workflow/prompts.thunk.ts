@@ -1,5 +1,5 @@
 import {AppState} from "../../inflame-store.ts";
-import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
+import {ThunkDispatch, UnknownAction} from "@reduxjs/toolkit";
 import {promptsSliceActions} from "./prompts.slice.ts";
 import {promptsSelectors} from "./prompts.selectors.ts";
 import {dataNodesSelectors} from "../../data-nodes/data-nodes.selectors.ts";
@@ -9,15 +9,19 @@ import {comfyApi} from "../../api/comfy-api.slice.ts";
 import {AbstractPromptNode} from "@inflame/models";
 
 const createPromptWithWorkflow = (props: {
+    clientId: string,
     nodes: AbstractPromptNode[]
-}) => async (dispatch: ThunkDispatch<AppState, unknown, AnyAction>, getState: () => AppState) => {
-    const {nodes} = props;
+}) => async (dispatch: ThunkDispatch<AppState, unknown, UnknownAction>, getState: () => AppState) => {
+    const {
+        clientId,
+        nodes
+    } = props;
 
     await dispatch(comfyApi.GetObjectInfoQuery())
 
     const dataNodes = dataNodesSelectors.selectDataNodes(getState())
 
-    dispatch(promptsSliceActions.createPrompt());
+    dispatch(promptsSliceActions.createPrompt(clientId));
 
     const prompt = promptsSelectors.selectPromptsByNewest(getState());
     if (!prompt) {

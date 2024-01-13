@@ -1,4 +1,4 @@
-import {combineSlices, configureStore, Dispatch, UnknownAction} from "@reduxjs/toolkit";
+import {combineSlices, configureStore, Dispatch} from "@reduxjs/toolkit";
 import {socketSlice} from "./socket/socket-slice.ts";
 import {nodesSlice} from "./data-nodes/data-nodes.slice.ts";
 import {promptsSlice} from "./prompt/prompt-workflow/prompts.slice.ts";
@@ -7,6 +7,7 @@ import {subscribePromptSocketEventMapper} from "./prompt/prompt-workflow/prompts
 import {subscribePreviewImageNodeUpdate} from "./prompt/prompt-workflow-update";
 import {comfyApi} from "./api/comfy-api.slice.ts";
 import {storeListenerMiddleware} from "./inflame-store.listener.ts";
+import {subscribeToSyncStoreDataChanges} from "./data-store/data-store.ts";
 
 // This must be explicitely defined or else typescript just drops bombs on type system.
 const combinedReducer = combineSlices(
@@ -25,12 +26,13 @@ const store = configureStore({
 })
 
 export type AppState = ReturnType<typeof combinedReducer>;
-export type AppDispatch = Dispatch<UnknownAction>;
+export type AppDispatch = Dispatch;
 
 export const useAppDispatch: () => typeof store.dispatch = useDispatch;
 
 // Listeners
 subscribePromptSocketEventMapper();
 subscribePreviewImageNodeUpdate();
+subscribeToSyncStoreDataChanges(store);
 
 export default store;
