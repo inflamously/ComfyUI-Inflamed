@@ -1,4 +1,5 @@
 import {extendTheme} from "@chakra-ui/react";
+import Popover from './theme/popover.ts'
 
 export const theme = extendTheme({
     styles: {
@@ -13,5 +14,9 @@ export const theme = extendTheme({
                 listStyle: "none"
             },
         }
+    },
+    components: {
+        Popover
     }
 })
+
