@@ -1,5 +1,6 @@
 import {extendTheme} from "@chakra-ui/react";
 import Popover from './theme/popover.ts'
+import Button from './theme/button.ts'
 
 export const theme = extendTheme({
     styles: {
@@ -16,7 +17,8 @@ export const theme = extendTheme({
         }
     },
     components: {
-        Popover
+        Popover,
+        Button
     }
 })
 

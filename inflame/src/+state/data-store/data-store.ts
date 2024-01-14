@@ -21,11 +21,13 @@ const save = createListenerPreparedAction(
     }
 )
 
-const clear = createListenerPreparedAction('dataStore/delete', () => {
-    return {
-        payload: undefined
-    }
-})
+const clear = createListenerPreparedAction(
+    'dataStore/delete',
+    (_: unknown) => {
+        return {
+            payload: undefined
+        }
+    })
 
 export const dataStoreActions = {
     initialize,
@@ -68,5 +70,10 @@ export const subscribeToSyncStoreDataChanges = (store: EnhancedStore) => {
         }
 
         savePartialData(payload!)
+    })
+
+    subscribeToStoreChange(clear, () => {
+        localStorage.removeItem(localDataStoreConfig.name)
+        console.warn("Data in localStorage has been cleared")
     })
 }

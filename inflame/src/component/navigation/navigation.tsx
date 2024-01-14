@@ -13,6 +13,8 @@ import {
 } from "@chakra-ui/react";
 import {HamburgerIcon} from '@chakra-ui/icons'
 import "./navigation.css"
+import {useCallback, useContext} from "react";
+import {DataStoreContext} from "../data-store/data-store.hooks.tsx";
 
 const NavigationBarItem = (props: {
     label: string,
@@ -29,6 +31,58 @@ const NavigationBarItem = (props: {
     </ListItem>
 }
 
+const NavigationHeaderMenuItem = (props: {
+    label: string,
+    action?: () => void
+}) => {
+    const {label, action} = props
+    const actionHandler = useCallback(() => action?.(), [action])
+
+    return <ListItem>
+        <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+        >
+            {label}
+            {
+                action &&
+                <Button variant="menu" onClick={actionHandler}>Run</Button>
+            }
+        </Box>
+    </ListItem>
+}
+
+const NavigationHeaderMenu = () => {
+    const dataStore = useContext(DataStoreContext)
+    const clearHandler = useCallback(() => {
+        dataStore?.clear()
+    }, [dataStore])
+
+    return <Popover
+        size="menu"
+        offset={[-60, 10]}
+        lazyBehavior={"unmount"}
+    >
+        <PopoverTrigger>
+            <Button h={8}><HamburgerIcon/></Button>
+        </PopoverTrigger>
+        <Portal>
+            <PopoverContent>
+                <PopoverArrow/>
+                <PopoverBody>
+                    <List>
+                        <NavigationHeaderMenuItem
+                            label={"test"}
+                            action={clearHandler}
+                        ></NavigationHeaderMenuItem>
+                    </List>
+                </PopoverBody>
+            </PopoverContent>
+        </Portal>
+    </Popover>
+}
+
 const NavigationHeader = () => {
     return <>
         <List
@@ -41,25 +95,7 @@ const NavigationHeader = () => {
         >
             <ListItem>Logo</ListItem>
             <ListItem>
-                <Popover
-                    size="menu"
-                    offset={[-60, 10]}
-                    lazyBehavior={"unmount"}
-                >
-                    <PopoverTrigger>
-                        <Button h={8}></Button>
-                    </PopoverTrigger>
-                    <Portal>
-                        <PopoverContent>
-                            <PopoverArrow/>
-                            <PopoverBody>
-                                <Box>
-                                    <HamburgerIcon></HamburgerIcon>
-                                </Box>
-                            </PopoverBody>
-                        </PopoverContent>
-                    </Portal>
-                </Popover>
+                <NavigationHeaderMenu/>
             </ListItem>
         </List>
     </>
