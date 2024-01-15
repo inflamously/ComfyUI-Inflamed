@@ -22,7 +22,7 @@ export type PromptNodeConfig<
 export const createPromptNode = <NTD extends BaseNodeTypeDefinition>(
     props: PromptNodeFields<NTD["state"]>,
     classtype: string,
-    defaultInputs: [NTD["inputs"]] extends [never] ? undefined : NTD["inputs"],
+    defaultInputValues: [NTD["inputs"]] extends [never] ? undefined : NTD["inputs"],
     outputs: NTD["outputs"] | undefined,
     config?: PromptNodeConfig<
         NTD["state"],
@@ -39,7 +39,7 @@ export const createPromptNode = <NTD extends BaseNodeTypeDefinition>(
     return {
         id,
         classtype,
-        inputs: calculateStateInputs(initialState, config?.inputs, defaultInputs, config?.stateInputs),
+        inputs: calculateStateInputs(initialState, config?.inputs, defaultInputValues, config?.stateInputs),
         state: initialState,
         outputs: outputs ?? {} as NTD["outputs"],
     }

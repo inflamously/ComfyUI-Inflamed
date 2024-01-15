@@ -8,9 +8,11 @@ import {promptsSliceActions} from "@inflame/state";
 import {comfyApi} from "@inflame/state";
 import {isPromptResultDTO} from "@inflame/state";
 import {promptToPromptDto} from "../../mapper/prompt-to-prompt-dto.mapper.ts";
-import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.tsx";
+import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.hooks.tsx";
 import {useAppDispatch} from "@inflame/state";
 import {useGetViewImage} from "../resources/comfyui-api/view-image-download.hooks.ts";
+import {AbstractNodeView} from "../nodes/abstract-node-view.tsx";
+import {useGenericPromptNode} from "../nodes/data-nodes.hooks.tsx";
 
 const DebugImagePrompt = () => {
     const debugPrompt = useDebugImagePrompt();
@@ -20,6 +22,11 @@ const DebugImagePrompt = () => {
     const [_, url] = useGetViewImage({
         type: "input",
         filename: "example.png"
+    })
+
+    const genericLoadImageNode = useGenericPromptNode({
+        id: "1",
+        name: "LoadImage"
     })
 
     // const [_, generatedImageUrl] = useGetViewImage({})
@@ -72,6 +79,9 @@ const DebugImagePrompt = () => {
                 <Text pb={4}>Client ID {debugPrompt?.clientId}</Text>
                 <Text pb={4}>Remote ID {debugPrompt?.remoteId}</Text>
                 <Text pb={4}>{JSON.stringify(debugPrompt?.workflow.nodes[1]?.state)}</Text>
+            </Box>
+            <Box>
+                <AbstractNodeView abstractNode={genericLoadImageNode}></AbstractNodeView>
             </Box>
         </Box>
     )

@@ -17,7 +17,7 @@ export type PromptNodeFields<State> = {
 export type PromptNode<NTD extends BaseNodeTypeDefinition> = {
     id: string,
     classtype: string,
-    inputs: PromptNodeInputs<NTD["inputs"], NTD["stateInputs"]>,
+    inputs: PromptNodeInputs<NTD["inputs"], NTD["stateInputs"]>, // Mix both input types for access via inputs
     state: Partial<NTD["state"]>,
     outputs: NTD["outputs"],
 }

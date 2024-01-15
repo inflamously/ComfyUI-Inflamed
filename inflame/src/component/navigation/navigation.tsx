@@ -61,7 +61,7 @@ const NavigationHeaderMenu = () => {
 
     return <Popover
         size="menu"
-        offset={[-60, 10]}
+        offset={[-70, 10]}
         lazyBehavior={"unmount"}
     >
         <PopoverTrigger>
@@ -73,7 +73,7 @@ const NavigationHeaderMenu = () => {
                 <PopoverBody>
                     <List>
                         <NavigationHeaderMenuItem
-                            label={"test"}
+                            label="Clear Storage"
                             action={clearHandler}
                         ></NavigationHeaderMenuItem>
                     </List>

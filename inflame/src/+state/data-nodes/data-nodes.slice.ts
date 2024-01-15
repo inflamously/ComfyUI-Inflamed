@@ -6,11 +6,11 @@ import {AbstractDataNode} from "@inflame/models";
  * This file defines the data nodes. They are used in or on prompt nodes which are used in a workflow.
  */
 
-export type NodesSliceState = {
+export type DataNodesSliceState = {
     nodes: Record<string, AbstractDataNode>,
 }
 
-const INITIAL_STATE: NodesSliceState = {
+const INITIAL_STATE: DataNodesSliceState = {
     nodes: {},
 }
 
