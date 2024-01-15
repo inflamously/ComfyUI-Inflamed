@@ -4,7 +4,7 @@ import {AppState, promptsSelectors, useAppDispatch} from "@inflame/state";
 import {socketStateSelectors} from "@inflame/state";
 import {promptsThunk} from "@inflame/state";
 import {Prompt} from "@inflame/models";
-import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.tsx";
+import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.hooks.tsx";
 import {PromptNodePreviewImage} from "../../prompt-nodes/preview-image/preview-image.node.ts";
 import {PromptNodeLoadImage} from "../../prompt-nodes/load-image/load-image.node.ts";
 

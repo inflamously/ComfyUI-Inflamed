@@ -1,8 +1,8 @@
 import {createSelector} from "@reduxjs/toolkit";
-import {NodesSliceState} from "./data-nodes.slice.ts";
+import {DataNodesSliceState} from "./data-nodes.slice.ts";
 import { AppState } from "../inflame-store.ts";
 
-const selectDataNodesState = (state: AppState): NodesSliceState => {
+const selectDataNodesState = (state: AppState): DataNodesSliceState => {
     return state.dataNodes
 }
 
@@ -11,6 +11,15 @@ const selectDataNodes = createSelector(
     (state) => Object.keys(state.nodes).length > 0 ? state.nodes : undefined
 )
 
+const selectDataNode = createSelector(
+    [
+        selectDataNodesState,
+        (_: AppState, nodeName: string) => nodeName
+    ],
+    (state: DataNodesSliceState, nodeName: string) => state.nodes[nodeName]
+)
+
 export const dataNodesSelectors = {
-    selectDataNodes
+    selectDataNodes,
+    selectDataNode,
 }
