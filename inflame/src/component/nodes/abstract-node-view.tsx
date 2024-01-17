@@ -22,14 +22,14 @@ export const AbstractNodeView = (props: {
                     <Text>State</Text>
                     <List>
                         {
-                            Object.keys(abstractNode.state).map((key) => {
-                                return <ListItem key={key} p={4}>
+                            Object.keys(abstractNode.state).map((key, index) => {
+                                return <ListItem key={index} p={4}>
                                     <Text>Key: {key}</Text>
                                     <List p={4}>
                                         {
                                             !Array.isArray(abstractNode.state[key]) &&
-                                            Object.keys(abstractNode.state[key] as Object).map((valueKey) => {
-                                                return <ListItem key={valueKey}>
+                                            Object.keys(abstractNode.state[key] as Object).map((valueKey, index) => {
+                                                return <ListItem key={index}>
                                                     <Text>Value Key: {valueKey}</Text>
                                                 </ListItem>
                                             })
@@ -52,8 +52,8 @@ export const AbstractNodeView = (props: {
                     <Text>Inputs</Text>
                     <List p={4}>
                         {
-                            Object.keys(abstractNode.inputs ?? {}).map((key) => {
-                                return <ListItem key={key}>
+                            Object.keys(abstractNode.inputs ?? {}).map((key, index) => {
+                                return <ListItem key={index}>
                                     <Text>Key: {key}</Text>
                                 </ListItem>
                             })
@@ -64,8 +64,8 @@ export const AbstractNodeView = (props: {
                     <Text>Outputs</Text>
                     <List p={4}>
                         {
-                            Object.keys(abstractNode.outputs ?? {}).map((key) => {
-                                return <ListItem key={key}>
+                            Object.keys(abstractNode.outputs ?? {}).map((key , index) => {
+                                return <ListItem key={index}>
                                     <Text>Key: {key}</Text>
                                 </ListItem>
                             })
