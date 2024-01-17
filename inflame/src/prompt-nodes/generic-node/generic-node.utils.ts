@@ -1,13 +1,37 @@
-import {AbstractDataNode, PromptNodeConnection} from "@inflame/models";
+import {AbstractDataNode, BindValueLink} from "@inflame/models";
 import {promptNodeGeneric} from "./generic-node.ts";
 import {mapComfyuiOutput} from "./comfyui-generic/generic-output.ts";
 import {mapComfyuiInput} from "./comfyui-generic/generic-input.ts";
 import {mapGenericPromptNodeState} from "./comfyui-generic/generic-state.ts";
 
+export const mapNodeIOLinks = (props: {
+    id: string,
+    slot: number,
+    type: string,
+}): BindValueLink | undefined => {
+    const {id, slot, type} = props
+
+    switch (type) {
+        case "MODEL":
+        case "CLIP":
+        case "VAE":
+        case "IMAGE":
+        case "MASK":
+            return {
+                id,
+                slot,
+                kind: "link",
+            }
+        default:
+            console.error(`Unsupported type "${type}" when mapping comfyui output`)
+            return undefined
+    }
+}
+
 const mapGenericPromptNodeOutputs = (
     id: string,
     output: { type: string, label: string }[]
-): Record<string, PromptNodeConnection> | undefined => {
+): Record<string, BindValueLink> | undefined => {
     if (!output || output.length <= 0) {
         return undefined
     }
@@ -38,8 +62,6 @@ export const dataNodeAsGenericPromptNode = (
         console.error("Invalid data-node provided")
         return
     }
-
-    console.log(dataNode)
 
     const {
         name

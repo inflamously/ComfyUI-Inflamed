@@ -1,11 +1,17 @@
 import {
-    BaseNodeTypeDefinition,
+    NodeTypeDefinition,
     PromptNode,
+    PromptNodeConnection,
     PromptNodeFields
 } from "@inflame/models";
 import {createPromptNode} from "../prompt-node.ts";
 
-type NodeGenericNodeTypeDefinition = BaseNodeTypeDefinition
+type NodeGenericNodeTypeDefinition = NodeTypeDefinition<
+    Record<string, unknown>,
+    Record<string, PromptNodeConnection>,
+    Record<string, PromptNodeConnection>,
+    never
+>
 
 export type PromptNodeGeneric = PromptNode<NodeGenericNodeTypeDefinition>
 
