@@ -8,3 +8,4 @@ export * from './error.model.ts'
 export * from './data-node/data-node.model.ts'
 export * from './dto';
 export * from './prompt/prompt-workflow-update.model.ts'
+export * from './prompt/prompt-node-builder.model.ts'

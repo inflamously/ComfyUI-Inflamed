@@ -1,5 +1,4 @@
 import {BindValueLink, PromptNodeConnection} from "@inflame/models";
-import {mapNodeIOLinks} from "../generic-node.utils.ts";
 
 type ComfyuiInputs = {
     required: Record<string, unknown[] | unknown[][]>
@@ -16,18 +15,13 @@ export const checkIfInputIsLink = (value: string) => {
 }
 
 const mapComfyuiInputType = (
-    id: string,
-    slot: number,
     nodeInput: [string, unknown[] | unknown[][] | Record<string, unknown>]
 ): PromptNodeConnection | undefined => {
     const [key, values] = nodeInput
 
     if (Array.isArray(values) && values.length > 0 && typeof values[0] === "string") {
-        return mapNodeIOLinks({
-            type: values[0],
-            slot,
-            id
-        })
+        // We return here undefined since the input must be bound from other context
+        return undefined
     } else {
         console.warn(`Node has invalid config ${key} ${values}`)
         return undefined;
@@ -35,7 +29,6 @@ const mapComfyuiInputType = (
 }
 
 export const mapComfyuiInput = (
-    id: string,
     input: Record<string, unknown>
 ): Record<string, BindValueLink> | undefined => {
     if (!isComfyuiInput(input)) {
@@ -43,7 +36,7 @@ export const mapComfyuiInput = (
     }
 
     const entries = Object.keys(input.required)
-        .map((key, index) => [key, mapComfyuiInputType(id, index, [key, input.required[key]])])
+        .map((key) => [key, mapComfyuiInputType([key, input.required[key]])])
 
     return Object.fromEntries(entries)
 }

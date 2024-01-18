@@ -1,6 +1,6 @@
 import {checkIfInputIsLink, isComfyuiInput} from "./generic-input.ts";
 
-export const mapGenericPromptNodeState = (
+export const mapComfyuiNodeState = (
     input: Record<string, unknown>
 ) => {
     if (!isComfyuiInput(input)) {
