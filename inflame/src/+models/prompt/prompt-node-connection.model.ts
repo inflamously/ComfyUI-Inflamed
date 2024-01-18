@@ -3,5 +3,4 @@ import {BindValueArray, BindValueLink, BindValueStateInput, BindValueString} fro
 type PromptNodeConnectionBindType = BindValueLink | BindValueString | BindValueArray | BindValueStateInput
 
 // Defines an object which stores node links to other nodes
-// export type PromptNodeLinkObject = Record<string, Readonly<PromptNodeBindTypes | undefined>>;
 export type PromptNodeConnection = PromptNodeConnectionBindType | undefined

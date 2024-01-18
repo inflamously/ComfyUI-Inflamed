@@ -10,7 +10,7 @@ type NodeGenericNodeTypeDefinition = NodeTypeDefinition<
     Record<string, unknown>,
     Record<string, PromptNodeConnection>,
     Record<string, PromptNodeConnection>,
-    never
+    Record<string, never>
 >
 
 export type PromptNodeGeneric = PromptNode<NodeGenericNodeTypeDefinition>

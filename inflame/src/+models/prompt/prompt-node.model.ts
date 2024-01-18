@@ -13,12 +13,13 @@ export type PromptNodeFields<State> = {
 
 /**
  * Foundation of PromptNode
+ * This defines the final PromptNode that is use in a Prompt Workflow and so on.
  */
 export type PromptNode<NTD extends BaseNodeTypeDefinition> = {
     id: string,
     classtype: string,
-    inputs: PromptNodeInputs<NTD["inputs"], NTD["stateInputs"]>, // Mix both input types for access via inputs
     state: Partial<NTD["state"]>,
+    inputs: PromptNodeInputs<NTD["inputs"], NTD["stateInputs"]>, // Mix both input types for access via inputs
     outputs: NTD["outputs"],
 }
 

@@ -1,8 +1,13 @@
-import {AbstractDataNode, BindValueLink} from "@inflame/models";
+import {
+    AbstractDataNode, AbstractPromptNode,
+    BindValueLink, DynamicNodeTypeDefinition,
+    BuilderInputBind
+} from "@inflame/models";
 import {promptNodeGeneric} from "./generic-node.ts";
 import {mapComfyuiOutput} from "./comfyui-generic/generic-output.ts";
 import {mapComfyuiInput} from "./comfyui-generic/generic-input.ts";
-import {mapGenericPromptNodeState} from "./comfyui-generic/generic-state.ts";
+import {mapComfyuiNodeState} from "./comfyui-generic/generic-state.ts";
+import {NodeTypeDefinitionBuilder} from "../../+models/prompt/prompt-node-builder.model.ts";
 
 export const mapNodeIOLinks = (props: {
     id: string,
@@ -28,7 +33,7 @@ export const mapNodeIOLinks = (props: {
     }
 }
 
-const mapGenericPromptNodeOutputs = (
+const mapComfyuiOutputs = (
     id: string,
     output: { type: string, label: string }[]
 ): Record<string, BindValueLink> | undefined => {
@@ -47,11 +52,10 @@ const mapGenericPromptNodeOutputs = (
     )
 }
 
-const mapGenericPromptNodeInputs = (
-    id: string,
+const mapComfyuiInputs = (
     input: Record<string, unknown>
 ) => {
-    return mapComfyuiInput(id, input)
+    return mapComfyuiInput(input)
 }
 
 export const dataNodeAsGenericPromptNode = (
@@ -60,7 +64,7 @@ export const dataNodeAsGenericPromptNode = (
 ) => {
     if (!dataNode) {
         console.error("Invalid data-node provided")
-        return
+        return undefined
     }
 
     const {
@@ -71,9 +75,18 @@ export const dataNodeAsGenericPromptNode = (
         {
             id,
             classtype: name,
-            initialState: mapGenericPromptNodeState(dataNode.input) ?? {}
+            initialState: mapComfyuiNodeState(dataNode.input) ?? {}
         },
-        mapGenericPromptNodeInputs(id, dataNode.input) ?? {},
-        mapGenericPromptNodeOutputs(id, dataNode.output) ?? {},
+        mapComfyuiInputs(dataNode.input) ?? {},
+        mapComfyuiOutputs(id, dataNode.output) ?? {},
     )
+}
+
+// TODO: Implement NodeTypeDefinition validation
+export const typeMapGenericPromptNode = <T extends NodeTypeDefinitionBuilder>(
+    id: string,
+    dataNode: AbstractDataNode,
+    nodeTypeDefinition: T
+): DynamicNodeTypeDefinition<T> | undefined => {
+    return dataNodeAsGenericPromptNode(id, dataNode) as DynamicNodeTypeDefinition<T>
 }
