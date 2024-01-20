@@ -1,17 +1,24 @@
 import {NodeTypeDefinition} from "./prompt-node-definition.model.ts";
-import {BindValueEmpty, BindValueLink, BindValueString} from "./prompt-node-connection-value.model.ts";
-import {PromptNode} from "./prompt-node.model.ts";
+import {BindValueLink, BindValueString} from "./prompt-node-connection-value.model.ts";
+import {PromptNode, PromptNodeValue} from "./prompt-node.model.ts";
 
 /**
  * This model exists so we can build our type dynamically while also typeguarding via castGenericPromptNode as example
  */
 
+type BuilderConstantOptions = Record<string, "string" | "number">
+
+type BuilderConstant<Value extends string> = {
+    value: Value,
+    options: BuilderConstantOptions
+}
+
 type BuilderTypes =
-    | "int"
-    | "float"
-    | "string"
-    | "array"
     | "link"
+    | "array"
+    | BuilderConstant<"string">
+    | BuilderConstant<"int">
+    | BuilderConstant<"float">
     | "unknown"
 
 type BuilderEntries = {
@@ -41,11 +48,42 @@ type ResolveInputBind<T extends BuilderInputBind, Key extends keyof T> =
 type ResolveOutputBind<T extends BuilderInputBind, Key extends keyof T> =
     T[Key] extends "link" ? BindValueLink : never
 
+/**
+ * Parses a complete state tree
+ */
 type ResolveBuilderTypes<T extends BuilderEntries, Key extends keyof T> =
+// Resolve recursively
     T[Key] extends BuilderEntries ? { [SubKey in keyof T[Key]]: ResolveBuilderTypes<T[Key], SubKey> } :
-        T[Key] extends "int" ? { default: number, min: number, max: number } :
-            T[Key] extends "float" ? { default: number, min: number, max: number, step: number } :
-                T[Key] extends "array" ? Array<string> : unknown
+        // Array just plain array
+        T[Key] extends "array" ? Array<string> :
+            T[Key] extends BuilderTypes ? ResolveBuilderConstant<T[Key]> : unknown
+
+/**
+ * Resolve all constant values in a state object
+ * {
+ *     state: {
+ *         steps: {
+ *             value: "int",
+ *             options: {
+ *                 min: "int",
+ *                 max: "int",
+ *             }
+ *         }
+ *     }
+ * }
+ */
+type ResolveBuilderConstant<T extends BuilderTypes> =
+    T extends BuilderConstant<"int"> ? PromptNodeValue<number, ResolveBuilderConstantOption<T["options"]>> :
+        T extends BuilderConstant<"float"> ? PromptNodeValue<number, T["options"]> :
+            unknown
+
+type ResolveBuilderConstantOption<T extends Record<string, unknown>> = {
+    // Get all keys of object
+    [Key in keyof T]:
+    // Resolve all values of key-value pair under BuilderConstant[???].options
+    T[Key] extends "string" ? string :
+        T[Key] extends "number" ? number : unknown
+}
 
 export type DynamicNodeTypeDefinition<T extends NodeTypeDefinitionBuilder> = PromptNode<
     NodeTypeDefinition<
