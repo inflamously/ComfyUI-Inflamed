@@ -23,6 +23,11 @@ export type PromptNode<NTD extends BaseNodeTypeDefinition> = {
     outputs: NTD["outputs"],
 }
 
+export type PromptNodeValue<Value, Options extends Record<string, unknown>> = {
+    value: Value,
+    options: Options | undefined
+}
+
 /**
  * Abstract node type that can be use in arrays, containers and contexts where its inner details do not matter.
  */

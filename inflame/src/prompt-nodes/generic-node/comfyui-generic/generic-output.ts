@@ -1,5 +1,5 @@
 import {BindValueLink} from "@inflame/models";
-import {mapNodeIOLinks} from "../generic-node.utils.ts";
+import {mapNodeIOLinks} from "./comfyui-generic-node.utils.ts";
 
 export const mapComfyuiOutput = (props: {
     id: string,
