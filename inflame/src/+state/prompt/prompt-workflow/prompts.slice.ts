@@ -55,23 +55,26 @@ export const promptsSlice = createSlice({
             }
 
             const prompt = state.items.entities[clientId]
-            if (prompt) {
-                const newPrompt: Prompt = {
-                    ...prompt,
-                    workflow: {
-                        nodes
-                    }
-                }
-                promptsEntityAdapter.updateOne(state.items, {
-                    id: prompt.clientId,
-                    changes: newPrompt
-                })
-            } else {
-                return state
+            if (!prompt) {
+                return state;
             }
+
+            const newPrompt: Prompt = {
+                ...prompt,
+                workflow: {
+                    nodes
+                }
+            }
+            promptsEntityAdapter.updateOne(state.items, {
+                id: prompt.clientId,
+                changes: newPrompt
+            })
         },
     },
     extraReducers: (builder) => {
+        /**
+         * Reload data from localStorage
+         */
         builder.addCase(dataStoreActions.initialize, (_, action) => {
             const prompts = action.payload.prompts!
             // Must delete remote id since we not longer have access after reload or refresh
