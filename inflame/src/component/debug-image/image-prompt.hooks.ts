@@ -3,10 +3,17 @@ import {NodeLoadImageDefinition} from "../../prompt-nodes/load-image/node-load-i
 import {useEffect} from "react";
 import {NodePreviewImageDefinition} from "../../prompt-nodes/preview-image/node-preview-image-definition.ts";
 import {promptToPromptDto} from "../../mapper/prompt-to-prompt-dto.mapper.ts";
-import {Prompt} from "@inflame/models";
+import {GenericSocket, Prompt} from "@inflame/models";
 import {comfyApi} from "@inflame/state";
 
-export const usePostSimpleImagePrompt = () => {
+/**
+ * Simple Proof-of-Concept for Dynamic-Nodes and prompting
+ */
+export const usePostSimpleImagePrompt = (props: {
+    socket: GenericSocket
+}) => {
+    const {socket} = props
+
     const [postPrompt] = comfyApi.usePostPrompt();
 
     const nodeLoadImage = useTypedGenericPromptNode({
@@ -53,10 +60,12 @@ export const usePostSimpleImagePrompt = () => {
         }
 
         const promptDto = promptToPromptDto({
-            clientId: "123",
+            socketId: socket.clientId,
             prompt,
         })
 
-        postPrompt(promptDto)
+        setTimeout(() => {
+            postPrompt(promptDto)
+        }, 2000)
     }, [nodeLoadImage, nodePreviewImage]);
 }

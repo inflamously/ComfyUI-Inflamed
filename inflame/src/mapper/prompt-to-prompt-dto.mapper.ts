@@ -2,12 +2,14 @@ import {workflowToWorkflowDtoMapper} from "./workflow-to-workflow-dto.mapper.ts"
 import {Prompt, PromptDTO} from "@inflame/models";
 
 export const promptToPromptDto = (props: {
-    clientId: string,
+    socketId: string,
     prompt: Prompt,
 }): PromptDTO => {
+    const {socketId, prompt} = props
+
     return {
-        client_id: props.clientId,
-        prompt: props.prompt ? workflowToWorkflowDtoMapper(props.prompt.workflow) : {},
+        client_id: socketId,
+        prompt: prompt ? workflowToWorkflowDtoMapper(props.prompt.workflow) : {},
         extra_data: {}
     };
 }

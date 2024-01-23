@@ -42,7 +42,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
         }
 
         const dto: PromptDTO = promptToPromptDto({
-            clientId: socket.clientId,
+            socketId: socket.clientId,
             prompt
         })
 
@@ -104,7 +104,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
         }
 
         const dto: PromptDTO = promptToPromptDto({
-            clientId: socket.clientId,
+            socketId: socket.clientId,
             prompt
         })
 
