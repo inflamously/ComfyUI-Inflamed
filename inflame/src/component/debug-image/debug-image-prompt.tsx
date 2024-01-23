@@ -12,7 +12,6 @@ import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.hooks.tsx";
 import {useAppDispatch} from "@inflame/state";
 import {useGetViewImage} from "../resources/comfyui-api/view-image-download.hooks.ts";
 import {AbstractNodeView} from "../nodes/abstract-node-view.tsx";
-import {usePostSimpleImagePrompt} from "./image-prompt.hooks.ts";
 import {GenericSocket} from "@inflame/models";
 
 const DebugImagePrompt = () => {
@@ -23,10 +22,6 @@ const DebugImagePrompt = () => {
     const [_, url] = useGetViewImage({
         type: "input",
         filename: "example.png"
-    })
-
-    usePostSimpleImagePrompt({
-        socket
     })
 
     // const [_, generatedImageUrl] = useGetViewImage({})
