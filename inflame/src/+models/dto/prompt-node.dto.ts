@@ -1,7 +1,7 @@
 import {NodeErrorMapDTO} from "./error.dto.ts";
 
 export type PromptNodeValueLinkDTO = [string, number]
-export type PromptNodeValueDTO = string | number | PromptNodeValueLinkDTO | undefined
+export type PromptNodeValueDTO = string | number | PromptNodeValueLinkDTO | boolean | undefined
 
 type PromptIds = string
 

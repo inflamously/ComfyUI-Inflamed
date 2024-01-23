@@ -24,7 +24,7 @@ export const mapComfyuiNodeState = (
         return undefined
     }
 
-    const state = Object.fromEntries(
+    return Object.fromEntries(
         Object.keys(input.required).map((key) => {
             const [type, value] = input.required[key]
 
@@ -49,6 +49,4 @@ export const mapComfyuiNodeState = (
             return [key, input.required[key]]
         }).filter((entry) => entry.length == 2)
     )
-
-    return state
 }

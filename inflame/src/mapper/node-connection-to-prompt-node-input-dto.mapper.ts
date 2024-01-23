@@ -1,4 +1,5 @@
 import {
+    isConnectionOfBoolean,
     isConnectionOfLink,
     isConnectionOfStateInput,
     isConnectionOfString
@@ -17,6 +18,10 @@ export const nodeConnectionToPromptNodeInputDto = (node: AbstractPromptNode, key
     }
 
     if (isConnectionOfString(connection)) {
+        nodeValue = connection.value
+    }
+
+    if (isConnectionOfBoolean(connection)) {
         nodeValue = connection.value
     }
 

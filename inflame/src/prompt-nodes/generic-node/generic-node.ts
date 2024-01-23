@@ -13,7 +13,7 @@ type NodeGenericNodeTypeDefinition = NodeTypeDefinition<
     Record<string, never>
 >
 
-export type PromptNodeGeneric = PromptNode<NodeGenericNodeTypeDefinition>
+export type GenericNode = PromptNode<NodeGenericNodeTypeDefinition>
 
 export const promptNodeGeneric = (
     props: PromptNodeFields<NodeGenericNodeTypeDefinition["state"]> & { classtype: string },
