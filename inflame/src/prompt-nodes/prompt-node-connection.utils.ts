@@ -1,5 +1,5 @@
 import {
-    BindValueAssigned,
+    BindValueAssigned, BindValueBoolean,
     BindValueLink,
     BindValueStateInput,
     BindValueString,
@@ -18,3 +18,6 @@ export const isConnectionOfString = (obj: PromptNodeConnection): obj is BindValu
     return obj?.kind === "string";
 }
 
+export const isConnectionOfBoolean = (obj: PromptNodeConnection): obj is BindValueAssigned<BindValueBoolean> => {
+    return obj?.kind === "boolean";
+}

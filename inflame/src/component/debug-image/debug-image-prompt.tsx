@@ -12,8 +12,7 @@ import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.hooks.tsx";
 import {useAppDispatch} from "@inflame/state";
 import {useGetViewImage} from "../resources/comfyui-api/view-image-download.hooks.ts";
 import {AbstractNodeView} from "../nodes/abstract-node-view.tsx";
-import {useGenericPromptNode} from "../nodes/data-nodes.hooks.tsx";
-import {Prompt} from "@inflame/models";
+import {usePostSimpleImagePrompt} from "./image-prompt.hooks.ts";
 
 const DebugImagePrompt = () => {
     const debugPrompt = useDebugImagePrompt();
@@ -25,56 +24,7 @@ const DebugImagePrompt = () => {
         filename: "example.png"
     })
 
-    const genericLoadImageNode = useGenericPromptNode({
-        id: "1",
-        name: "LoadImage"
-    })
-    const genericPreviewImageNode = useGenericPromptNode({
-        id: "2",
-        name: "PreviewImage"
-    })
-
-    // TODO: Simplify this dynamic stuff but without losing dynamic flexibility
-    useEffect(() => {
-        console.log(genericLoadImageNode?.state)
-
-        if(genericPreviewImageNode?.inputs?.images) {
-            genericPreviewImageNode.inputs.images = genericLoadImageNode?.outputs?.IMAGE
-        }
-
-        if (genericLoadImageNode?.inputs && "image" in genericLoadImageNode.inputs) {
-            genericLoadImageNode.inputs.image = {
-                kind: "string",
-                value: (genericLoadImageNode?.state?.image as [Array<string>, unknown])?.[0][0] ?? ""
-            }
-
-            genericLoadImageNode.inputs["image_upload"] = {
-                kind: "string",
-                value: "true",
-            }
-        }
-
-        if (genericPreviewImageNode && genericLoadImageNode) {
-            const prompt: Prompt = {
-                clientId: "123",
-                workflow: {
-                    nodes: [
-                        genericLoadImageNode,
-                        genericPreviewImageNode
-                    ]
-                }
-            }
-
-            const promptDto = promptToPromptDto({
-                clientId: "123",
-                prompt,
-            })
-
-            console.log(promptDto)
-
-            postPrompt(promptDto)
-        }
-    }, [postPrompt, genericPreviewImageNode, genericLoadImageNode]);
+    usePostSimpleImagePrompt()
 
     // const [_, generatedImageUrl] = useGetViewImage({})
 
@@ -128,7 +78,7 @@ const DebugImagePrompt = () => {
                 <Text pb={4}>{JSON.stringify(debugPrompt?.workflow.nodes[1]?.state)}</Text>
             </Box>
             <Box>
-                <AbstractNodeView abstractNode={genericLoadImageNode}></AbstractNodeView>
+                <AbstractNodeView abstractNode={debugPrompt?.workflow.nodes.at(0)}></AbstractNodeView>
             </Box>
         </Box>
     )

@@ -8,20 +8,6 @@ export const isComfyuiInput = (obj: Record<string, unknown>): obj is ComfyuiInpu
     return (obj as ComfyuiInputs)?.required !== undefined
 }
 
-// const mapComfyuiInputType = (
-//     nodeInput: [string, unknown[] | unknown[][] | Record<string, unknown>]
-// ): PromptNodeConnection | undefined => {
-//     const [key, values] = nodeInput
-//
-//     if (Array.isArray(values) && values.length > 0 && typeof values[0] === "string") {
-//         // We return here undefined since the input must be bound from other context
-//         return undefined
-//     } else {
-//         console.warn(`Node has invalid config ${key} ${values}`)
-//         return undefined;
-//     }
-// }
-
 export const mapComfyuiInput = (
     input: Record<string, unknown>
 ): Record<string, BindValueLink> | undefined => {

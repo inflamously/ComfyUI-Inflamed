@@ -25,3 +25,7 @@ export type BindValueString = BindValueKind<"string"> & {
 export type BindValueStateInput = BindValueKind<"state"> & {
     propertyPath: string
 }
+
+export type BindValueBoolean = BindValueKind<"boolean"> & {
+    value: boolean
+}

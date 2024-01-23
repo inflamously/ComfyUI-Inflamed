@@ -1,7 +1,7 @@
 import {PromptNodeConnection} from "./prompt-node-connection.model.ts";
 import {BaseNodeTypeDefinition} from "./prompt-node-definition.model.ts";
 
-export type PromptNodeInputs<Inputs, StateInputs> = Inputs | StateInputs | undefined
+export type PromptNodeInputs<Inputs, StateInputs> = Inputs | StateInputs
 
 /**
  * Object which declares a node's ID and its initialState which can be passed into it

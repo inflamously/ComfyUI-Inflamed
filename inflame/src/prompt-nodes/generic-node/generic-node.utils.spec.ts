@@ -1,5 +1,5 @@
 import {AbstractDataNode} from "@inflame/models";
-import {typeMapGenericPromptNode} from "./generic-node.utils.ts";
+import {typeDataNode} from "./generic-node.utils.ts";
 import {comfyuiDataNodeAsGenericPromptNode} from "./comfyui-generic/comfyui-generic-node.utils.ts";
 
 describe("tests for various utilities on generic prompt nodes", () => {
@@ -55,11 +55,11 @@ describe("tests for various utilities on generic prompt nodes", () => {
             ]
         }
 
-        const castedNode = typeMapGenericPromptNode(
-            "1",
-            dataNode,
-            comfyuiDataNodeAsGenericPromptNode,
-            {
+        const castedNode = typeDataNode({
+            id: "1",
+            node: dataNode,
+            mapper: comfyuiDataNodeAsGenericPromptNode,
+            definition: {
                 state: {
                     steps: {
                         value: "int",
@@ -90,7 +90,8 @@ describe("tests for various utilities on generic prompt nodes", () => {
                     SIGMAS: "link"
                 },
                 stateInputs: undefined,
-            })
+            }
+        })
 
         expect(castedNode?.id).toEqual("1")
         expect(castedNode?.classtype).toEqual("BasicScheduler")
