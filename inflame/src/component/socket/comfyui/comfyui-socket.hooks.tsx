@@ -15,6 +15,7 @@ const isComfyuiMessage = (eventData: unknown): eventData is ComfyuiSocketMessage
     return eventData != null && (eventData as ComfyuiSocketMessages)?.type !== undefined && (eventData as ComfyuiSocketMessages)?.data !== undefined
 }
 
+// TODO: Remove redux specific code by providing event listeners via props and pushing events to them, afterwards create a new redux like socket that dispatches events below into store to be listened.
 const useComfyuiSocket = () => {
     const dispatch = useAppDispatch()
     const socketState = useSelector(

@@ -16,7 +16,7 @@ const selectPromptsStateItems = createSelector(
 
 const selectPromptByClientId = createSelector([
         selectPromptsStateItems,
-        (_, clientId: string) => clientId,
+        (_: AppState, clientId: string) => clientId,
     ],
     (state: PromptsEntityAdapterType, clientId) => promptsEntityAdapterSelectors.selectById(state, clientId),
 )

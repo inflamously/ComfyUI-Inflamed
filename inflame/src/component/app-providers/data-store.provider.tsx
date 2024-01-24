@@ -11,7 +11,6 @@ export const DataStoreProvider = (props: {
         dispatch(dataStoreActions.clear())
     }, [dispatch])
 
-
     const {children} = props
     return <DataStoreContext.Provider value={{
         clear: clearHandler
