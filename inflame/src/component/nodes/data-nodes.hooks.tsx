@@ -39,12 +39,12 @@ export const useTypedGenericPromptNode = <T extends NodeTypeBuilderDefinition>(p
 
         setTypedNode(
             typeDataNode({
-                id,
-                node: dataNode,
-                mapper: comfyuiDataNodeAsGenericPromptNode,
-                definition,
-            })
-        )
+                    id,
+                    node: dataNode,
+                    mapper: comfyuiDataNodeAsGenericPromptNode,
+                    definition,
+                })
+            )
     }, [id, dataNode, setTypedNode]);
 
     return typedNode

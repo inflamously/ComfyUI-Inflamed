@@ -8,6 +8,7 @@ import {mergeDataNodeIntoPromptNode} from "../../data-nodes/prompt-nodes-data-no
 import {comfyApi} from "../../api/comfy-api.slice.ts";
 import {AbstractPromptNode} from "@inflame/models";
 
+// TODO: Deprecated? See PoC of image-prompt.hooks.ts
 const createPromptWithWorkflow = (props: {
     clientId: string,
     nodes: AbstractPromptNode[]

@@ -24,8 +24,13 @@ export const promptsSlice = createSlice({
             const {payload} = action
 
             if (!payload) {
-                console.error("Missing clientId for creation of a new prompt.")
-                return
+                console.error("Missing name for creation of a new prompt.")
+                return state;
+            }
+
+            if (state.items.entities[payload]) {
+                console.error(`Prompt with name ${payload} already exists`)
+                return state;
             }
 
             promptsEntityAdapter.addOne(state.items, {
@@ -76,10 +81,12 @@ export const promptsSlice = createSlice({
          * Reload data from localStorage
          */
         builder.addCase(dataStoreActions.initialize, (_, action) => {
-            const prompts = action.payload.prompts!
+            const prompts = action.payload.prompts
             // Must delete remote id since we not longer have access after reload or refresh
-            for (const id of prompts.items.ids) {
-                delete prompts.items.entities[id]?.remoteId
+            if (prompts && prompts.items?.ids?.length > 0) {
+                for (const id of prompts.items.ids) {
+                    delete prompts.items.entities[id]?.remoteId
+                }
             }
             return prompts
         })
