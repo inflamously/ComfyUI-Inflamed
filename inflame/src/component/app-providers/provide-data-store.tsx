@@ -3,7 +3,7 @@ import {ReactNode, useCallback} from "react";
 import {useAppDispatch} from "@inflame/state";
 import {dataStoreActions} from "../../+state/data-store/data-store.ts";
 
-export const DataStoreProvider = (props: {
+export const ProvideDataStore = (props: {
     children?: ReactNode
 }) => {
     const dispatch = useAppDispatch()

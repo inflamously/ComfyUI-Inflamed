@@ -1,35 +1,24 @@
-import {useCallback} from "react";
+import {useCallback, useState} from "react";
 import useWebsocket from "../websocket.tsx";
-import {useSelector} from "react-redux";
-import {isMessageEvent, isOfMessageEventString} from "../websocket.utils.ts";
-import {isSidPresent} from "./comfyui-socket.utils.ts";
-import {ComfyuiSocketMessages} from "@inflame/models";
-import {AppState, useAppDispatch} from "@inflame/state";
-import {socketStateSelectors} from "@inflame/state";
-import {socketSliceActions} from "@inflame/state";
-import {comfyuiSocketActions} from "@inflame/state";
+import {SocketListener} from "@inflame/models";
+import {EventListener} from "../../../core/event.ts";
+import {isComfyuiMessage, isSidPresent} from "./comfyui-socket.utils.ts";
+import {resolveToMessageEvent} from "../websocket.utils.ts";
 
 export const COMFYUI_SOCKET = "comfyui-socket"
 
-const isComfyuiMessage = (eventData: unknown): eventData is ComfyuiSocketMessages => {
-    return eventData != null && (eventData as ComfyuiSocketMessages)?.type !== undefined && (eventData as ComfyuiSocketMessages)?.data !== undefined
-}
-
 // TODO: Remove redux specific code by providing event listeners via props and pushing events to them, afterwards create a new redux like socket that dispatches events below into store to be listened.
 const useComfyuiSocket = () => {
-    const dispatch = useAppDispatch()
-    const socketState = useSelector(
-        (state: AppState) => socketStateSelectors.selectSocketById(state, COMFYUI_SOCKET)
-    )
+    const [socketId, setSocketId] = useState<string | undefined>()
+
+    const [socketListener] = useState<SocketListener>({
+        onClose: undefined,
+        onMessage: new EventListener(new MessageEvent("comfyui-socket-message")),
+        onOpen: undefined,
+    })
 
     const handleMessage = useCallback((ev: MessageEvent) => {
-        if (!isMessageEvent(ev)) {
-            console.warn("Unreadable MessageEvent")
-            return
-        }
-
-        if (!isOfMessageEventString(ev)) {
-            console.warn("Invalid message format")
+        if (!resolveToMessageEvent(ev)) {
             return;
         }
 
@@ -42,41 +31,24 @@ const useComfyuiSocket = () => {
         const message = data;
         switch (message.type) {
             case "status": {
-                // In case of sid we have a new client
-                if (isSidPresent(message.data) && !socketState) {
-                    dispatch(socketSliceActions.createSocket({
-                        name: COMFYUI_SOCKET,
-                        clientId: message.data.sid
-                    }))
+                if (isSidPresent(message.data) && !socketId) {
+                    setSocketId(message.data.sid)
                 }
-                dispatch(comfyuiSocketActions.statusEvent(message.data))
                 break;
             }
-            case "execution_start": {
-                dispatch(comfyuiSocketActions.executionStart(message.data))
-                break;
-            }
-            case "execution_cached": {
-                dispatch(comfyuiSocketActions.executionCached(message.data))
-                break;
-            }
-            case "executing": {
-                dispatch(comfyuiSocketActions.executing(message.data))
-                break;
-            }
-            case "executed": {
-                dispatch(comfyuiSocketActions.executed(message.data))
-                break;
-            }
-            default:
-                throw new Error(`Message type not implemented "${message.type}"`)
         }
-    }, [dispatch, socketState])
+
+        socketListener?.onMessage?.dispatch(ev.data)
+    }, [socketListener, setSocketId])
 
     useWebsocket({
-        url: `ws://localhost:8188/ws${socketState ? `?clientId=${socketState.clientId}` : ""}`,
-        onMessage: handleMessage
+        url: `ws://localhost:8188/ws${socketId ? `?clientId=${socketId}` : ""}`,
+        onOpen: undefined,
+        onMessage: handleMessage,
+        onClose: undefined,
     })
+
+    return {socketListener, socketId}
 }
 
 export default useComfyuiSocket
