@@ -1,4 +1,7 @@
-import {useEffect, useState} from "react";
+import {createContext, useEffect, useState} from "react";
+import {AppSocket} from "@inflame/models";
+
+export const AppSocketContext = createContext<AppSocket | undefined>(undefined)
 
 /**
  * Waits until server send back a hello

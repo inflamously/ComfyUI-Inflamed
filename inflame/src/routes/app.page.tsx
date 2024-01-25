@@ -1,21 +1,26 @@
 import {Box} from "@chakra-ui/react";
 import {Outlet} from "react-router-dom";
-import {useDataNodesLoader} from "../component/nodes/data-nodes.hooks.tsx";
 import NavigationBar from "../component/navigation/navigation.tsx";
 import useComfyuiSocket from "../component/socket/comfyui/comfyui-socket.hooks.tsx";
-import {DataStoreProvider} from "../component/app-providers/data-store.provider.tsx";
+import ProviderStack from "../component/app-providers/provider-stack.tsx";
+import ApplicationFrame from "../component/application/application-frame.tsx";
 
 const PageApp = () => {
-    useComfyuiSocket()
-    useDataNodesLoader()
-
+    const {socketId, socketListener} = useComfyuiSocket()
     return (
-        <Box p={4}>
-            <DataStoreProvider>
-                <NavigationBar/>
-            </DataStoreProvider>
-            <Outlet/>
-        </Box>
+        <ProviderStack value={{
+            socket: {
+                id: socketId,
+                listener: socketListener
+            }
+        }}>
+            <ApplicationFrame>
+                <Box p={4}>
+                    <NavigationBar/>
+                    <Outlet/>
+                </Box>
+            </ApplicationFrame>
+        </ProviderStack>
     )
 }
 
