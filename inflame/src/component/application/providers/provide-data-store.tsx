@@ -1,7 +1,7 @@
-import {DataStoreContext} from "../data-store/data-store.hooks.tsx";
 import {ReactNode, useCallback} from "react";
 import {useAppDispatch} from "@inflame/state";
-import {dataStoreActions} from "../../+state/data-store/data-store.ts";
+import {dataStoreActions} from "../../../+state/data-store/data-store.ts";
+import { DataStoreContext } from "../../data-store/data-store.hooks.tsx";
 
 export const ProvideDataStore = (props: {
     children?: ReactNode
