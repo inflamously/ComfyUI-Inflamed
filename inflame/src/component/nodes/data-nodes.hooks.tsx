@@ -33,7 +33,6 @@ export const useTypedGenericPromptNode = <T extends NodeTypeBuilderDefinition>(p
 
     useEffect(() => {
         if (!dataNode) {
-            console.warn(`DataNode does not exist ${name}`)
             return;
         }
 

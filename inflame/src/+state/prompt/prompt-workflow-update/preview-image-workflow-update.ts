@@ -1,10 +1,10 @@
-import {nodeUpdate} from "./prompt-workflow-update.action.ts";
+import {nodeUpdate} from "./prompt-workflow.action.ts";
 import {findAbstractPromptNodeById, replaceNodesInWorkflow} from "../../../prompt-nodes/prompt-node.utils.ts";
 import {
     hasSingleNode,
     sourceContainNodes,
     sourceIncludesAppendix
-} from "./prompt-workflow-update.utils.ts";
+} from "./prompt-workflow.utils.ts";
 import {AbstractPromptNode} from "@inflame/models";
 import {updateObject} from "../../../core/object.utils.ts";
 import {nodeTypePreviewImage} from "../../../prompt-nodes/preview-image/preview-image.node.ts";

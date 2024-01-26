@@ -1,8 +1,8 @@
 import {Box, Button, Image, Text} from "@chakra-ui/react";
-import {useCallback, useEffect} from "react";
+import {useCallback} from "react";
 import Fileuploader from "../file/fileuploader.tsx";
 import {useSelector} from "react-redux";
-import {useDebugImagePrompt} from "./debug-image-prompt.hooks.ts";
+import {useDebugImagePrompt} from "./debug-image-prompt.hooks.tsx";
 import {AppState, socketStateSelectors} from "@inflame/state";
 import {promptsSliceActions} from "@inflame/state";
 import {comfyApi} from "@inflame/state";
@@ -13,28 +13,28 @@ import {useAppDispatch} from "@inflame/state";
 import {useGetViewImage} from "../resources/comfyui-api/view-image-download.hooks.ts";
 import {AbstractNodeView} from "../nodes/abstract-node-view.tsx";
 import {GenericSocket} from "@inflame/models";
-import {usePostSimpleImagePrompt} from "./image-prompt.hooks.ts";
+import {useSubscribeStoreChange} from "../store.hooks.tsx";
+import {promptWorkflowUpdate} from "../../+state/prompt/prompt-workflow-update/prompt-workflow.action.ts";
 
 const DebugImagePrompt = () => {
     const debugPrompt = useDebugImagePrompt();
     const socket = useSelector((state: AppState): GenericSocket => socketStateSelectors.selectSocketById(state, COMFYUI_SOCKET))
-    const [postPrompt, result] = comfyApi.usePostPrompt()
+    const [postPrompt] = comfyApi.usePostPrompt()
     const dispatch = useAppDispatch()
     const [_, url] = useGetViewImage({
         type: "input",
         filename: "example.png"
     })
 
-    usePostSimpleImagePrompt({
-        socket
+    // TODO: Better naming and fix type issue
+    useSubscribeStoreChange({
+        action: promptWorkflowUpdate.nodeUpdate,
+        listener: (action, api) => {
+            console.log("Debug Prompt Action happend", action)
+        }
     })
 
     // const [_, generatedImageUrl] = useGetViewImage({})
-
-    useEffect(() => {
-        console.log("Call Result", result.status)
-    }, [result.status])
-
 
     const handleInvokePrompt = useCallback(async () => {
         const prompt = debugPrompt

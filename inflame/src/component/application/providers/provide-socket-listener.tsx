@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
-import {AppSocketContext} from "../socket/websocket.tsx";
 import {AppSocket} from "@inflame/models";
+import { AppSocketContext } from "../../socket/websocket";
 
 
 export const ProvideAppSocket = (props: {

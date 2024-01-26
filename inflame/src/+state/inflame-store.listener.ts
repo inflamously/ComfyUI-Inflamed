@@ -10,11 +10,11 @@ const storeListener = createListenerMiddleware<AppState, AppDispatch>();
 
 export const storeListenerMiddleware = storeListener.middleware;
 
-export const subscribeToStoreChange = <Payload>(
+export const subscribeToStoreChange = <Args, Payload>(
     actionCreator:
         ActionCreatorWithoutPayload |
         ActionCreatorWithPayload<Payload> |
-        ActionCreatorWithPreparedPayload<unknown[], Payload>,
+        ActionCreatorWithPreparedPayload<Args[], Payload>,
     effect: (action: PayloadAction<Payload | undefined>, api: ListenerEffectAPI<AppState, AppDispatch>) => void
 ): UnsubscribeListener => storeListener.startListening({
     actionCreator,

@@ -18,12 +18,10 @@ export const useDebugImagePrompt = (): Prompt | undefined => {
 
     useEffect(() => {
         if (prompt) {
-            console.log("Debug prompt acquired")
             return;
         }
 
         if (!socket) {
-            console.warn("DebugImagePrompt: Socket initialization failed!");
             return;
         }
 

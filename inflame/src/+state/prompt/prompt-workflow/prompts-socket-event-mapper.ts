@@ -3,10 +3,10 @@
  */
 import {comfyuiSocketActions} from "../../socket/comfyui-socket/comfyui-socket.actions.ts";
 import {promptsSelectors} from "./prompts.selectors.ts";
-import {promptWorkflowUpdate} from "../prompt-workflow-update/prompt-workflow-update.action.ts";
+import {promptWorkflowUpdate} from "../prompt-workflow-update/prompt-workflow.action.ts";
 import {subscribeToStoreChange} from "../../inflame-store.listener.ts";
 
-export const subscribePromptSocketEventMapper = () => {
+export const subscribePromptSocketEventHandler = () => {
     subscribeToStoreChange(comfyuiSocketActions.statusEvent, () => {
         // TODO: Reactivate on need
         console.log("comfyuiSocketActions.statusEvent: not implemented")
@@ -33,7 +33,6 @@ export const subscribePromptSocketEventMapper = () => {
         const {payload} = action
         if (payload && payload.node) {
             const prompt = promptsSelectors.selectPromptByRemoteId(api.getState(), payload.prompt_id)
-            console.log(prompt)
 
             if (!prompt) {
                 return;
