@@ -52,6 +52,6 @@ export const typeDataNode = <T extends NodeTypeBuilderDefinition>(
     return mapper(id, node) as ResolvedNodeType<T>
 }
 
-export const castDataNode = <T extends NodeTypeBuilderDefinition>(node: GenericNode, _: T): ResolvedNodeType<T> => {
+export const castGenericNode = <T extends NodeTypeBuilderDefinition>(node: GenericNode, _: T): ResolvedNodeType<T> => {
     return node as ResolvedNodeType<T>
 }
