@@ -1,45 +1,43 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useSelector} from "react-redux";
 import {AppState, promptsSelectors, useAppDispatch} from "@inflame/state";
-import {socketStateSelectors} from "@inflame/state";
 import {promptsThunk} from "@inflame/state";
 import {Prompt} from "@inflame/models";
-import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.hooks.tsx";
 import {useTypedGenericPromptNode} from "../nodes/data-nodes.hooks.tsx";
 import {NodeDefinitionLoadImage} from "../../prompt-nodes/load-image/node-definition-load-image.ts";
 import {NodeDefinitionPreviewImage} from "../../prompt-nodes/preview-image/node-definition-preview-image.ts";
+import {usePromptNodeUpdate} from "../nodes/workflow.hooks.tsx";
+import {filterToExistingNodes} from "../../prompt-nodes/prompt-node.utils.ts";
 
-export const useDebugImagePrompt = (): Prompt | undefined => {
-    const socket = useSelector(
-        (state: AppState) => socketStateSelectors.selectSocketById(state, COMFYUI_SOCKET)
-    )
+export const useDebugPrompt = (): Prompt | undefined => {
     const [promptId] = useState<string>("debug-prompt")
     const prompt = useSelector((state: AppState) => promptsSelectors.selectPromptByClientId(state, promptId))
     const dispatch = useAppDispatch();
 
     const loadImage = useTypedGenericPromptNode({
         id: "1",
-        className: "LoadImage",
+        classtype: "LoadImage",
         definition: NodeDefinitionLoadImage,
     })
 
     const previewImage = useTypedGenericPromptNode({
         id: "2",
-        className: "PreviewImage",
+        classtype: "PreviewImage",
         definition: NodeDefinitionPreviewImage,
     })
 
-    useEffect(() => {
-        if (prompt) {
-            return;
-        }
-
-        if (!socket || !previewImage || !loadImage) {
-            return;
-        }
-
-        if (previewImage?.inputs?.images) {
+    if (loadImage && previewImage && (!prompt || prompt?.workflow?.nodes?.length <= 0)) {
+        if ("images" in previewImage?.inputs) {
             previewImage.inputs.images = loadImage?.outputs?.IMAGE
+        }
+
+        loadImage.inputs.image = {
+            kind: "string",
+            value: loadImage.state.image?.[0]?.[0] ?? ""
+        }
+        loadImage.inputs.upload = {
+            kind: "boolean",
+            value: true,
         }
 
         dispatch(
@@ -50,8 +48,34 @@ export const useDebugImagePrompt = (): Prompt | undefined => {
                     previewImage,
                 ]
             })
-        ).catch((error) => console.error(error))
-    }, [socket, dispatch, promptId, loadImage, previewImage])
+        )
+    }
+
+    usePromptNodeUpdate({
+        onUpdate: (source, target) => {
+            filterToExistingNodes({
+                source,
+                target,
+            }).forEach((node) => {
+                console.log("Node data received", node)
+            })
+        }
+    })
+
+    // useEffect(() => {
+    //     if (!prompt) {
+    //         return;
+    //     }
+    //
+    //     const [previewImageNode] = findAbstractPromptNodeByClass("PreviewImage", prompt.workflow)
+    //     if (previewImageNode) {
+    //         const previewImage = castGenericNode(
+    //             previewImageNode,
+    //             NodeDefinitionPreviewImage
+    //         )
+    //         console.log("PreviewImage", previewImage)
+    //     }
+    // }, [prompt]);
 
     return prompt
 }

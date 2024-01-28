@@ -18,16 +18,16 @@ export const useSelectDataNode = (name: string) => {
 
 export const useTypedGenericPromptNode = <T extends NodeTypeBuilderDefinition>(props: {
     id: string,
-    className: string,
+    classtype: string,
     definition: T
 }): ResolvedNodeType<T> | undefined => {
     const {
         id,
-        className,
+        classtype,
         definition
     } = props
 
-    const dataNode = useSelector((state: AppState) => dataNodesSelectors.selectDataNode(state, className))
+    const dataNode = useSelector((state: AppState) => dataNodesSelectors.selectDataNode(state, classtype))
     const [typedNode, setTypedNode] =
         useState<ResolvedNodeType<T> | undefined>()
 
@@ -52,15 +52,15 @@ export const useTypedGenericPromptNode = <T extends NodeTypeBuilderDefinition>(p
 export const useGenericPromptNode = (
     props: {
         id: string,
-        className: string
+        classtype: string
     }
 ) => {
     const {
         id,
-        className
+        classtype
     } = props
 
-    const dataNode = useSelector((state: AppState) => dataNodesSelectors.selectDataNode(state, className))
+    const dataNode = useSelector((state: AppState) => dataNodesSelectors.selectDataNode(state, classtype))
     const [genericPromptNode, setGenericPromptNode] =
         useState<GenericNode | undefined>()
 
