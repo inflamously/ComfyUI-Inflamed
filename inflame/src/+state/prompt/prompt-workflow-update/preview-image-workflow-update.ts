@@ -1,5 +1,8 @@
 import {nodeUpdate} from "./prompt-workflow.action.ts";
-import {findAbstractPromptNodeById, replaceNodesInWorkflow} from "../../../prompt-nodes/prompt-node.utils.ts";
+import {
+    filterToExistingNodes,
+    replaceNodesInWorkflow
+} from "../../../prompt-nodes/prompt-node.utils.ts";
 import {
     hasSingleNode,
     sourceContainNodes,
@@ -25,9 +28,10 @@ export const subscribePreviewImageNodeUpdate = () => {
                 return;
             }
 
-            const existingNodes: Array<AbstractPromptNode | undefined> = source.nodes
-                .map((id) => findAbstractPromptNodeById(id, target.workflow))
-                .filter((node) => node !== undefined);
+            const existingNodes: Array<AbstractPromptNode | undefined> = filterToExistingNodes({
+                source,
+                target,
+            })
 
             if (!hasSingleNode(existingNodes)) {
                 console.warn("Cannot apply output update on multiple nodes.")

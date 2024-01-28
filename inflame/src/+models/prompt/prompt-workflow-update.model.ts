@@ -1,11 +1,11 @@
 import {Prompt} from "@inflame/models";
 
-export type PipelineNodeUpdateSource = {
+export type NodeUpdateSource = {
     nodes?: Array<string>,
     appendix?: Record<string, unknown>
 }
 
-export type PipelineNodeUpdatePayload = {
-    source: PipelineNodeUpdateSource,
+export type NodeUpdatePayload = {
+    source: NodeUpdateSource,
     target: Prompt
 }

@@ -1,6 +1,6 @@
 import {NodeTypeBuilderDefinition} from "@inflame/models";
 
-export const NodeLoadImageDefinition = {
+export const NodeDefinitionLoadImage = {
     state: {
         // TODO: Rewrite here because array sucks
         image: ["array", "string"],

@@ -14,9 +14,9 @@ const selectDataNodes = createSelector(
 const selectDataNode = createSelector(
     [
         selectDataNodesState,
-        (_: AppState, nodeName: string) => nodeName
+        (_: AppState, className: string) => className
     ],
-    (state: DataNodesSliceState, nodeName: string) => state.nodes[nodeName]
+    (state: DataNodesSliceState, className: string) => state.nodes[className]
 )
 
 export const dataNodesSelectors = {

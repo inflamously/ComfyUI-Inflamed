@@ -1,9 +1,9 @@
 import {createAction} from "@reduxjs/toolkit";
-import {PipelineNodeUpdatePayload} from "@inflame/models";
+import {NodeUpdatePayload} from "@inflame/models";
 
 export const nodeUpdate = createAction(
     "promptWorkflow/nodeUpdate",
-    (payload: PipelineNodeUpdatePayload) => {
+    (payload: NodeUpdatePayload) => {
         return {
             payload
         }

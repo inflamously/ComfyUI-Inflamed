@@ -1,8 +1,13 @@
 import {useEffect} from "react";
-import {subscribeToStoreChange} from "../+state/inflame-store.listener.ts";
-export const useSubscribeStoreChange = (props: {
-    action: Parameters<typeof subscribeToStoreChange>[0]
-    listener: Parameters<typeof subscribeToStoreChange>[1]
+import {
+    ActionCreatorArgument,
+    EffectListenerArgument,
+    subscribeToStoreChange
+} from "../+state/inflame-store.listener.ts";
+
+export const useSubscribeStoreChange = <Args, Payload>(props: {
+    action: ActionCreatorArgument<Args, Payload>
+    listener: EffectListenerArgument<Payload>
 }) => {
     const {action, listener} = props
     useEffect(() => {

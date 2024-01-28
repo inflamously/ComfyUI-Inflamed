@@ -1,6 +1,6 @@
 import {NodeTypeBuilderDefinition} from "@inflame/models";
 
-export const NodePreviewImageDefinition = {
+export const NodeDefinitionPreviewImage = {
     state: {},
     inputs: {
         images: "link"
