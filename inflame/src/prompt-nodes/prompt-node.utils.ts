@@ -99,6 +99,14 @@ export const findAbstractPromptNodeById = (id: string, workflow: PromptWorkflow)
     return workflow.nodes.find((node) => node.id === id);
 }
 
+export const findAbstractPromptNodeByClass = (classtype: string, workflow: PromptWorkflow): AbstractPromptNode[] => {
+    if (!workflow?.nodes || workflow.nodes.length <= 0) {
+        return [];
+    }
+
+    return workflow.nodes.filter(node => node.classtype === classtype)
+}
+
 
 export const filterToExistingNodes = (props: {
     source: {
