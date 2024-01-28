@@ -23,13 +23,13 @@ export const usePostSimpleImagePrompt = (props: {
 
     const nodeLoadImage = useTypedGenericPromptNode({
         id: "1",
-        className: "LoadImage",
+        classtype: "LoadImage",
         definition: NodeDefinitionLoadImage
     })
 
     const nodePreviewImage = useTypedGenericPromptNode({
         id: "2",
-        className: "PreviewImage",
+        classtype: "PreviewImage",
         definition: NodeDefinitionPreviewImage
     })
 
