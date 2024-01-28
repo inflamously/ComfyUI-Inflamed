@@ -1,7 +1,7 @@
 import {set} from "lodash";
 import {isConnectionOfLink} from "./prompt-node-connection.utils.ts";
 import {
-    AbstractPromptNode, BaseNodeTypeDefinition,
+    AbstractPromptNode, BaseNodeTypeDefinition, Prompt,
     PromptNode,
     PromptNodeConnection,
     PromptWorkflow
@@ -99,6 +99,22 @@ export const findAbstractPromptNodeById = (id: string, workflow: PromptWorkflow)
     return workflow.nodes.find((node) => node.id === id);
 }
 
+
+export const filterToExistingNodes = (props: {
+    source: {
+        nodes: string[]
+    },
+    target: Prompt
+}): Array<AbstractPromptNode | undefined> => {
+    const {source, target} = props
+
+    if (!source || !target)
+        return [];
+
+    return source.nodes
+        .map((id) => findAbstractPromptNodeById(id, target.workflow))
+        .filter((node) => node !== undefined);
+}
 
 export const replaceNodesInWorkflow = (workflow: PromptWorkflow, nodes: Array<AbstractPromptNode>) => {
     return updateObject(workflow, (newWorkflow) => {

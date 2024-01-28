@@ -1,7 +1,7 @@
 import {useTypedGenericPromptNode} from "../nodes/data-nodes.hooks.tsx";
-import {NodeLoadImageDefinition} from "../../prompt-nodes/load-image/node-load-image-definition.ts";
+import {NodeDefinitionLoadImage} from "../../prompt-nodes/load-image/node-definition-load-image.ts";
 import {useEffect} from "react";
-import {NodePreviewImageDefinition} from "../../prompt-nodes/preview-image/node-preview-image-definition.ts";
+import {NodeDefinitionPreviewImage} from "../../prompt-nodes/preview-image/node-definition-preview-image.ts";
 import {promptToPromptDto} from "../../mapper/prompt-to-prompt-dto.mapper.ts";
 import {GenericSocket} from "@inflame/models";
 import {AppState, comfyApi, promptsSelectors, promptsSliceActions, useAppDispatch} from "@inflame/state";
@@ -23,14 +23,14 @@ export const usePostSimpleImagePrompt = (props: {
 
     const nodeLoadImage = useTypedGenericPromptNode({
         id: "1",
-        name: "LoadImage",
-        definition: NodeLoadImageDefinition
+        className: "LoadImage",
+        definition: NodeDefinitionLoadImage
     })
 
     const nodePreviewImage = useTypedGenericPromptNode({
         id: "2",
-        name: "PreviewImage",
-        definition: NodePreviewImageDefinition
+        className: "PreviewImage",
+        definition: NodeDefinitionPreviewImage
     })
 
     useEffect(() => {

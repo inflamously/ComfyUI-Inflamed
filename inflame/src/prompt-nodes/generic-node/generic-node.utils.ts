@@ -1,10 +1,8 @@
-import {
-    AbstractDataNode,
-    ResolvedNodeType,
-} from "@inflame/models";
-import {NodeTypeBuilderDefinition} from "@inflame/models";
+import {AbstractDataNode, NodeTypeBuilderDefinition, ResolvedNodeType,} from "@inflame/models";
 import {GenericNode} from "./generic-node.ts";
 
+// TODO: What should I do?
+// @ts-ignore
 const validateGenericPromptNode = (node: GenericNode, typeDefinition: NodeTypeBuilderDefinition): boolean => {
     if (!node) {
         return false;
@@ -44,15 +42,14 @@ export const typeDataNode = <T extends NodeTypeBuilderDefinition>(
         definition: T
     }
 ): ResolvedNodeType<T> | undefined => {
-    const {id, node, mapper, definition} = props
+    const {id, node, mapper} = props
 
-    const dynamicNode = mapper(id, node) as ResolvedNodeType<T>
+    // TODO: Should I validate or not?
+    // if (!validateGenericPromptNode(dynamicNode, definition)) {
+    //     return undefined
+    // }
 
-    if (!validateGenericPromptNode(dynamicNode, definition)) {
-        return undefined
-    }
-
-    return dynamicNode
+    return mapper(id, node) as ResolvedNodeType<T>
 }
 
 export const castDataNode = <T extends NodeTypeBuilderDefinition>(node: GenericNode, _: T): ResolvedNodeType<T> => {

@@ -15,6 +15,11 @@ import {AbstractNodeView} from "../nodes/abstract-node-view.tsx";
 import {GenericSocket} from "@inflame/models";
 import {useSubscribeStoreChange} from "../store.hooks.tsx";
 import {promptWorkflowUpdate} from "../../+state/prompt/prompt-workflow-update/prompt-workflow.action.ts";
+import {
+    sourceContainNodes,
+    sourceIncludesAppendix
+} from "../../+state/prompt/prompt-workflow-update/prompt-workflow.utils.ts";
+import {filterToExistingNodes} from "../../prompt-nodes/prompt-node.utils.ts";
 
 const DebugImagePrompt = () => {
     const debugPrompt = useDebugImagePrompt();
@@ -31,6 +36,27 @@ const DebugImagePrompt = () => {
         action: promptWorkflowUpdate.nodeUpdate,
         listener: (action, api) => {
             console.log("Debug Prompt Action happend", action)
+
+            const {source, target} = action.payload ?? {}
+
+            if (!source ||
+                !target ||
+                !sourceContainNodes(source) ||
+                !sourceIncludesAppendix(source)) {
+                console.warn("Neither source nor target was valid and / or included an appendix.")
+                return;
+            }
+
+            filterToExistingNodes({
+                source,
+                target,
+            }).forEach((_) => {
+            })
+
+            api.dispatch(promptsSliceActions.updatePromptNodes({
+                nodes: [],
+                clientId: target.clientId,
+            }))
         }
     })
 
