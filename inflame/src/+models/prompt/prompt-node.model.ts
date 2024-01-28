@@ -1,5 +1,5 @@
-import {PromptNodeConnection} from "./prompt-node-connection.model.ts";
 import {BaseNodeTypeDefinition} from "./prompt-node-definition.model.ts";
+import {GenericNode} from "../../prompt-nodes/generic-node/generic-node.ts";
 
 export type PromptNodeInputs<Inputs, StateInputs> = Inputs | StateInputs
 
@@ -31,10 +31,4 @@ export type PromptNodeValue<Value, Options extends Record<string, unknown>> = {
 /**
  * Abstract node type that can be use in arrays, containers and contexts where its inner details do not matter.
  */
-export type AbstractPromptNode = {
-    id: string,
-    classtype: string,
-    inputs: Record<string, PromptNodeConnection> | undefined,
-    state: Record<string, unknown>,
-    outputs: Record<string, PromptNodeConnection> | undefined,
-}
+export type AbstractPromptNode = GenericNode
