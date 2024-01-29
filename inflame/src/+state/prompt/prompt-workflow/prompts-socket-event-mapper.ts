@@ -9,20 +9,20 @@ import {subscribeToStoreChange} from "../../inflame-store.listener.ts";
 export const subscribePromptSocketEventHandler = () => {
     subscribeToStoreChange(comfyuiSocketActions.statusEvent, () => {
         // TODO: Reactivate on need
-        console.log("comfyuiSocketActions.statusEvent: not implemented")
+        // console.log("comfyuiSocketActions.statusEvent: not implemented")
     })
 
-    subscribeToStoreChange(comfyuiSocketActions.executionStart, (action) => {
+    subscribeToStoreChange(comfyuiSocketActions.executionStart, () => {
         // TODO: Handle loading state?
-        console.log(action)
+        // console.log(action)
     })
 
-    subscribeToStoreChange(comfyuiSocketActions.executionCached, (action) => {
-        console.log(action)
+    subscribeToStoreChange(comfyuiSocketActions.executionCached, () => {
+        // console.log(action)
     })
 
-    subscribeToStoreChange(comfyuiSocketActions.executing, (action) => {
-        console.log(action)
+    subscribeToStoreChange(comfyuiSocketActions.executing, () => {
+        // console.log(action)
     })
 
     /**

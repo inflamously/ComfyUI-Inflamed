@@ -12,26 +12,33 @@ import {COMFYUI_SOCKET} from "../socket/comfyui/comfyui-socket.hooks.tsx";
 import {useAppDispatch} from "@inflame/state";
 import {useGetViewImage} from "../resources/comfyui-api/view-image-download.hooks.ts";
 import {AbstractNodeView} from "../nodes/abstract-node-view.tsx";
-import {GenericSocket} from "@inflame/models";
-import {usePostSimpleImagePrompt} from "./image-prompt.hooks.ts";
+import {GenericSocket, ViewQueryDTO} from "@inflame/models";
+import {NodeDefinitionPreviewImage} from "../../prompt-nodes/preview-image/node-definition-preview-image.ts";
+import {useNodeFromPrompt} from "../nodes/nodes.hooks.tsx";
 
 const DebugImagePrompt = () => {
-    const debugPrompt = useDebugPrompt();
+    const debugPrompt = useDebugPrompt({
+        image: {
+            index: 0,
+        }
+    });
     const socket = useSelector((state: AppState): GenericSocket => socketStateSelectors.selectSocketById(state, COMFYUI_SOCKET))
     const [postPrompt] = comfyApi.usePostPrompt()
     const dispatch = useAppDispatch()
+
     const {url: exampleUrl} = useGetViewImage({
         type: "input",
         filename: "example.png"
     })
 
-    usePostSimpleImagePrompt({
-        socket,
+    const previewImage = useNodeFromPrompt({
+        prompt: debugPrompt,
+        definition: NodeDefinitionPreviewImage
     })
 
     const {url: generatedImageUrl = ""} = useGetViewImage({
-        type: "output",
-        filename: "",
+        type: previewImage?.state?.images?.[0]?.type as ViewQueryDTO["type"] ?? "",
+        filename: previewImage?.state?.images?.[0]?.filename ?? "",
     })
 
     const handleInvokePrompt = useCallback(async () => {
@@ -72,14 +79,14 @@ const DebugImagePrompt = () => {
                 <Text pb={4}>Custom Prompt</Text>
                 <Button onClick={handleInvokePrompt}>Invoke</Button>
             </Box>
-            <Box>
+            <Box p={16}>
                 <Text pb={4}>Client ID {debugPrompt?.clientId}</Text>
                 <Text pb={4}>Remote ID {debugPrompt?.remoteId}</Text>
                 <Text pb={4}>{JSON.stringify(debugPrompt?.workflow.nodes[1]?.state)}</Text>
+                <Image src={generatedImageUrl} width={128} height={128}></Image>
             </Box>
             <Box>
                 <AbstractNodeView abstractNode={debugPrompt?.workflow.nodes.at(0)}></AbstractNodeView>
-                <Image src={generatedImageUrl} width={128} height={128}></Image>
             </Box>
         </Box>
     )

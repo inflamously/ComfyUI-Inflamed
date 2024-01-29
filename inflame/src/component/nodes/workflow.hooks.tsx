@@ -5,23 +5,12 @@ import {
     sourceIncludesAppendix
 } from "../../+state/prompt/prompt-workflow-update/prompt-workflow.utils.ts";
 import {promptsSliceActions} from "@inflame/state";
-import {NodeUpdateSource, Prompt} from "@inflame/models";
+import {updateStateInExistingNodes} from "../../prompt-nodes/prompt-node.utils.ts";
 
-type ValidatedNodeUpdateSource = {
-    nodes: Exclude<NodeUpdateSource["nodes"], undefined>,
-    appendix: Exclude<NodeUpdateSource["appendix"], undefined>
-}
-
-export const usePromptNodeUpdate = (props: {
-    onUpdate: (source: ValidatedNodeUpdateSource, target: Prompt) => void,
-}) => {
-    const {onUpdate} = props
-
+export const usePromptNodeUpdateHandler = () => {
     useSubscribeStoreChange({
         action: promptWorkflowUpdate.nodeUpdate,
         listener: (action, api) => {
-            console.log("Debug Prompt Action happend", action)
-
             const {source, target} = action.payload ?? {}
 
             if (!source ||
@@ -32,10 +21,10 @@ export const usePromptNodeUpdate = (props: {
                 return;
             }
 
-            onUpdate(source, target)
+            const nodes = updateStateInExistingNodes(source, target)
 
             api.dispatch(promptsSliceActions.updatePromptNodes({
-                nodes: [],
+                nodes,
                 clientId: target.clientId,
             }))
         }

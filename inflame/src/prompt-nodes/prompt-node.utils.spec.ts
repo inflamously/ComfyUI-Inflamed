@@ -1,5 +1,5 @@
 import {
-    calculatePathsForObject, replaceNodesInWorkflow, updateNodeId,
+    calculatePathsForObject, replaceNodesInPrompt, updateNodeId,
     updateNodeState
 } from "./prompt-node.utils.ts";
 import {PromptNodeLoadImage} from "./load-image/load-image.node.ts";
@@ -281,7 +281,7 @@ describe('Various utils functions collected applied to prompt nodes', function (
             nodePreviewImage
         ])
 
-        const newWorkflow = replaceNodesInWorkflow(workflow, [newNodePreviewImage])
+        const newWorkflow = replaceNodesInPrompt(workflow, [newNodePreviewImage])
 
         expect(newWorkflow.nodes).toEqual([
             nodeLoadImage,

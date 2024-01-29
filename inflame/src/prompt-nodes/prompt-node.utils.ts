@@ -1,13 +1,13 @@
-import {set} from "lodash";
 import {isConnectionOfLink} from "./prompt-node-connection.utils.ts";
 import {
     AbstractPromptNode, BaseNodeTypeDefinition, Prompt,
     PromptNode,
     PromptNodeConnection,
-    PromptWorkflow
+    PromptWorkflow, ValidatedNodeUpdateSource
 } from "@inflame/models";
 import structuredClone from "@ungap/structured-clone";
-import {updateObject} from "../core/object.utils.ts";
+import {GenericNode} from "./generic-node/generic-node.ts";
+import {set} from "lodash";
 
 export const calculatePathsForObject = (tree: Record<string, unknown>) => {
     const statePaths = structuredClone(tree)
@@ -91,7 +91,7 @@ export const updateNodeId = (node: AbstractPromptNode, id: string) => {
     return node
 }
 
-export const findAbstractPromptNodeById = (id: string, workflow: PromptWorkflow): AbstractPromptNode | undefined => {
+export const findPromptNodeById = (id: string, workflow: PromptWorkflow): AbstractPromptNode | undefined => {
     if (!workflow?.nodes || workflow.nodes.length <= 0) {
         return undefined;
     }
@@ -99,7 +99,7 @@ export const findAbstractPromptNodeById = (id: string, workflow: PromptWorkflow)
     return workflow.nodes.find((node) => node.id === id);
 }
 
-export const findAbstractPromptNodeByClass = (classtype: string, workflow: PromptWorkflow): AbstractPromptNode[] => {
+export const findPromptNodeByClasstype = (classtype: string, workflow: PromptWorkflow): AbstractPromptNode[] => {
     if (!workflow?.nodes || workflow.nodes.length <= 0) {
         return [];
     }
@@ -107,27 +107,47 @@ export const findAbstractPromptNodeByClass = (classtype: string, workflow: Promp
     return workflow.nodes.filter(node => node.classtype === classtype)
 }
 
-
 export const filterToExistingNodes = (props: {
     source: {
         nodes: string[]
     },
     target: Prompt
-}): Array<AbstractPromptNode | undefined> => {
+}): GenericNode[] => {
     const {source, target} = props
 
     if (!source || !target)
         return [];
 
     return source.nodes
-        .map((id) => findAbstractPromptNodeById(id, target.workflow))
-        .filter((node) => node !== undefined);
+        .map((id) => findPromptNodeById(id, target.workflow))
+        .filter((node): node is GenericNode => node !== undefined);
 }
 
-export const replaceNodesInWorkflow = (workflow: PromptWorkflow, nodes: Array<AbstractPromptNode>) => {
-    return updateObject(workflow, (newWorkflow) => {
-        newWorkflow.nodes = newWorkflow.nodes.map((workflowNode) =>
-            nodes.find((newNode) => workflowNode?.id === newNode.id) ?? workflowNode
-        )
+export const updateStateInExistingNodes = (
+    source: ValidatedNodeUpdateSource,
+    target: Prompt
+): GenericNode[] => {
+    const updatedNodes = filterToExistingNodes({
+        source,
+        target,
+    }).map((node) => {
+        const {appendix} = source
+
+        const newNode = structuredClone(node)
+        Object.keys(appendix).forEach(key => {
+            newNode.state[key] = appendix[key]
+        })
+
+        return newNode
     })
+
+    return target.workflow.nodes.map(node => updatedNodes.find(updatedNode => updatedNode.id === node.id) ?? node)
+}
+
+export const replaceNodesInPrompt = (workflow: PromptWorkflow, newNodes: Array<AbstractPromptNode>) => {
+    const newWorkflow = structuredClone(workflow)
+    newWorkflow.nodes = newWorkflow.nodes.map((node) =>
+        newNodes.find((newNode) => node?.id === newNode.id) ?? node
+    )
+    return newWorkflow
 }

@@ -1,7 +1,7 @@
 import {nodeUpdate} from "./prompt-workflow.action.ts";
 import {
     filterToExistingNodes,
-    replaceNodesInWorkflow
+    replaceNodesInPrompt
 } from "../../../prompt-nodes/prompt-node.utils.ts";
 import {
     hasSingleNode,
@@ -65,7 +65,7 @@ export const subscribePreviewImageNodeUpdate = () => {
             })
 
             console.log("Workflow before", target.workflow)
-            const newWorkflow = replaceNodesInWorkflow(target.workflow, [previewImageNode])
+            const newWorkflow = replaceNodesInPrompt(target.workflow, [previewImageNode])
             console.log("Workflow after", newWorkflow)
 
             api.dispatch(promptsSliceActions.updatePromptNodes({
