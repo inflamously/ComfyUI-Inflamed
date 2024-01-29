@@ -1,4 +1,4 @@
-import {useTypedGenericPromptNode} from "../nodes/data-nodes.hooks.tsx";
+import {useTypedGenericPromptNodeFromDataNode} from "../nodes/nodes.hooks.tsx";
 import {NodeDefinitionLoadImage} from "../../prompt-nodes/load-image/node-definition-load-image.ts";
 import {NodeDefinitionPreviewImage} from "../../prompt-nodes/preview-image/node-definition-preview-image.ts";
 import {promptToPromptDto} from "../../mapper/prompt-to-prompt-dto.mapper.ts";
@@ -21,13 +21,13 @@ export const usePostSimpleImagePrompt = (props: {
     const dispatch = useAppDispatch()
     const prompt = useSelector((state: AppState) => promptsSelectors.selectPromptByClientId(state, promptName))
 
-    const nodeLoadImage = useTypedGenericPromptNode({
+    const nodeLoadImage = useTypedGenericPromptNodeFromDataNode({
         id: "1",
         classtype: "LoadImage",
         definition: NodeDefinitionLoadImage
     })
 
-    const nodePreviewImage = useTypedGenericPromptNode({
+    const nodePreviewImage = useTypedGenericPromptNodeFromDataNode({
         id: "2",
         classtype: "PreviewImage",
         definition: NodeDefinitionPreviewImage

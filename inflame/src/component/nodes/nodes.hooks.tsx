@@ -9,14 +9,11 @@ import {GenericNode} from "../../prompt-nodes/generic-node/generic-node.ts";
 import {
     comfyuiDataNodeAsGenericPromptNode
 } from "../../prompt-nodes/generic-node/comfyui-generic/comfyui-generic-node.utils.ts";
-import {NodeTypeBuilderDefinition, ResolvedNodeType} from "@inflame/models";
-import {typeDataNode} from "../../prompt-nodes/generic-node/generic-node.utils.ts";
+import {NodeTypeBuilderDefinition, Prompt, ResolvedNodeType} from "@inflame/models";
+import {castGenericNode, typeDataNode} from "../../prompt-nodes/generic-node/generic-node.utils.ts";
+import {findPromptNodeById} from "../../prompt-nodes/prompt-node.utils.ts";
 
-export const useSelectDataNode = (name: string) => {
-    return useSelector((state: AppState) => dataNodesSelectors.selectDataNode(state, name))
-}
-
-export const useTypedGenericPromptNode = <T extends NodeTypeBuilderDefinition>(props: {
+export const useTypedGenericPromptNodeFromDataNode = <T extends NodeTypeBuilderDefinition>(props: {
     id: string,
     classtype: string,
     definition: T
@@ -38,12 +35,12 @@ export const useTypedGenericPromptNode = <T extends NodeTypeBuilderDefinition>(p
 
         setTypedNode(
             typeDataNode({
-                    id,
-                    node: dataNode,
-                    mapper: comfyuiDataNodeAsGenericPromptNode,
-                    definition,
-                })
-            )
+                id,
+                node: dataNode,
+                mapper: comfyuiDataNodeAsGenericPromptNode,
+                definition,
+            })
+        )
     }, [id, dataNode, setTypedNode]);
 
     return typedNode
@@ -98,4 +95,17 @@ export const useDataNodesLoader = () => {
             )
         }
     }, [dispatch, data, error])
+}
+
+export const useNodeFromPrompt = <T extends NodeTypeBuilderDefinition>(props: {
+    prompt: Prompt,
+    id: string,
+    definition: T,
+}) => {
+    const {prompt, definition, id} = props
+    if (!prompt) {
+        return undefined
+    }
+    const node = findPromptNodeById(id, prompt.workflow)
+    return node ? castGenericNode(node, definition) : node
 }

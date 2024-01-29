@@ -13,8 +13,6 @@ type BuilderConstant<Value extends string> = {
     options?: BuilderConstantOptions
 }
 
-type BuilderTypeArray = Array<"array" | "string" | "number" | "boolean">
-
 type BuilderTypes =
     | "link"
     | BuilderTypeArray
@@ -41,7 +39,6 @@ export type NodeTypeBuilderDefinition = {
     state: BuilderEntries,
     inputs: BuilderInputBind,
     outputs: BuilderOutputBind,
-    // stateInputs: undefined,
 }
 
 type ResolveOptions<T> = T extends BuilderConstantOptions ? T : Record<string, unknown>
@@ -54,9 +51,6 @@ type ResolveInputBind<T extends BuilderInputBind, Key extends keyof T> =
 type ResolveOutputBind<T extends BuilderOutputBind, Key extends keyof T> =
     T[Key] extends "link" ? BindValueLink : never
 
-type ResolveTypeArray<T extends BuilderTypeArray[number]> =
-    T extends "array" ? Array<never> :
-        T extends "string" ? string : never
 
 /**
  * Parses a complete state tree
@@ -67,6 +61,43 @@ type ResolveBuilderTypes<T extends BuilderEntries, Key extends keyof T> =
         // Array just plain array
         T[Key] extends BuilderTypeArray ? ResolveTypeArray<T[Key][number]> :
             T[Key] extends BuilderTypes ? ResolveBuilderConstant<T[Key]> : unknown
+
+
+type BuilderTypeArray = Array<
+    | "array"
+    | "string"
+    | "number"
+    | "boolean"
+    | BuilderTypeArrayObject
+>
+type BuilderTypeArrayObject = Record<string,
+    | "string"
+    | "boolean"
+    | "number"
+    | "unknown"
+>
+
+/**
+ * In case an state property is an array, this handles the property's value-type
+ */
+type ResolveTypeArray<T extends BuilderTypeArray[number]> =
+    T extends "array" ? Array<never> :
+        T extends "string" ? string :
+            T extends "number" ? number :
+                T extends "boolean" ? boolean :
+                    T extends BuilderTypeArrayObject ? ResolveTypeArraysSubArray<T>[] : never
+
+/**
+ * This is a very stupid but special case where we have objects in an array
+ * from here there should be no more sub arrays or objects
+ */
+type ResolveTypeArraysSubArray<T extends BuilderTypeArrayObject> = {
+    [Key in keyof T]:
+    T[Key] extends "string" ? string :
+        T[Key] extends "number" ? number :
+            T[Key] extends "boolean" ? boolean :
+                T[Key] extends "unknown" ? never : never
+}
 
 /**
  * Resolve all constant values in a state object
@@ -97,6 +128,9 @@ type ResolveBuilderConstantOption<T extends Record<string, unknown>> = {
             T[Key] extends "boolean" ? boolean : unknown
 }
 
+/**
+ * Resolve type and finalizes it.
+ */
 export type ResolvedNodeType<T extends NodeTypeBuilderDefinition> = PromptNode<
     NodeTypeDefinition<
         {
