@@ -16,7 +16,7 @@ const combinedReducer = combineSlices(
     comfyApi.slice
 )
 
-const store = configureStore({
+export const appStore = configureStore({
     devTools: true,
     reducer: combinedReducer,
     middleware: (defaultMiddleware) => defaultMiddleware()
@@ -27,11 +27,9 @@ const store = configureStore({
 export type AppState = ReturnType<typeof combinedReducer>;
 export type AppDispatch = Dispatch;
 
-export const useAppDispatch: () => typeof store.dispatch = useDispatch;
+export const useAppDispatch: () => typeof appStore.dispatch = useDispatch;
 
 // Listeners
 subscribePromptSocketEventHandler();
 // subscribePreviewImageNodeUpdate();
-subscribeToSyncStoreDataChanges(store);
-
-export default store;
+subscribeToSyncStoreDataChanges(appStore);
