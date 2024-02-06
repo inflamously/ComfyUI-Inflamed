@@ -19,7 +19,7 @@ export const usePostSimpleImagePrompt = (props: {
 
     const [postPrompt, requestMeta] = comfyApi.usePostPrompt();
     const dispatch = useAppDispatch()
-    const prompt = useSelector((state: AppState) => promptsSelectors.selectPromptByClientId(state, promptName))
+    const prompt = useSelector((state: AppState) => promptsSelectors.selectPromptByName(state, promptName))
 
     const nodeLoadImage = useTypedGenericPromptNodeFromDataNode({
         id: "1",
@@ -62,7 +62,7 @@ export const usePostSimpleImagePrompt = (props: {
         previewImage.inputs.images = loadImage.outputs.IMAGE
 
         dispatch(promptsSliceActions.updatePromptNodes({
-            clientId: promptName,
+            name: promptName,
             nodes: [
                 loadImage,
                 previewImage,

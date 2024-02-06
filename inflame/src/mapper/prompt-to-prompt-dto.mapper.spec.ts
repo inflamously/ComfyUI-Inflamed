@@ -12,7 +12,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
         }
 
         const prompt: Prompt = {
-            clientId: "1234",
+            name: "1234",
             workflow: {
                 nodes: [
                     PromptNodeLoadImage({
@@ -74,7 +74,7 @@ describe('Mapper for converting a full prompt into a dto object that can be pass
         }
 
         const prompt: Prompt = {
-            clientId: "1234",
+            name: "1234",
             workflow: {
                 nodes: [
                     PromptNodeLoadImage({

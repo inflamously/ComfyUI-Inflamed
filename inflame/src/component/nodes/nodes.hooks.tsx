@@ -1,17 +1,16 @@
-import {AppState, useAppDispatch} from "@inflame/state";
+import {AppState, comfyApi, useAppDispatch} from "@inflame/state";
 import {useEffect, useState} from "react";
 import {nodesSliceActions} from "../../+state/data-nodes/data-nodes.slice.ts";
-import {comfyApi} from "@inflame/state";
 import {mapObjectNodesDtoToDataNodeCollection} from "../../mapper/object-dto-to-datanode.mapper.ts";
 import {useSelector} from "react-redux";
 import {dataNodesSelectors} from "../../+state/data-nodes/data-nodes.selectors.ts";
-import {GenericNode} from "../../prompt-nodes/generic-node/generic-node.ts";
 import {
     comfyuiDataNodeAsGenericPromptNode
 } from "../../prompt-nodes/generic-node/comfyui-generic/comfyui-generic-node.utils.ts";
 import {NodeTypeBuilderDefinition, Prompt, ResolvedNodeType} from "@inflame/models";
 import {castGenericNode, typeDataNode} from "../../prompt-nodes/generic-node/generic-node.utils.ts";
 import {findPromptNodeById} from "../../prompt-nodes/prompt-node.utils.ts";
+import {cloneDeep} from "lodash";
 
 export const useTypedGenericPromptNodeFromDataNode = <T extends NodeTypeBuilderDefinition>(props: {
     id: string,
@@ -24,57 +23,25 @@ export const useTypedGenericPromptNodeFromDataNode = <T extends NodeTypeBuilderD
         definition
     } = props
 
-    const dataNode = useSelector((state: AppState) => dataNodesSelectors.selectDataNode(state, classtype))
-    const [typedNode, setTypedNode] =
-        useState<ResolvedNodeType<T> | undefined>()
+    const node = useSelector((state: AppState) => dataNodesSelectors.selectDataNode(state, classtype))
+    const [typedNode, setTypedNode] = useState<Readonly<ResolvedNodeType<T> | undefined>>()
 
     useEffect(() => {
-        if (!dataNode) {
+        if (!node) {
             return;
         }
 
         setTypedNode(
             typeDataNode({
                 id,
-                node: dataNode,
-                mapper: comfyuiDataNodeAsGenericPromptNode,
+                node,
                 definition,
+                mapper: comfyuiDataNodeAsGenericPromptNode
             })
         )
-    }, [id, dataNode, setTypedNode]);
+    }, [node, setTypedNode]);
 
-    return typedNode
-}
-
-export const useGenericPromptNode = (
-    props: {
-        id: string,
-        classtype: string
-    }
-) => {
-    const {
-        id,
-        classtype
-    } = props
-
-    const dataNode = useSelector((state: AppState) => dataNodesSelectors.selectDataNode(state, classtype))
-    const [genericPromptNode, setGenericPromptNode] =
-        useState<GenericNode | undefined>()
-
-    useEffect(() => {
-        if (!dataNode) {
-            return;
-        }
-
-        setGenericPromptNode(
-            comfyuiDataNodeAsGenericPromptNode(
-                id,
-                dataNode
-            )
-        )
-    }, [id, dataNode, setGenericPromptNode]);
-
-    return genericPromptNode
+    return typedNode ? cloneDeep(typedNode) : undefined
 }
 
 export const useDataNodesLoader = () => {
@@ -82,30 +49,35 @@ export const useDataNodesLoader = () => {
     const {data, error} = comfyApi.useGetObjectInfoQuery()
 
     useEffect(() => {
-        if (error) {
-            console.error(error) // TODO: Handle error
+        if (!error) {
+            return;
+        }
+
+        console.error(error)
+    }, [error]);
+
+    useEffect(() => {
+        if (!data) {
             return
         }
 
-        if (data) {
-            dispatch(
-                nodesSliceActions.updateDataNodeCollection(
-                    mapObjectNodesDtoToDataNodeCollection(data).nodes
-                )
+        dispatch(
+            nodesSliceActions.updateDataNodeCollection(
+                mapObjectNodesDtoToDataNodeCollection(data).nodes
             )
-        }
-    }, [dispatch, data, error])
+        )
+    }, [data]);
 }
 
 export const useNodeFromPrompt = <T extends NodeTypeBuilderDefinition>(props: {
     prompt: Prompt,
-    id: string,
+    nodeId: string,
     definition: T,
 }) => {
-    const {prompt, definition, id} = props
+    const {prompt, definition, nodeId} = props
     if (!prompt) {
         return undefined
     }
-    const node = findPromptNodeById(id, prompt.workflow)
+    const node = findPromptNodeById(nodeId, prompt.workflow)
     return node ? castGenericNode(node, definition) : node
 }
