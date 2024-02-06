@@ -27,33 +27,20 @@ export const fetchViewImage = (props: ViewQueryDTO): Partial<FetchViewImageClien
     }
 }
 
-export const useGetViewImage = (props: ViewQueryDTO): Partial<ImageDTO> => {
+export const useComfyuiImage = (props: ViewQueryDTO): Partial<ImageDTO> => {
     const {filename, type} = props;
-    if (!filename || filename.length <= 0 || !type || type.length <= 0) {
-        return {
-            image: undefined,
-            url: undefined
-        }
-    }
 
     const [image, setImage] = useState<ReadableStream<Uint8Array> | null>(null)
-    const [url, setUrl] = useState<string>(`${comfyApi.url}view?filename=${filename}&type=${type}`)
+    const [url, setUrl] = useState<string>("")
 
     useEffect(() => {
-        const {client, url: acquiredUrl} = fetchViewImage({
+        const {client: fetchedClient, url: fetchedUrl} = fetchViewImage({
             filename,
             type
         })
 
-        if (!client || !acquiredUrl || acquiredUrl.length <= 0) {
-            return;
-        }
-
-        setUrl(acquiredUrl);
-
-        client
-            .then((response) => response?.ok && setImage(response.body))
-            .catch(() => setImage(null))
+        fetchedClient?.then((value) => value && setImage(value.body)).catch(() => setImage(null))
+        setUrl(fetchedUrl ?? "")
     }, [filename, type]);
 
     return {image, url}
