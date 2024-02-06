@@ -36,7 +36,7 @@ export const calculateStateInputs = <
     inputs: Inputs | undefined,
     defaultInputs: Inputs | undefined,
     stateInputs: ((state: State) => StateInputs) | undefined
-): Inputs | StateInputs | undefined => {
+): Inputs | StateInputs => {
     let result: Inputs | StateInputs | undefined = inputs ?? defaultInputs
 
     if (stateInputs) {
@@ -50,7 +50,7 @@ export const calculateStateInputs = <
         }
     }
 
-    return result
+    return result ?? {} as (Inputs & StateInputs)
 }
 
 
@@ -91,12 +91,12 @@ export const updateNodeId = (node: AbstractPromptNode, id: string) => {
     return node
 }
 
-export const findPromptNodeById = (id: string, workflow: PromptWorkflow): AbstractPromptNode | undefined => {
+export const findPromptNodeById = (nodeId: string, workflow: PromptWorkflow): AbstractPromptNode | undefined => {
     if (!workflow?.nodes || workflow.nodes.length <= 0) {
         return undefined;
     }
 
-    return workflow.nodes.find((node) => node.id === id);
+    return workflow.nodes.find((node) => node.id === nodeId);
 }
 
 export const findPromptNodeByClasstype = (classtype: string, workflow: PromptWorkflow): AbstractPromptNode[] => {
