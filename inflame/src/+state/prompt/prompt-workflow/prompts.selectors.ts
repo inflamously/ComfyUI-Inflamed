@@ -14,11 +14,11 @@ const selectPromptsStateItems = createSelector(
     (state: PromptState) => state.items,
 )
 
-const selectPromptByClientId = createSelector([
+const selectPromptByName = createSelector([
         selectPromptsStateItems,
-        (_: AppState, clientId: string) => clientId,
+        (_: AppState, name: string) => name,
     ],
-    (state: PromptsEntityAdapterType, clientId) => promptsEntityAdapterSelectors.selectById(state, clientId),
+    (state: PromptsEntityAdapterType, name) => promptsEntityAdapterSelectors.selectById(state, name),
 )
 
 const selectPromptByRemoteId = createSelector([
@@ -40,7 +40,7 @@ export const promptsSelectors = {
     selectPrompts,
     selectPromptsState,
     selectPromptsStateItems,
-    selectPromptByClientId,
+    selectPromptByName,
     selectPromptByRemoteId,
     selectPromptsByNewest,
 };

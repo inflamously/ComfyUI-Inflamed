@@ -3,9 +3,10 @@ import {PromptsEntityAdapterType, promptsEntityAdapter} from "./prompts-entity.t
 import {AbstractPromptNode, Prompt} from "@inflame/models";
 import {dataStoreActions} from "../../data-store/data-store.ts";
 import {subscribeToStoreChange} from "../../inflame-store.listener.ts";
+import {cloneDeep} from "lodash";
 
 type PromptAction<Type extends Record<string, unknown>> = PayloadAction<{
-    clientId: string
+    name: string
 } & Type>
 
 export type PromptState = {
@@ -24,54 +25,73 @@ export const promptsSlice = createSlice({
             const {payload} = action
 
             if (!payload) {
-                console.error("Missing name for creation of a new prompt.")
+                console.warn("Missing name for creation of a new prompt.")
                 return state;
             }
 
             if (state.items.entities[payload]) {
-                console.error(`Prompt with name ${payload} already exists`)
+                console.warn(`Prompt with name "${payload}" already exists`)
                 return state;
             }
 
             promptsEntityAdapter.addOne(state.items, {
-                clientId: payload,
+                name: payload,
                 workflow: {
                     nodes: []
                 }
             })
         },
         updatePromptRemoteId: (state, action: PromptAction<{ remoteId: string }>) => {
-            const {clientId, remoteId} = action.payload
-            if (!clientId) {
+            const {name, remoteId} = action.payload
+            if (!name) {
                 return state;
             }
 
-            const prompt = state.items.entities[clientId]
+            const prompt = state.items.entities[name]
             if (prompt) {
                 prompt.remoteId = remoteId
             }
         },
+        updatePrompt: (state, action: PayloadAction<Prompt>) => {
+            const prompt = action.payload
+
+            if (!prompt) {
+                return state
+            }
+
+            promptsEntityAdapter.updateOne(state.items, {
+                id: prompt.name,
+                changes: cloneDeep(prompt)
+            })
+        },
         updatePromptNodes: (state, action: PromptAction<{
             nodes: AbstractPromptNode[]
         }>) => {
-            const {clientId, nodes} = action.payload
-            if (!clientId) {
+            const {name, nodes} = action.payload
+
+            if (!name) {
                 return state;
             }
 
-            const prompt = state.items.entities[clientId]
+            const prompt = state.items.entities[name]
             if (!prompt) {
                 return state;
             }
 
-            const newPrompt: Prompt = {
+            if (prompt.workflow.nodes.some((node) => node === undefined || node === null)) {
+                console.warn(`Invalid prompt node was detected in workflow ${prompt.name}`)
+                return state;
+            }
+
+            const newPrompt = {
                 ...prompt,
                 workflow: {
-                    nodes
+                    nodes,
                 }
-            }
+            } satisfies Prompt
+
             promptsEntityAdapter.updateOne(state.items, {
-                id: prompt.clientId,
+                id: prompt.name,
                 changes: newPrompt
             })
         },

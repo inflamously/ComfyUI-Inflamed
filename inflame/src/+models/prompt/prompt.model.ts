@@ -1,7 +1,7 @@
 import {AbstractPromptNode} from "./prompt-node.model.ts";
 
 export type Prompt = {
-    clientId: string,
+    name: string,
     remoteId?: string,
     workflow: PromptWorkflow
 }

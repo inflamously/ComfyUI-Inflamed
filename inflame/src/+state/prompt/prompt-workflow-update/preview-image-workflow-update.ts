@@ -70,7 +70,7 @@ export const subscribePreviewImageNodeUpdate = () => {
 
             api.dispatch(promptsSliceActions.updatePromptNodes({
                 nodes: newWorkflow.nodes,
-                clientId: target.clientId
+                name: target.name
             }))
         }
     );
