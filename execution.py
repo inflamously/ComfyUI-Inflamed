@@ -1,13 +1,12 @@
+import sys
 import os
 import queue
-import sys
 import copy
-import json
 import logging
+import json
 import threading
 import heapq
 import traceback
-import gc
 import inspect
 from typing import List, Literal, NamedTuple, Optional
 
@@ -256,7 +255,6 @@ def recursive_output_delete_if_changed(prompt, old_prompt, outputs, current_item
                     is_changed = map_node_over_list(class_def, input_data_all, "IS_CHANGED")
                     prompt[unique_id]['is_changed'] = is_changed
                 except Exception as e:
-                    # TODO: IMPL Frontend UI
                     print("Exception occured on IS_CHANGED: {}".format(e))
                     to_delete = True
         else:

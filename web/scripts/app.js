@@ -355,7 +355,7 @@ export class ComfyApp {
 								window.open(url, "_blank");
 							},
 						},
-						...getCopyImageOption(img),
+						...getCopyImageOption(img), 
 						{
 							content: "Save Image",
 							callback: () => {
@@ -1501,12 +1501,17 @@ export class ComfyApp {
 		// Load previous workflow
 		let restored = false;
 		try {
-			const json = localStorage.getItem("workflow");
-			if (json) {
-				const workflow = JSON.parse(json);
-				await this.loadGraphData(workflow);
-				restored = true;
-			}
+			const loadWorkflow = async (json) => {
+				if (json) {
+					const workflow = JSON.parse(json);
+					await this.loadGraphData(workflow);
+					return true;
+				}
+			};
+			const clientId = api.initialClientId ?? api.clientId;
+			restored =
+				(clientId && (await loadWorkflow(sessionStorage.getItem(`workflow:${clientId}`)))) ||
+				(await loadWorkflow(localStorage.getItem("workflow")));
 		} catch (err) {
 			console.error("Error loading previous workflow", err);
 		}
@@ -1516,8 +1521,14 @@ export class ComfyApp {
 			await this.loadGraphData();
 		}
 
-        // Save current workflow automatically
-        setInterval(async () => await this.saveWorkflow(), 1000);
+		// Save current workflow automatically
+		setInterval(() => {
+			const workflow = JSON.stringify(this.graph.serialize());
+			localStorage.setItem("workflow", workflow);
+			if (api.clientId) {
+				sessionStorage.setItem(`workflow:${api.clientId}`, workflow);
+			}
+		}, 1000);
 
 		this.#addDrawNodeHandler();
 		this.#addDrawGroupsHandler();
@@ -1529,9 +1540,6 @@ export class ComfyApp {
 		await this.#invokeExtensionsAsync("setup");
 	}
 
-	async saveWorkflow() {
-        localStorage.setItem("workflow", JSON.stringify(this.graph.serialize()));
-    }
 	/**
 	 * Registers nodes with the graph
 	 */
@@ -2101,6 +2109,8 @@ export class ComfyApp {
 					this.loadGraphData(JSON.parse(pngInfo.Workflow)); // Support loading workflows from that webp custom node.
 				} else if (pngInfo.prompt) {
 					this.loadApiJson(JSON.parse(pngInfo.prompt));
+				} else if (pngInfo.Prompt) {
+					this.loadApiJson(JSON.parse(pngInfo.Prompt)); // Support loading prompts from that webp custom node.
 				}
 			}
 		} else if (file.type === "application/json" || file.name?.endsWith(".json")) {
@@ -2154,8 +2164,17 @@ export class ComfyApp {
 				if (value instanceof Array) {
 					const [fromId, fromSlot] = value;
 					const fromNode = app.graph.getNodeById(fromId);
-					const toSlot = node.inputs?.findIndex((inp) => inp.name === input);
-					if (toSlot !== -1) {
+					let toSlot = node.inputs?.findIndex((inp) => inp.name === input);
+					if (toSlot == null || toSlot === -1) {
+						try {
+							// Target has no matching input, most likely a converted widget
+							const widget = node.widgets?.find((w) => w.name === input);
+							if (widget && node.convertWidgetToInput?.(widget)) {
+								toSlot = node.inputs?.length - 1;
+							}
+						} catch (error) {}
+					}
+					if (toSlot != null || toSlot !== -1) {
 						fromNode.connect(fromSlot, node, toSlot);
 					}
 				} else {
