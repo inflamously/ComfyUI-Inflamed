@@ -10,7 +10,6 @@ import {
 import {NodeTypeBuilderDefinition, Prompt, ResolvedNodeType} from "@inflame/models";
 import {castGenericNode, typeDataNode} from "../../prompt-nodes/generic-node/generic-node.utils.ts";
 import {findPromptNodeById} from "../../prompt-nodes/prompt-node.utils.ts";
-import {cloneDeep} from "lodash";
 
 export const useTypedGenericPromptNodeFromDataNode = <T extends NodeTypeBuilderDefinition>(props: {
     id: string,
@@ -24,7 +23,7 @@ export const useTypedGenericPromptNodeFromDataNode = <T extends NodeTypeBuilderD
     } = props
 
     const node = useSelector((state: AppState) => dataNodesSelectors.selectDataNode(state, classtype))
-    const [typedNode, setTypedNode] = useState<Readonly<ResolvedNodeType<T> | undefined>>()
+    const [typedNode, setTypedNode] = useState<Readonly<ResolvedNodeType<T>> | undefined>()
 
     useEffect(() => {
         if (!node) {
@@ -41,7 +40,7 @@ export const useTypedGenericPromptNodeFromDataNode = <T extends NodeTypeBuilderD
         )
     }, [node, setTypedNode]);
 
-    return typedNode ? cloneDeep(typedNode) : undefined
+    return typedNode
 }
 
 export const useDataNodesLoader = () => {
