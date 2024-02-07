@@ -4,6 +4,9 @@ import {
     EffectListenerArgument,
     subscribeToStoreChange
 } from "../+state/inflame-store.listener.ts";
+import {useSelector} from "react-redux";
+import {AppState} from "@inflame/state";
+import {isEqual} from "lodash";
 
 export const useSubscribeStoreChange = <Args, Payload>(props: {
     action: ActionCreatorArgument<Args, Payload>
@@ -13,4 +16,8 @@ export const useSubscribeStoreChange = <Args, Payload>(props: {
     useEffect(() => {
         subscribeToStoreChange(action, listener);
     }, []);
+}
+
+export const useMemoSelector = <Result extends unknown>(selector: (state: AppState) => Result) => {
+    return useSelector((state: AppState) => selector(state), isEqual)
 }
