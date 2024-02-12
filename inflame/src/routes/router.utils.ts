@@ -22,4 +22,4 @@ export const routerPaths = () => {
     return paths
 }
 
-export const RoutePathsContext = createContext<Routes | undefined>(undefined)
+export const RouterPathsContext = createContext<Routes | undefined>(undefined)

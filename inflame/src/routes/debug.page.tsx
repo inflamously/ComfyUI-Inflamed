@@ -1,9 +1,7 @@
 import DebugImagePrompt from "../component/debug-image/debug-image-prompt.tsx";
 
-const PageDebug = () => {
+export const PageDebug = () => {
     return <>
         <DebugImagePrompt />
     </>
 }
-
-export default PageDebug

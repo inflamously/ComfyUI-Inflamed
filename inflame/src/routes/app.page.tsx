@@ -5,7 +5,7 @@ import useComfyuiSocket from "../component/socket/comfyui/comfyui-socket.hooks.t
 import ApplicationFrame from "../component/application/application-frame.tsx";
 import ProviderStack from "../component/application/providers/provider-stack.tsx";
 
-const PageApp = () => {
+export const PageApp = () => {
     const {socketId, socketListener} = useComfyuiSocket()
     return (
         <ProviderStack value={{
@@ -23,5 +23,3 @@ const PageApp = () => {
         </ProviderStack>
     )
 }
-
-export default PageApp
