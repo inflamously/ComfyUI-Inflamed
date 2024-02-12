@@ -1,6 +1,7 @@
 import {createBrowserRouter, RouteObject} from "react-router-dom";
-import PageApp from "./app.page.tsx";
-import PageDebug from "./debug.page.tsx";
+import {PageApp} from "./app.page.tsx";
+import {PageDebug} from "./debug.page.tsx";
+import {PagePromptEditor} from "./prompt-editor.page.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -10,6 +11,9 @@ const routes: RouteObject[] = [
             {
                 path: "debug",
                 element: <PageDebug/>
+            }, {
+                path: "editor",
+                element: <PagePromptEditor/>
             }
         ]
     }

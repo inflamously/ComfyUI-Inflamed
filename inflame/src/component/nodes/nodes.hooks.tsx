@@ -5,7 +5,7 @@ import {mapObjectNodesDtoToDataNodeCollection} from "../../mapper/object-dto-to-
 import {useSelector} from "react-redux";
 import {dataNodesSelectors} from "../../+state/data-nodes/data-nodes.selectors.ts";
 import {
-    comfyuiDataNodeAsGenericPromptNode
+    mapComfyuiDataNodeAsGenericPromptNode
 } from "../../prompt-nodes/generic-node/comfyui-generic/comfyui-generic-node.utils.ts";
 import {NodeTypeBuilderDefinition, Prompt, ResolvedNodeType} from "@inflame/models";
 import {castGenericNode, typeDataNode} from "../../prompt-nodes/generic-node/generic-node.utils.ts";
@@ -35,7 +35,7 @@ export const useTypedGenericPromptNodeFromDataNode = <T extends NodeTypeBuilderD
                 id,
                 node,
                 definition,
-                mapper: comfyuiDataNodeAsGenericPromptNode
+                mapper: mapComfyuiDataNodeAsGenericPromptNode
             })
         )
     }, [node, setTypedNode]);

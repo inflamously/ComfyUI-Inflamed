@@ -1,6 +1,6 @@
 import {AbstractDataNode} from "@inflame/models";
 import {typeDataNode} from "./generic-node.utils.ts";
-import {comfyuiDataNodeAsGenericPromptNode} from "./comfyui-generic/comfyui-generic-node.utils.ts";
+import {mapComfyuiDataNodeAsGenericPromptNode} from "./comfyui-generic/comfyui-generic-node.utils.ts";
 
 describe("tests for various utilities on generic prompt nodes", () => {
 
@@ -58,7 +58,7 @@ describe("tests for various utilities on generic prompt nodes", () => {
         const castedNode = typeDataNode({
             id: "1",
             node: dataNode,
-            mapper: comfyuiDataNodeAsGenericPromptNode,
+            mapper: mapComfyuiDataNodeAsGenericPromptNode,
             definition: {
                 state: {
                     steps: {

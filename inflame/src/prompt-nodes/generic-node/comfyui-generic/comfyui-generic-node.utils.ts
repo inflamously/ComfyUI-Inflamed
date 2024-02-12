@@ -58,7 +58,7 @@ const mapComfyuiInputs = (
     return mapComfyuiInput(input)
 }
 
-export const comfyuiDataNodeAsGenericPromptNode = (
+export const mapComfyuiDataNodeAsGenericPromptNode = (
     id: string,
     dataNode: AbstractDataNode
 ) => {

@@ -46,6 +46,7 @@ const NavigationBar = () => {
         <List pb={4}>
             <NavigationBarItem label="Home" link="/"/>
             <NavigationBarItem label="Debug" link="debug"/>
+            <NavigationBarItem label="Prompt Editor" link="editor"/>
         </List>
     </nav>
 }
