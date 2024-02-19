@@ -1942,10 +1942,10 @@ def load_custom_nodes():
 
         for possible_module in possible_modules:
             module_path = os.path.join(custom_node_path, possible_module)
-            if os.path.basename(module_path).startswith("__") or os.path.splitext(module_path)[1] != ".py" or not os.path.isfile(module_path):
+            if os.path.basename(module_path).startswith("__") or os.path.basename(module_path).startswith("."):
                 print("Invalid module found: {}".format(possible_module))
                 continue
-            if module_path.endswith(".disabled"): continue
+            if module_path.endswith(".disabled") or module_path.endswith(".example"): continue
             time_before = time.perf_counter()
             success, custom_node_data = load_custom_node(module_path, base_node_names)
             if success:
