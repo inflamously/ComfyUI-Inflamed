@@ -1,15 +1,9 @@
-import {Card} from "@chakra-ui/react";
 import {ReactNode} from "react";
+import { BlockCard } from "../../layout/block-card";
 
 export const Block = (props: {
     children: ReactNode,
 }) => {
     const {children} = props
-    return <Card
-        p={4}
-        colorScheme="gray"
-        variant="outline"
-    >
-        {children}
-    </Card>
+    return <BlockCard>{children}</BlockCard>
 }

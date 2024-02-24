@@ -1,16 +1,22 @@
 import {Flex, IconButton} from "@chakra-ui/react";
 import {PlusSquareIcon} from "@chakra-ui/icons";
-import {BindValueLink} from "@inflame/models";
+import {PromptNodeConnection} from "@inflame/models";
 
-export const NodePin = () => <IconButton aria-label="node-pin" icon={<PlusSquareIcon/>}></IconButton>
+export const NodePin = (props: {
+    label: string,
+    onClick?: () => void,
+}) => <>
+    <IconButton aria-label="node-pin" key={props.label} icon={<PlusSquareIcon/>} onClick={props.onClick}></IconButton>
+</>
 
 export const NodePinBlock = (props: {
-    inputs: Record<string, BindValueLink>
+    inputs: Record<string, PromptNodeConnection>,
+    onClick?: () => void
 }) => {
-    return <Flex>
+    return <Flex justifyContent="center">
         {
-            props.inputs && Object.keys(props.inputs).map(() => {
-                return <NodePin />
+            props.inputs && Object.keys(props.inputs).map((value, index) => {
+                return <NodePin key={index} label={value} onClick={props.onClick}/>
             })
         }
     </Flex>
