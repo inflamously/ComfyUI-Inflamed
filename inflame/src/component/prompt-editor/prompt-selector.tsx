@@ -8,8 +8,9 @@ import {ChangeEvent, useCallback} from "react";
 export const PromptSelector = (props: {
     onPromptSelection: (prompt: Prompt | undefined) => void,
 }) => {
-    const prompts = useSelector((state: AppState) => promptsSelectors.selectPrompts(state))
-        .concat(undefined as unknown as Prompt).reverse()
+    const prompts = useSelector(
+        (state: AppState) => promptsSelectors.selectPrompts(state)
+    ).concat(undefined as unknown as Prompt).reverse()
 
     const handlePromptSelection = useCallback((ev: ChangeEvent<HTMLSelectElement>) => {
         const {value = undefined} = ev?.target as unknown as { value: string }
