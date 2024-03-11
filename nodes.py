@@ -8,6 +8,7 @@ import traceback
 import math
 import time
 import random
+import logging
 
 from PIL import Image, ImageOps, ImageSequence
 from PIL.PngImagePlugin import PngInfo
@@ -85,7 +86,7 @@ class ConditioningAverage :
         out = []
 
         if len(conditioning_from) > 1:
-            print("Warning: ConditioningAverage conditioning_from contains more than 1 cond, only the first one will actually be applied to conditioning_to.")
+            logging.warning("Warning: ConditioningAverage conditioning_from contains more than 1 cond, only the first one will actually be applied to conditioning_to.")
 
         cond_from = conditioning_from[0][0]
         pooled_output_from = conditioning_from[0][1].get("pooled_output", None)
@@ -124,7 +125,7 @@ class ConditioningConcat:
         out = []
 
         if len(conditioning_from) > 1:
-            print("Warning: ConditioningConcat conditioning_from contains more than 1 cond, only the first one will actually be applied to conditioning_to.")
+            logging.warning("Warning: ConditioningConcat conditioning_from contains more than 1 cond, only the first one will actually be applied to conditioning_to.")
 
         cond_from = conditioning_from[0][0]
 
@@ -1923,11 +1924,11 @@ def load_custom_node(module_path, ignore=set()):
                 NODE_DISPLAY_NAME_MAPPINGS.update(module.NODE_DISPLAY_NAME_MAPPINGS)
             return True, loaded_custom_node_data
         else:
-            print(f"Skip {module_path} module for custom nodes due to the lack of NODE_CLASS_MAPPINGS.")
+            logging.warning(f"Skip {module_path} module for custom nodes due to the lack of NODE_CLASS_MAPPINGS.")
             return False, loaded_custom_node_data
     except Exception as e:
-        print(traceback.format_exc())
-        print(f"Cannot import {module_path} module for custom nodes:", e)
+        logging.warning(traceback.format_exc())
+        logging.warning(f"Cannot import {module_path} module for custom nodes:", e)
         return False
 
 def load_custom_nodes():
@@ -1952,17 +1953,17 @@ def load_custom_nodes():
                 node_data[module_path] = custom_node_data
             node_import_times.append((time.perf_counter() - time_before, module_path, success))
 
-    print("Custom Loaded Nodes Data: {}".format(node_data))
+    logging.info("Custom Loaded Nodes Data: {}".format(node_data))
 
     if len(node_import_times) > 0:
-        print("\nImport times for custom nodes:")
+        logging.info("\nImport times for custom nodes:")
         for n in sorted(node_import_times):
             if n[2]:
                 import_message = " (SUCCESS)"
             else:
                 import_message = " (IMPORT FAILED)"
-            print("{:6.1f} seconds{}:".format(n[0], import_message), n[1])
-        print()
+            logging.info("{:6.1f} seconds{}: {}".format(n[0], import_message, n[1]))
+        logging.info("")
 
     # Notify other prompt loop thread of refresh
     refreshed_nodes_list = [custom_node for custom_node in [custom_node_list for _, custom_node_list in node_data.items()]]
@@ -2010,12 +2011,12 @@ def init_custom_nodes():
     load_custom_nodes()
 
     if len(import_failed) > 0:
-        print("WARNING: some comfy_extras/ nodes did not import correctly. This may be because they are missing some dependencies.\n")
+        logging.warning("WARNING: some comfy_extras/ nodes did not import correctly. This may be because they are missing some dependencies.\n")
         for node in import_failed:
-            print("IMPORT FAILED: {}".format(node))
-        print("\nThis issue might be caused by missing dependencies.")
+            logging.warning("IMPORT FAILED: {}".format(node))
+        logging.warning("\nThis issue might be caused by new missing dependencies added the last time you updated ComfyUI.")
         if args.windows_standalone_build:
-            print("Please run the update script: update/update_comfyui.bat")
+            logging.warning("Please run the update script: update/update_comfyui.bat")
         else:
-            print("Please do a: pip install -r requirements.txt")
-        print()
+            logging.warning("Please do a: pip install -r requirements.txt")
+        logging.warning("")
