@@ -2,6 +2,7 @@ import {extendTheme} from "@chakra-ui/react";
 import Popover from './theme/popover.ts'
 import Button from './theme/button.ts'
 import Card from "./theme/card.ts";
+import Accordion from './theme/accordion.ts';
 
 export const theme = extendTheme({
     styles: {
@@ -20,7 +21,8 @@ export const theme = extendTheme({
     components: {
         Popover,
         Button,
-        Card
+        Card,
+        Accordion,
     }
 })
 

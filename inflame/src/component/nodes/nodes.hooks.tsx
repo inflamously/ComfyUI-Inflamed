@@ -8,8 +8,39 @@ import {
     mapComfyuiDataNodeAsGenericPromptNode
 } from "../../prompt-nodes/generic-node/comfyui-generic/comfyui-generic-node.utils.ts";
 import {NodeTypeBuilderDefinition, Prompt, ResolvedNodeType} from "@inflame/models";
-import {castGenericNode, typeDataNode} from "../../prompt-nodes/generic-node/generic-node.utils.ts";
+import {castGenericNode, typeDataNode, untypedDataNode} from "../../prompt-nodes/generic-node/generic-node.utils.ts";
 import {findPromptNodeById} from "../../prompt-nodes/prompt-node.utils.ts";
+import {GenericNode} from "../../prompt-nodes/generic-node/generic-node.ts";
+
+// TODO: Simplify useTypedGenericPromptNodeFromDataNode
+export const useGenericPromptNodeFromDataNode = (props: {
+    id: string,
+    classtype: string,
+}) => {
+    const {
+        id,
+        classtype,
+    } = props
+
+    const node = useSelector((state: AppState) => dataNodesSelectors.selectDataNode(state, classtype))
+    const [typedNode, setTypedNode] = useState<Readonly<GenericNode> | undefined>()
+
+    useEffect(() => {
+        if (!node) {
+            return;
+        }
+
+        setTypedNode(
+            untypedDataNode({
+                id,
+                node,
+                mapper: mapComfyuiDataNodeAsGenericPromptNode,
+            })
+        )
+    }, [id, node, setTypedNode]);
+
+    return typedNode
+}
 
 export const useTypedGenericPromptNodeFromDataNode = <T extends NodeTypeBuilderDefinition>(props: {
     id: string,
@@ -38,7 +69,7 @@ export const useTypedGenericPromptNodeFromDataNode = <T extends NodeTypeBuilderD
                 mapper: mapComfyuiDataNodeAsGenericPromptNode
             })
         )
-    }, [node, setTypedNode]);
+    }, [definition, id, node, setTypedNode]);
 
     return typedNode
 }
@@ -65,11 +96,11 @@ export const useDataNodesLoader = () => {
                 mapObjectNodesDtoToDataNodeCollection(data).nodes
             )
         )
-    }, [data]);
+    }, [data, dispatch]);
 }
 
 export const useNodeFromPrompt = <T extends NodeTypeBuilderDefinition>(props: {
-    prompt: Prompt,
+    prompt: Prompt | undefined,
     nodeId: string,
     definition: T,
 }) => {
@@ -77,6 +108,6 @@ export const useNodeFromPrompt = <T extends NodeTypeBuilderDefinition>(props: {
     if (!prompt) {
         return undefined
     }
-    const node = findPromptNodeById(nodeId, prompt.workflow)
+    const node = prompt ? findPromptNodeById(nodeId, prompt.workflow) : undefined
     return node ? castGenericNode(node, definition) : node
 }

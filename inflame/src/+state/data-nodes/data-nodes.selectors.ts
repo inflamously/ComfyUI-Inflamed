@@ -19,7 +19,13 @@ const selectDataNode = createSelector(
     (state: DataNodesSliceState, classtype: string) => state.nodes[classtype]
 )
 
+const selectDataNodeNames = createSelector(
+    selectDataNodesState,
+    (state) => Object.keys(state.nodes)
+)
+
 export const dataNodesSelectors = {
     selectDataNodes,
     selectDataNode,
+    selectDataNodeNames,
 }

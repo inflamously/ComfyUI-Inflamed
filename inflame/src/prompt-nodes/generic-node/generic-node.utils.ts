@@ -34,14 +34,20 @@ const validateGenericPromptNode = (node: GenericNode, typeDefinition: NodeTypeBu
 }
 
 // TODO: Implement NodeTypeDefinition validation
-export const typeDataNode = <T extends NodeTypeBuilderDefinition>(
-    props: {
-        id: string,
-        node: AbstractDataNode,
-        mapper: (id: string, dataNode: AbstractDataNode) => GenericNode | undefined,
-        definition: T
-    }
-): ResolvedNodeType<T> | undefined => {
+export const typeDataNode = <T extends NodeTypeBuilderDefinition>(props: {
+    id: string,
+    node: AbstractDataNode,
+    mapper: (id: string, dataNode: AbstractDataNode) => GenericNode | undefined,
+    definition: T
+}): ResolvedNodeType<T> | undefined => {
+    return untypedDataNode(props) as ResolvedNodeType<T>
+}
+
+export const untypedDataNode = (props: {
+    id: string,
+    node: AbstractDataNode,
+    mapper: (id: string, dataNode: AbstractDataNode) => GenericNode | undefined,
+}): GenericNode | undefined => {
     const {id, node, mapper} = props
 
     // TODO: Should I validate or not?
@@ -49,7 +55,7 @@ export const typeDataNode = <T extends NodeTypeBuilderDefinition>(
     //     return undefined
     // }
 
-    return mapper(id, node) as ResolvedNodeType<T>
+    return mapper(id, node)
 }
 
 export const castGenericNode = <T extends NodeTypeBuilderDefinition>(node: GenericNode, _: T): ResolvedNodeType<T> => {

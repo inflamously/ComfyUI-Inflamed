@@ -35,11 +35,11 @@ const DebugImagePrompt = () => {
         filename: "example.png"
     })
 
-    const previewImage = debugPrompt ? useNodeFromPrompt({
+    const previewImage = useNodeFromPrompt({
         nodeId: "2",
         prompt: debugPrompt,
         definition: NodeDefinitionPreviewImage
-    }) : undefined
+    })
 
     const {url: generatedImageUrl = ""} = useComfyuiImage({
         type: previewImage?.state?.images?.[0]?.type as ViewQueryDTO["type"] ?? "",
