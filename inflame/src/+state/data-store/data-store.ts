@@ -1,10 +1,10 @@
-import {createListenerPreparedAction} from "../action.utils.ts";
-import {subscribeToStoreChange} from "../inflame-store.listener.ts";
-import {EnhancedStore} from "@reduxjs/toolkit";
-import {AppState} from "../inflame-store.ts";
+import { createListenerPreparedAction } from '../action-listener.ts'
+import { subscribeToStoreChange } from '../inflame-store.listener.ts'
+import { EnhancedStore } from '@reduxjs/toolkit'
+import { AppState } from '../inflame-store.ts'
 
 const initialize = createListenerPreparedAction(
-    "dataStore/initialize",
+    'dataStore/initialize',
     (payload: Partial<AppState>) => {
         return {
             payload,
@@ -12,37 +12,33 @@ const initialize = createListenerPreparedAction(
     }
 )
 
-const save = createListenerPreparedAction(
-    'dataStore/save',
-    (payload: Partial<AppState>) => {
-        return {
-            payload
-        }
+const save = createListenerPreparedAction('dataStore/save', (payload: Partial<AppState>) => {
+    return {
+        payload,
     }
-)
+})
 
-const clear = createListenerPreparedAction(
-    'dataStore/delete',
-    (_: unknown) => {
-        return {
-            payload: undefined
-        }
-    })
+const clear = createListenerPreparedAction('dataStore/delete', (_: unknown) => {
+    return {
+        payload: undefined,
+    }
+})
 
 export const dataStoreActions = {
     initialize,
     save,
-    clear
+    clear,
 }
 
 export const subscribeToSyncStoreDataChanges = (store: EnhancedStore) => {
     const localDataStoreConfig: {
-        name: string,
+        name: string
     } = {
-        name: "inflame-data-store",
+        name: 'inflame-data-store',
     }
 
-    const loadData = (): AppState => JSON.parse(localStorage.getItem(localDataStoreConfig.name) ?? "")
+    const loadData = (): AppState =>
+        JSON.parse(localStorage.getItem(localDataStoreConfig.name) ?? '')
 
     const savePartialData = (nextData: Partial<AppState>) => {
         const prevData: Record<string, unknown> = loadData()
@@ -61,12 +57,11 @@ export const subscribeToSyncStoreDataChanges = (store: EnhancedStore) => {
         store.dispatch(initialize(loadData()))
     }
 
-
     subscribeToStoreChange(save, (action) => {
-        const {payload} = action
+        const { payload } = action
 
         if (!payload) {
-            console.error("Invalid data cannot be saved")
+            console.error('Invalid data cannot be saved')
         }
 
         savePartialData(payload!)
@@ -74,6 +69,6 @@ export const subscribeToSyncStoreDataChanges = (store: EnhancedStore) => {
 
     subscribeToStoreChange(clear, () => {
         localStorage.removeItem(localDataStoreConfig.name)
-        console.warn("Data in localStorage has been cleared")
+        console.warn('Data in localStorage has been cleared')
     })
 }

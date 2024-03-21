@@ -1,16 +1,16 @@
-import {AbstractDataNode, AbstractPromptNode} from "@inflame/models";
+import { AbstractDataNode, GenericNode } from '@inflame/models'
 
 export type PromptDataNodeMergerFunc = (
-    node: AbstractPromptNode,
+    node: GenericNode,
     dataNode: AbstractDataNode
-) => AbstractPromptNode
+) => GenericNode
 
 export const mergeDataNodeIntoPromptNode = (
-    nodes: AbstractPromptNode[],
+    nodes: GenericNode[],
     dataNodes: Record<string, AbstractDataNode>,
     mergeFunc: Record<string, PromptDataNodeMergerFunc>
 ) => {
-     return nodes.map((node) => {
+    return nodes.map((node) => {
         if (!dataNodes) {
             return node
         }
@@ -22,6 +22,6 @@ export const mergeDataNodeIntoPromptNode = (
             return node
         }
 
-        return mergeFunc[nodeClass]?.(structuredClone(node), dataNode) ?? node;
+        return mergeFunc[nodeClass]?.(structuredClone(node), dataNode) ?? node
     })
 }

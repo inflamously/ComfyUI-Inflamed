@@ -1,10 +1,5 @@
-import {
-    NodeTypeDefinition,
-    PromptNode,
-    PromptNodeConnection,
-    PromptNodeFields
-} from "@inflame/models";
-import {createPromptNode} from "../prompt-node.ts";
+import { NodeTypeDefinition, PromptNodeConnection, PromptNodeFields } from '@inflame/models'
+import { createPromptNode } from '../prompt-node.ts'
 
 type NodeGenericNodeTypeDefinition = NodeTypeDefinition<
     Record<string, unknown>,
@@ -13,22 +8,14 @@ type NodeGenericNodeTypeDefinition = NodeTypeDefinition<
     Record<string, never>
 >
 
-export type GenericNode = PromptNode<NodeGenericNodeTypeDefinition>
-
 export const promptNodeGeneric = (
-    props: PromptNodeFields<NodeGenericNodeTypeDefinition["state"]> & { classtype: string },
-    inputs: NodeGenericNodeTypeDefinition["inputs"],
-    outputs: NodeGenericNodeTypeDefinition["outputs"],
+    props: PromptNodeFields<NodeGenericNodeTypeDefinition['state']> & { classtype: string },
+    inputs: NodeGenericNodeTypeDefinition['inputs'],
+    outputs: NodeGenericNodeTypeDefinition['outputs']
 ) => {
-    const {classtype} = props
+    const { classtype } = props
 
-    return createPromptNode<NodeGenericNodeTypeDefinition>(
-        props,
-        classtype,
-        {},
-        outputs,
-        {
-            inputs
-        }
-    )
+    return createPromptNode<NodeGenericNodeTypeDefinition>(props, classtype, {}, outputs, {
+        inputs,
+    })
 }

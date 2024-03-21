@@ -1,52 +1,62 @@
-import {createListenerPreparedAction} from "../../action.utils.ts";
+import { createListenerPreparedAction } from '../../action-listener.ts'
 import {
     ComfyuiExecutedDTO,
     ComfyuiExecutingDTO,
     ComfyuiExecutionCachedDTO,
-    ComfyuiExecutionStartDTO, ComfyuiStatusDTO, ComfyuiStatusWithSidDTO
-} from "@inflame/models";
+    ComfyuiExecutionStartDTO,
+    ComfyuiStatusDTO,
+    ComfyuiStatusWithSidDTO,
+} from '@inflame/models'
 
-
-const executionCached = createListenerPreparedAction("comfyuiSocket/executionCached",
-        (payload: ComfyuiExecutionCachedDTO) => {
-    return {
-        payload
+const executionCached = createListenerPreparedAction(
+    'comfyuiSocket/executionCached',
+    (payload: ComfyuiExecutionCachedDTO) => {
+        return {
+            payload,
+        }
     }
-})
+)
 
-const executionStart = createListenerPreparedAction(`comfyuiSocket/executionStart`,
+const executionStart = createListenerPreparedAction(
+    `comfyuiSocket/executionStart`,
     (payload: ComfyuiExecutionStartDTO) => {
-    return {
-        payload,
+        return {
+            payload,
+        }
     }
-})
+)
 
-const executing = createListenerPreparedAction('comfyuiSocket/executing',
+const executing = createListenerPreparedAction(
+    'comfyuiSocket/executing',
     (payload: ComfyuiExecutingDTO) => {
-    return {
-        payload
+        return {
+            payload,
+        }
     }
-})
+)
 
-const executed = createListenerPreparedAction('comfyuiSocket/executed',
+const executed = createListenerPreparedAction(
+    'comfyuiSocket/executed',
     (payload: ComfyuiExecutedDTO) => {
-    return {
-        payload
+        return {
+            payload,
+        }
     }
-})
+)
 
-const statusEvent = createListenerPreparedAction("comfyuiSocket/statusEvent",
+const statusEvent = createListenerPreparedAction(
+    'comfyuiSocket/statusEvent',
     (payload: ComfyuiStatusWithSidDTO | ComfyuiStatusDTO) => {
-    return {
-        payload
+        return {
+            payload,
+        }
     }
-})
-
+)
 
 export const comfyuiSocketActions = {
     statusEvent,
     executionStart,
     executionCached,
     executing,
-    executed
+    executed,
 }

@@ -1,32 +1,39 @@
-import {useSubscribeStoreChange} from "../store.hooks.tsx";
-import {promptWorkflowUpdate} from "../../+state/prompt/prompt-workflow-update/prompt-workflow.action.ts";
+import { useSubscribeStoreChange } from '../store.hooks.tsx'
+import { promptWorkflowUpdate } from '../../+state/prompt/prompt-workflow-update/prompt-workflow.action.ts'
+import { promptsSliceActions } from '@inflame/state'
 import {
     sourceContainNodes,
-    sourceIncludesAppendix
-} from "../../+state/prompt/prompt-workflow-update/prompt-workflow.utils.ts";
-import {promptsSliceActions} from "@inflame/state";
-import {updateStateInExistingNodes} from "../../prompt-nodes/prompt-node.utils.ts";
+    sourceIncludesAppendix,
+} from '../../prompt-nodes/prompt-workflow.utils.ts'
+import { updateStateInExistingNodes } from '../../prompt-nodes/prompt-state.utils.ts'
 
+/**
+ * This listener handles backend prompt updates and updates the specific node accordingly, based on appendix given.
+ */
 export const usePromptNodeUpdateHandler = () => {
     useSubscribeStoreChange({
         action: promptWorkflowUpdate.nodeUpdate,
         listener: (action, api) => {
-            const {source, target} = action.payload ?? {}
+            const { source, target } = action.payload ?? {}
 
-            if (!source ||
+            if (
+                !source ||
                 !target ||
                 !sourceContainNodes(source) ||
-                !sourceIncludesAppendix(source)) {
-                console.warn("Neither source nor target was valid and / or included an appendix.")
-                return;
+                !sourceIncludesAppendix(source)
+            ) {
+                console.warn('Neither source nor target was valid and / or included an appendix.')
+                return
             }
 
             const nodes = updateStateInExistingNodes(source, target)
 
-            api.dispatch(promptsSliceActions.updatePromptNodes({
-                nodes,
-                name: target.name,
-            }))
-        }
+            api.dispatch(
+                promptsSliceActions.updatePromptNodes({
+                    nodes,
+                    name: target.name,
+                })
+            )
+        },
     })
 }

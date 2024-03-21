@@ -2,11 +2,15 @@ import {
     isConnectionOfBoolean,
     isConnectionOfLink,
     isConnectionOfStateInput,
-    isConnectionOfString
-} from "../prompt-nodes/prompt-node-connection.utils.ts";
-import {AbstractPromptNode, PromptNodeConnection, PromptNodeValueDTO} from "@inflame/models";
+    isConnectionOfString,
+} from '../prompt-nodes/prompt-node-connection.utils.ts'
+import { GenericNode, PromptNodeConnection, PromptNodeValueDTO } from '@inflame/models'
 
-export const nodeConnectionToPromptNodeInputDto = (node: AbstractPromptNode, key: string, connection: PromptNodeConnection): [string, PromptNodeValueDTO] | [string, unknown] => {
+export const nodeConnectionToPromptNodeInputDto = (
+    node: GenericNode,
+    key: string,
+    connection: PromptNodeConnection
+): [string, PromptNodeValueDTO] | [string, unknown] => {
     let nodeValue: PromptNodeValueDTO = undefined
 
     if (isConnectionOfLink(connection)) {
@@ -14,7 +18,7 @@ export const nodeConnectionToPromptNodeInputDto = (node: AbstractPromptNode, key
     }
 
     if (isConnectionOfStateInput(connection)) {
-        return [key, node.state[connection.propertyPath]];
+        return [key, node.state[connection.propertyPath]]
     }
 
     if (isConnectionOfString(connection)) {
