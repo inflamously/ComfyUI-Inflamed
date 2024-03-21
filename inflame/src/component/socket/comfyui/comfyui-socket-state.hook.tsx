@@ -1,72 +1,68 @@
-import {useContext, useEffect} from "react";
-import {AppSocketContext} from "../websocket.tsx";
-import {comfyuiSocketActions, socketSliceActions, useAppDispatch} from "@inflame/state";
-import {COMFYUI_SOCKET} from "./comfyui-socket.hooks.tsx";
-import {resolveToMessageEvent} from "../websocket.utils.ts";
-import {isComfyuiMessage} from "./comfyui-socket.utils.ts";
+import { useContext, useEffect } from 'react'
+import { AppSocketContext } from '../websocket.tsx'
+import { comfyuiSocketActions, socketSliceActions, useAppDispatch } from '@inflame/state'
+import { COMFYUI_SOCKET } from './comfyui-socket.hooks.tsx'
+import { resolveToMessageEvent } from '../websocket.utils.ts'
+import { isComfyuiMessage } from './comfyui-socket.utils.ts'
 
 export const useComfyuiSocketEventDispatcher = () => {
     const dispatch = useAppDispatch()
-    const appSocket = useContext(AppSocketContext)
-
-    if (!appSocket) {
-        return;
-    }
-
-    const {id, listener} = appSocket
+    const { id, listener } = useContext(AppSocketContext)
 
     useEffect(() => {
         if (!id) {
-            return;
+            return
         }
 
-        dispatch(socketSliceActions.createSocket({
-            name: COMFYUI_SOCKET,
-            clientId: id
-        }))
-    }, [id]);
+        dispatch(
+            socketSliceActions.createSocket({
+                name: COMFYUI_SOCKET,
+                clientId: id,
+            })
+        )
+    }, [dispatch, id])
 
     useEffect(() => {
         if (!listener) {
-            return;
+            return
         }
 
         listener.onMessage?.listen((ev: Event) => {
             if (!resolveToMessageEvent(ev)) {
-                return;
+                return
             }
 
-            const data = JSON.parse(ev.data);
+            const data = JSON.parse(ev.data)
             if (!isComfyuiMessage(data)) {
                 console.warn(`Invalid comfyui websocket message received. ${JSON.stringify(ev)}`)
-                return false;
+                return false
             }
 
-            const message = data;
+            const message = data
             switch (message.type) {
-                case "status": {
+                case 'status': {
                     dispatch(comfyuiSocketActions.statusEvent(message.data))
-                    break;
+                    break
                 }
-                case "execution_start": {
+                case 'execution_start': {
                     dispatch(comfyuiSocketActions.executionStart(message.data))
-                    break;
+                    break
                 }
-                case "execution_cached": {
+                case 'execution_cached': {
                     dispatch(comfyuiSocketActions.executionCached(message.data))
-                    break;
+                    break
                 }
-                case "executing": {
+                case 'executing': {
                     dispatch(comfyuiSocketActions.executing(message.data))
-                    break;
+                    break
                 }
-                case "executed": {
+                case 'executed': {
                     dispatch(comfyuiSocketActions.executed(message.data))
-                    break;
+                    break
                 }
                 default:
                     throw new Error(`Message type not implemented "${message.type}"`)
             }
         })
-    }, [listener]);
+    }, [dispatch, listener])
 }

@@ -6,7 +6,7 @@ import { NodeDefinitionPreviewImage } from '../../preview-image/node-definition-
 const isNodeOfType = <T extends NodeTypeBuilderDefinition>(
     node: GenericNode,
     classtype: string,
-    _definition: T
+    _: T
 ): node is ResolvedNodeType<T> => {
     return node?.classtype === classtype
 }

@@ -1,28 +1,35 @@
-import {createContext, useEffect, useState} from "react";
-import {AppSocket} from "@inflame/models";
+import { createContext, useEffect, useState } from 'react'
+import { AppSocket } from '@inflame/models'
 
-export const AppSocketContext = createContext<AppSocket | undefined>(undefined)
+export const AppSocketContext = createContext<AppSocket>({
+    id: undefined,
+    listener: undefined,
+})
 
 /**
  * Waits until server send back a hello
  */
 const handleHandshake = (ws: WebSocket) => {
     return new Promise<void>((res) => {
-        ws.addEventListener("open", () => {
-            res()
-        }, {
-            once: true,
-        })
+        ws.addEventListener(
+            'open',
+            () => {
+                res()
+            },
+            {
+                once: true,
+            }
+        )
     })
 }
 
 const useWebsocket = (props: {
-    url: string,
-    onOpen?: (event: Event) => void,
-    onMessage?: (event: MessageEvent) => void,
-    onClose?: (event: CloseEvent) => void,
+    url: string
+    onOpen?: (event: Event) => void
+    onMessage?: (event: MessageEvent) => void
+    onClose?: (event: CloseEvent) => void
 }) => {
-    const {url, onMessage, onClose, onOpen} = props;
+    const { url, onMessage, onClose, onOpen } = props
     const [, setStateWS] = useState<WebSocket | null>(null)
 
     useEffect(() => {
@@ -31,30 +38,30 @@ const useWebsocket = (props: {
         }
 
         const handleCloseConnection = (ev: CloseEvent) => {
-            onClose?.(ev);
+            onClose?.(ev)
         }
 
         const handleMessage = (ev: MessageEvent) => {
-            onMessage?.(ev);
+            onMessage?.(ev)
         }
 
-        const ws = new WebSocket(url);
+        const ws = new WebSocket(url)
 
-        (async () => {
+        ;(async () => {
             await handleHandshake(ws)
-            ws.addEventListener("open", handleOpenConnection);
-            ws.addEventListener("close", handleCloseConnection);
-            ws.addEventListener("message", handleMessage);
-            setStateWS(ws);
+            ws.addEventListener('open', handleOpenConnection)
+            ws.addEventListener('close', handleCloseConnection)
+            ws.addEventListener('message', handleMessage)
+            setStateWS(ws)
         })()
 
         return () => {
-            ws.removeEventListener("open", handleOpenConnection);
-            ws.removeEventListener("close", handleCloseConnection);
-            ws.removeEventListener("message", handleMessage);
-            ws.close();
+            ws.removeEventListener('open', handleOpenConnection)
+            ws.removeEventListener('close', handleCloseConnection)
+            ws.removeEventListener('message', handleMessage)
+            ws.close()
         }
-    }, [onClose, onMessage, onOpen, url]);
+    }, [onClose, onMessage, onOpen, url])
 }
 
 export default useWebsocket

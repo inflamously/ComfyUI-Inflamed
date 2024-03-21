@@ -25,15 +25,18 @@ export const AbstractNodeView = (props: { abstractNode?: GenericNode }) => {
                                         <Text>Key: {key}</Text>
                                         <List p={4}>
                                             {!Array.isArray(abstractNode.state[key]) &&
-                                                Object.keys(abstractNode.state[key] as Object).map(
-                                                    (valueKey, index) => {
-                                                        return (
-                                                            <ListItem key={index}>
-                                                                <Text>Value Key: {valueKey}</Text>
-                                                            </ListItem>
-                                                        )
-                                                    }
-                                                )}
+                                                Object.keys(
+                                                    abstractNode.state[key] as Record<
+                                                        string,
+                                                        string
+                                                    >
+                                                ).map((valueKey, index) => {
+                                                    return (
+                                                        <ListItem key={index}>
+                                                            <Text>Value Key: {valueKey}</Text>
+                                                        </ListItem>
+                                                    )
+                                                })}
                                             {Array.isArray(abstractNode.state[key]) &&
                                                 (abstractNode.state[key] as Array<unknown>).map(
                                                     (item, index) => {

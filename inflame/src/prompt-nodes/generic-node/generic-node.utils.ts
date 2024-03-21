@@ -2,7 +2,6 @@ import { AbstractDataNode, NodeTypeBuilderDefinition, ResolvedNodeType } from '@
 import { GenericNode } from '@inflame/models'
 
 // TODO: What should I do?
-// @ts-ignore
 const validateGenericPromptNode = (
     node: GenericNode,
     typeDefinition: NodeTypeBuilderDefinition

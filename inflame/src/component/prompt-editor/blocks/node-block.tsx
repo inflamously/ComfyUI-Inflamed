@@ -11,11 +11,13 @@ export const NodeBlock = (props: {
     onChangeProperty?: () => void
     onPinClick?: (pin: PromptNodeConnection, sourceNode: GenericNode) => void
 }) => {
+    const { node, onPinClick } = props
+
     const handlePinClick = useCallback(
         (pin: PromptNodeConnection) => {
-            props.onPinClick?.(pin, props.node)
+            onPinClick?.(pin, node)
         },
-        [props.node, props.onPinClick]
+        [node, onPinClick]
     )
 
     return (

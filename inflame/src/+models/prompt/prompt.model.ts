@@ -11,11 +11,14 @@ export type PromptWorkflow = {
     nodes: GenericNode[]
 }
 
-export type GenericNode = NodeTypeDefinition<
-    Record<string, unknown>,
-    Record<string, PromptNodeConnection>,
-    Record<string, PromptNodeConnection>,
-    Record<string, never>
+export type GenericNode = Omit<
+    NodeTypeDefinition<
+        Record<string, unknown>,
+        Record<string, PromptNodeConnection>,
+        Record<string, PromptNodeConnection>,
+        Record<string, never>
+    >,
+    'stateInputs'
 > & {
     id: string
     classtype: string
