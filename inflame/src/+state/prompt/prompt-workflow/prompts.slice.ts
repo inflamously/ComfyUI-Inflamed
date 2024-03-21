@@ -7,7 +7,7 @@ import { cloneDeep } from 'lodash'
 
 type PromptAction<Type extends Record<string, unknown>> = PayloadAction<
     {
-        name: string
+        promptName: string
     } & Type
 >
 
@@ -44,12 +44,12 @@ export const promptsSlice = createSlice({
             })
         },
         updatePromptRemoteId: (state, action: PromptAction<{ remoteId: string }>) => {
-            const { name, remoteId } = action.payload
-            if (!name) {
+            const { promptName, remoteId } = action.payload
+            if (!promptName) {
                 return state
             }
 
-            const prompt = state.items.entities[name]
+            const prompt = state.items.entities[promptName]
             if (prompt) {
                 prompt.remoteId = remoteId
             }
@@ -72,13 +72,13 @@ export const promptsSlice = createSlice({
                 nodes: GenericNode[]
             }>
         ) => {
-            const { name, nodes } = action.payload
+            const { promptName, nodes } = action.payload
 
-            if (!name) {
+            if (!promptName) {
                 return state
             }
 
-            const prompt = state.items.entities[name]
+            const prompt = state.items.entities[promptName]
             if (!prompt) {
                 return state
             }

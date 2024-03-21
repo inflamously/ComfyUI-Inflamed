@@ -12,10 +12,13 @@ import { useGenericPromptNodeFromDataNode } from '../nodes/nodes.hooks.tsx'
 const PromptNodeAdd = (props: { onNodeAdd: (node: GenericNode) => void }) => {
     const { onNodeAdd } = props
 
-    const names = useMemoSelector((state) => dataNodesSelectors.selectDataNodeNames(state))
-    const [selectedNodeName, setSelectedNodeName] = useState<string | undefined>()
+    const names: string[] = [
+        '',
+        ...useMemoSelector((state) => dataNodesSelectors.selectDataNodeNames(state)),
+    ]
+    const [selectedNodeName, setSelectedNodeName] = useState<string>('')
     const node = useGenericPromptNodeFromDataNode({
-        id: '3',
+        id: '-1',
         classtype: selectedNodeName ?? '',
     })
 

@@ -6,6 +6,8 @@ import { useCallback, useState } from 'react'
 import { GenericNode, Prompt, PromptNodeConnection } from '@inflame/models'
 import { Blockgroups } from './blockgroups.tsx'
 import { PromptToolbar } from './prompt-toolbar.tsx'
+import { concatNodeOfHighestId } from '../../prompt-nodes/prompt-nodes.utils.ts'
+import { promptsSliceActions, useAppDispatch } from '@inflame/state'
 
 const NodeEditor = (props: { prompt: Prompt | undefined }) => {
     const handlePinConnection = useCallback(
@@ -31,11 +33,23 @@ const NodeEditor = (props: { prompt: Prompt | undefined }) => {
 }
 
 export const PromptEditor = () => {
+    const dispatch = useAppDispatch()
     const [prompt, setPrompt] = useState<Prompt | undefined>()
 
     const handlePromptNodeAdd = useCallback(
         (node: GenericNode) => {
-            console.log(node, prompt)
+            if (!prompt) {
+                return
+            }
+
+            const newNodes = concatNodeOfHighestId(node, prompt.workflow.nodes)
+
+            dispatch(
+                promptsSliceActions.updatePromptNodes({
+                    nodes: newNodes,
+                    promptName: prompt.name,
+                })
+            )
         },
         [prompt]
     )

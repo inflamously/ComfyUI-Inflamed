@@ -18,6 +18,6 @@ export const useSubscribeStoreChange = <Args, Payload>(props: {
     }, [action, listener])
 }
 
-export const useMemoSelector = <Result extends unknown>(selector: (state: AppState) => Result) => {
+export const useMemoSelector = (selector: <Result>(state: AppState) => Result) => {
     return useSelector((state: AppState) => selector(state), isEqual)
 }

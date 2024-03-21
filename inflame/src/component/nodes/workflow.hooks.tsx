@@ -31,7 +31,7 @@ export const usePromptNodeUpdateHandler = () => {
             api.dispatch(
                 promptsSliceActions.updatePromptNodes({
                     nodes,
-                    name: target.name,
+                    promptName: target.name,
                 })
             )
         },
