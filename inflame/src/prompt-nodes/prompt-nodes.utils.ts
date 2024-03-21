@@ -9,7 +9,13 @@ export const concatNodeOfHighestId = (node: GenericNode, nodes: GenericNode[]): 
         return nodes
     }
 
-    const id = nodes.reduce((next, prev) => (+next.id > +prev.id ? next : prev)).id + 1
+    let id = '0'
+    nodes?.forEach((node) => {
+        if (+node.id > +id) {
+            id = node.id
+        }
+    })
+    id = (+id + 1).toString()
 
     const newNode = {
         ...node,

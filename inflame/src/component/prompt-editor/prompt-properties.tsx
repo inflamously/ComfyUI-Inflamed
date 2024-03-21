@@ -61,6 +61,7 @@ const PromptNodeAdd = (props: { onNodeAdd: (node: GenericNode) => void }) => {
 const PromptSelector = (props: { onPromptSelection: (prompt: Prompt | undefined) => void }) => {
     const { onPromptSelection } = props
 
+    // const prompt = useSelector((state: AppState) => promptsSelectors.selectPromptByName(state, ))
     const prompts = useSelector((state: AppState) => promptsSelectors.selectPrompts(state))
         .concat(undefined as unknown as Prompt)
         .reverse()

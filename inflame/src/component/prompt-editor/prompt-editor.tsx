@@ -34,6 +34,8 @@ const NodeEditor = (props: { prompt: Prompt | undefined }) => {
 
 export const PromptEditor = () => {
     const dispatch = useAppDispatch()
+
+    // TODO: Missing synchronization after state change
     const [prompt, setPrompt] = useState<Prompt | undefined>()
 
     const handlePromptNodeAdd = useCallback(
@@ -51,7 +53,7 @@ export const PromptEditor = () => {
                 })
             )
         },
-        [prompt]
+        [dispatch, prompt]
     )
 
     return (
