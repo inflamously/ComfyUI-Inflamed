@@ -24,3 +24,7 @@ export const concatNodeOfHighestId = (node: GenericNode, nodes: GenericNode[]): 
 
     return [...nodes, newNode]
 }
+
+export const deleteNodeById = (nodeId: string, nodes: GenericNode[]): GenericNode[] => {
+    return nodes.filter((node) => node.id !== nodeId)
+}

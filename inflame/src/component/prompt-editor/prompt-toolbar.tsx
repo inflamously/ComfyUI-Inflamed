@@ -1,6 +1,6 @@
 import { Button, Flex, FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { BlockCard } from '../layout/block-card.tsx'
-import { promptsSliceActions, useAppDispatch } from '@inflame/state'
+import { promptsActions, useAppDispatch } from '@inflame/state'
 import { ChangeEvent, useCallback, useState } from 'react'
 
 const ItemCreatePrompt = (props: { onCreatePrompt: (name: string) => void }) => {
@@ -41,7 +41,7 @@ export const PromptToolbar = () => {
 
     const handleCreatePrompt = useCallback(
         (name: string) => {
-            dispatch(promptsSliceActions.createPrompt(name))
+            dispatch(promptsActions.createPrompt(name))
         },
         [dispatch]
     )

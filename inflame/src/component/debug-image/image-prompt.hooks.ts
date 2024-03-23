@@ -7,7 +7,7 @@ import {
     AppState,
     comfyApi,
     promptsSelectors,
-    promptsSliceActions,
+    promptsActions,
     useAppDispatch,
 } from '@inflame/state'
 import { useSelector } from 'react-redux'
@@ -39,7 +39,7 @@ export const usePostSimpleImagePrompt = (props: { socket: GenericSocket; promptN
     })
 
     if (!prompt) {
-        dispatch(promptsSliceActions.createPrompt(promptName))
+        dispatch(promptsActions.createPrompt(promptName))
     }
 
     useEffect(() => {
@@ -68,7 +68,7 @@ export const usePostSimpleImagePrompt = (props: { socket: GenericSocket; promptN
         previewImage.inputs.images = loadImage.outputs.IMAGE
 
         dispatch(
-            promptsSliceActions.updatePromptNodes({
+            promptsActions.updatePromptNodes({
                 promptName: promptName,
                 nodes: [loadImage, previewImage],
             })

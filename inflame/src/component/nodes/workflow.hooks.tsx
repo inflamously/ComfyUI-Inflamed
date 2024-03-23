@@ -1,6 +1,6 @@
 import { useSubscribeStoreChange } from '../store.hooks.tsx'
 import { promptWorkflowUpdate } from '../../+state/prompt/prompt-workflow-update/prompt-workflow.action.ts'
-import { promptsSliceActions } from '@inflame/state'
+import { promptsActions } from '@inflame/state'
 import {
     sourceContainNodes,
     sourceIncludesAppendix,
@@ -29,7 +29,7 @@ export const usePromptNodeUpdateHandler = () => {
             const nodes = updateStateInExistingNodes(source, target)
 
             api.dispatch(
-                promptsSliceActions.updatePromptNodes({
+                promptsActions.updatePromptNodes({
                     nodes,
                     promptName: target.name,
                 })

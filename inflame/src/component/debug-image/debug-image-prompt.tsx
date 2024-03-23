@@ -3,7 +3,7 @@ import { ChangeEvent, useCallback, useState } from 'react'
 import Fileuploader from '../file/fileuploader.tsx'
 import { useSelector } from 'react-redux'
 import { AppState, socketStateSelectors } from '@inflame/state'
-import { promptsSliceActions } from '@inflame/state'
+import { promptsActions } from '@inflame/state'
 import { comfyApi } from '@inflame/state'
 import { isPromptResultDTO } from '@inflame/state'
 import { promptToPromptDto } from '../../mapper/prompt-to-prompt-dto.mapper.ts'
@@ -69,7 +69,7 @@ const DebugImagePrompt = () => {
 
             if ('data' in response && isPromptResultDTO(response.data)) {
                 dispatch(
-                    promptsSliceActions.updatePromptRemoteId({
+                    promptsActions.updatePromptRemoteId({
                         promptName: debugPrompt.name,
                         remoteId: response.data.prompt_id,
                     })

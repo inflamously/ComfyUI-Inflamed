@@ -6,10 +6,18 @@ import { useCallback, useState } from 'react'
 import { GenericNode, Prompt, PromptNodeConnection } from '@inflame/models'
 import { Blockgroups } from './blockgroups.tsx'
 import { PromptToolbar } from './prompt-toolbar.tsx'
-import { concatNodeOfHighestId } from '../../prompt-nodes/prompt-nodes.utils.ts'
-import { promptsSliceActions, useAppDispatch } from '@inflame/state'
+import { concatNodeOfHighestId, deleteNodeById } from '../../prompt-nodes/prompt-nodes.utils.ts'
+import { promptsSelectors, promptsActions, useAppDispatch } from '@inflame/state'
+import { useMemoSelector } from '../store.hooks.tsx'
+import { promptEditorActions } from '../../+state/prompt/prompt-editor/prompt-editor.slice.ts'
+import { promptEditorSelectors } from '../../+state/prompt/prompt-editor/prompt-editor.selectors.ts'
 
-const NodeEditor = (props: { prompt: Prompt | undefined }) => {
+const NodeEditor = (props: {
+    onNodeDelete: (nodeId: string) => void
+    prompt: Prompt | undefined
+}) => {
+    const { onNodeDelete } = props
+
     const handlePinConnection = useCallback(
         (pin: PromptNodeConnection, sourceNode: GenericNode) => {
             console.log(pin, sourceNode)
@@ -18,17 +26,20 @@ const NodeEditor = (props: { prompt: Prompt | undefined }) => {
     )
 
     return (
-        <>
-            <Blockgroups>
-                <Blocklist>
-                    {props?.prompt?.workflow?.nodes?.map((node, index) => {
-                        return (
-                            <NodeBlock key={index} node={node} onPinClick={handlePinConnection} />
-                        )
-                    })}
-                </Blocklist>
-            </Blockgroups>
-        </>
+        <Blockgroups>
+            <Blocklist>
+                {props?.prompt?.workflow?.nodes?.map((node, index) => {
+                    return (
+                        <NodeBlock
+                            key={index}
+                            node={node}
+                            onPinClick={handlePinConnection}
+                            onDelete={onNodeDelete}
+                        />
+                    )
+                })}
+            </Blocklist>
+        </Blockgroups>
     )
 }
 
@@ -36,7 +47,12 @@ export const PromptEditor = () => {
     const dispatch = useAppDispatch()
 
     // TODO: Missing synchronization after state change
-    const [prompt, setPrompt] = useState<Prompt | undefined>()
+    const promptName = useMemoSelector((state) =>
+        promptEditorSelectors.selectCurrentPromptName(state)
+    )
+    const prompt = useMemoSelector((state) =>
+        promptsSelectors.selectPromptByName(state, promptName)
+    )
 
     const handlePromptNodeAdd = useCallback(
         (node: GenericNode) => {
@@ -47,7 +63,7 @@ export const PromptEditor = () => {
             const newNodes = concatNodeOfHighestId(node, prompt.workflow.nodes)
 
             dispatch(
-                promptsSliceActions.updatePromptNodes({
+                promptsActions.updatePromptNodes({
                     nodes: newNodes,
                     promptName: prompt.name,
                 })
@@ -56,12 +72,40 @@ export const PromptEditor = () => {
         [dispatch, prompt]
     )
 
+    const handlePromptNodeDelete = useCallback(
+        (nodeId: string) => {
+            if (!prompt) {
+                return
+            }
+
+            const newNodes = deleteNodeById(nodeId, prompt.workflow.nodes)
+
+            dispatch(
+                promptsActions.updatePromptNodes({
+                    nodes: newNodes,
+                    promptName: prompt.name,
+                })
+            )
+        },
+        [dispatch, prompt]
+    )
+
+    const handlePromptSelection = useCallback(
+        (promptName: string) => {
+            dispatch(promptEditorActions.setCurrentPrompt(promptName))
+        },
+        [dispatch]
+    )
+
     return (
         <Box>
             <Text pb={4}>Under construction</Text>
             <PromptToolbar />
-            <PromptProperties onPromptSelection={setPrompt} onPromptNodeAdd={handlePromptNodeAdd} />
-            <NodeEditor prompt={prompt} />
+            <PromptProperties
+                onPromptNameSelected={handlePromptSelection}
+                onPromptNodeAdd={handlePromptNodeAdd}
+            />
+            <NodeEditor prompt={prompt} onNodeDelete={handlePromptNodeDelete} />
         </Box>
     )
 }

@@ -1,13 +1,12 @@
 import { BlockCard } from '../layout/block-card.tsx'
 import { Button, Flex, FormControl, FormLabel, Select, Stack } from '@chakra-ui/react'
-import { useSelector } from 'react-redux'
 import { AppState, promptsSelectors } from '@inflame/state'
-import { Prompt } from '@inflame/models'
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useMemoSelector } from '../store.hooks.tsx'
 import { dataNodesSelectors } from '../../+state/data-nodes/data-nodes.selectors.ts'
 import { GenericNode } from '@inflame/models'
 import { useGenericPromptNodeFromDataNode } from '../nodes/nodes.hooks.tsx'
+import { promptEditorSelectors } from '../../+state/prompt/prompt-editor/prompt-editor.selectors.ts'
 
 const PromptNodeAdd = (props: { onNodeAdd: (node: GenericNode) => void }) => {
     const { onNodeAdd } = props
@@ -58,35 +57,41 @@ const PromptNodeAdd = (props: { onNodeAdd: (node: GenericNode) => void }) => {
     )
 }
 
-const PromptSelector = (props: { onPromptSelection: (prompt: Prompt | undefined) => void }) => {
-    const { onPromptSelection } = props
+const PromptSelector = (props: { onPromptNameSelected: (promptName: string) => void }) => {
+    const { onPromptNameSelected } = props
 
-    // const prompt = useSelector((state: AppState) => promptsSelectors.selectPromptByName(state, ))
-    const prompts = useSelector((state: AppState) => promptsSelectors.selectPrompts(state))
-        .concat(undefined as unknown as Prompt)
+    const promptNames = useMemoSelector((state: AppState) =>
+        promptsSelectors.selectPromptNames(state)
+    )
+        .concat('')
         .reverse()
+
+    const selectedPromptName = useMemoSelector((state) =>
+        promptEditorSelectors.selectCurrentPromptName(state)
+    )
 
     const handlePromptSelection = useCallback(
         (ev: ChangeEvent<HTMLSelectElement>) => {
-            const { value = undefined } = ev?.target as unknown as { value: string }
-            const prompt = prompts.find((p) => p?.name === value)
-            onPromptSelection?.(prompt)
+            const { value } = ev?.target as unknown as { value: string }
+            if (value) {
+                onPromptNameSelected?.(value)
+            }
         },
-        [prompts, onPromptSelection]
+        [onPromptNameSelected]
     )
 
     return (
         <FormControl>
             <FormLabel>Prompt</FormLabel>
-            <Select onChange={handlePromptSelection}>
-                {prompts &&
-                    prompts.map((prompt) => {
-                        return prompt ? (
-                            <option key={prompt.name} value={prompt.name}>
-                                {prompt.name}
+            <Select onChange={handlePromptSelection} value={selectedPromptName}>
+                {promptNames &&
+                    promptNames.map((name) => {
+                        return name ? (
+                            <option key={name} value={name}>
+                                {name}
                             </option>
                         ) : (
-                            <option key="null" value="empty">
+                            <option key="null" value="">
                                 {'none'}
                             </option>
                         )
@@ -97,15 +102,15 @@ const PromptSelector = (props: { onPromptSelection: (prompt: Prompt | undefined)
 }
 
 export const PromptProperties = (props: {
-    onPromptSelection: (prompt: Prompt | undefined) => void
+    onPromptNameSelected: (prompt: string) => void
     onPromptNodeAdd: (node: GenericNode) => void
 }) => {
-    const { onPromptSelection, onPromptNodeAdd } = props
+    const { onPromptNameSelected, onPromptNodeAdd } = props
 
     return (
         <BlockCard>
             <Stack gap={4}>
-                <PromptSelector onPromptSelection={onPromptSelection} />
+                <PromptSelector onPromptNameSelected={onPromptNameSelected} />
                 <PromptNodeAdd onNodeAdd={onPromptNodeAdd} />
             </Stack>
         </BlockCard>

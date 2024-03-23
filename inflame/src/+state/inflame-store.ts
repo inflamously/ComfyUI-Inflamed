@@ -1,35 +1,36 @@
-import {combineSlices, configureStore, Dispatch} from "@reduxjs/toolkit";
-import {socketSlice} from "./socket/socket-slice.ts";
-import {nodesSlice} from "./data-nodes/data-nodes.slice.ts";
-import {promptsSlice} from "./prompt/prompt-workflow/prompts.slice.ts";
-import {useDispatch} from "react-redux";
-import {comfyApi} from "./api/comfy-api.slice.ts";
-import {storeListenerMiddleware} from "./inflame-store.listener.ts";
-import {subscribeToSyncStoreDataChanges} from "./data-store/data-store.ts";
-import {subscribePromptSocketEventHandler} from "./prompt/prompt-workflow/prompts-socket-event-mapper.ts";
+import { combineSlices, configureStore, Dispatch } from '@reduxjs/toolkit'
+import { socketSlice } from './socket/socket-slice.ts'
+import { nodesSlice } from './data-nodes/data-nodes.slice.ts'
+import { promptsSlice } from './prompt/prompt-workflow/prompts.slice.ts'
+import { useDispatch } from 'react-redux'
+import { comfyApi } from './api/comfy-api.slice.ts'
+import { storeListenerMiddleware } from './inflame-store.listener.ts'
+import { subscribeToSyncStoreDataChanges } from './data-store/data-store.ts'
+import { subscribePromptSocketEventHandler } from './prompt/prompt-workflow/prompts-socket-event-mapper.ts'
+import { promptEditorSlice } from './prompt/prompt-editor/prompt-editor.slice.ts'
 
 // This must be explicitely defined or else typescript just drops bombs on type system.
 const combinedReducer = combineSlices(
-    socketSlice,
+    comfyApi.slice,
     nodesSlice,
     promptsSlice,
-    comfyApi.slice
+    promptEditorSlice,
+    socketSlice
 )
 
 export const appStore = configureStore({
     devTools: true,
     reducer: combinedReducer,
-    middleware: (defaultMiddleware) => defaultMiddleware()
-        .concat(comfyApi.middleware)
-        .prepend(storeListenerMiddleware)
+    middleware: (defaultMiddleware) =>
+        defaultMiddleware().concat(comfyApi.middleware).prepend(storeListenerMiddleware),
 })
 
-export type AppState = ReturnType<typeof combinedReducer>;
-export type AppDispatch = Dispatch;
+export type AppState = ReturnType<typeof combinedReducer>
+export type AppDispatch = Dispatch
 
-export const useAppDispatch: () => typeof appStore.dispatch = useDispatch;
+export const useAppDispatch: () => typeof appStore.dispatch = useDispatch
 
 // Listeners
-subscribePromptSocketEventHandler();
+subscribePromptSocketEventHandler()
 // subscribePreviewImageNodeUpdate();
-subscribeToSyncStoreDataChanges(appStore);
+subscribeToSyncStoreDataChanges(appStore)

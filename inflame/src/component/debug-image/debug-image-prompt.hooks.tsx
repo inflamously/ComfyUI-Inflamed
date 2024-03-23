@@ -1,4 +1,4 @@
-import { promptsSelectors, promptsSliceActions, useAppDispatch } from '@inflame/state'
+import { promptsSelectors, promptsActions, useAppDispatch } from '@inflame/state'
 import { Prompt } from '@inflame/models'
 import { useTypedGenericPromptNodeFromDataNode } from '../nodes/nodes.hooks.tsx'
 import { NodeDefinitionLoadImage } from '../../prompt-nodes/load-image/node-definition-load-image.ts'
@@ -21,7 +21,7 @@ export const useDebugPrompt = (props: {
     )
 
     if (!prompt) {
-        dispatch(promptsSliceActions.createPrompt(promptName))
+        dispatch(promptsActions.createPrompt(promptName))
     }
 
     const loadImage = useTypedGenericPromptNodeFromDataNode({
@@ -62,7 +62,7 @@ export const useDebugPrompt = (props: {
 
             newPrompt.workflow.nodes = [newLoadImage!, newPreviewImage!]
 
-            dispatch(promptsSliceActions.updatePrompt(newPrompt))
+            dispatch(promptsActions.updatePrompt(newPrompt))
         }
     }, [loadImage, previewImage, dispatch, prompt, image.index])
 

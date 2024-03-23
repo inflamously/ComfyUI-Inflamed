@@ -118,11 +118,11 @@ export const promptsSlice = createSlice({
     },
 })
 
-export const promptsSliceActions = {
+export const promptsActions = {
     ...promptsSlice.actions,
 }
 
-subscribeToStoreChange(promptsSliceActions.createPrompt, (_, { dispatch, getState }) => {
+subscribeToStoreChange(promptsActions.createPrompt, (_, { dispatch, getState }) => {
     dispatch(
         dataStoreActions.save({
             prompts: getState().prompts,
@@ -130,7 +130,7 @@ subscribeToStoreChange(promptsSliceActions.createPrompt, (_, { dispatch, getStat
     )
 })
 
-subscribeToStoreChange(promptsSliceActions.updatePromptNodes, (_, { dispatch, getState }) => {
+subscribeToStoreChange(promptsActions.updatePromptNodes, (_, { dispatch, getState }) => {
     dispatch(
         dataStoreActions.save({
             prompts: getState().prompts,
