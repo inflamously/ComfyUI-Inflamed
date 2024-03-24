@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type PromptEditorState = {
-    prompt: {
+    currentPrompt: {
         id: string
     }
 }
 
 const INITIAL_STATE: PromptEditorState = {
-    prompt: {
+    currentPrompt: {
         id: '',
     },
 }
