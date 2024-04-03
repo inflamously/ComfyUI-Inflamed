@@ -43,7 +43,7 @@ def before_node_execution():
 def interrupt_processing(value=True):
     comfy.model_management.interrupt_current_processing(value)
 
-MAX_RESOLUTION=8192
+MAX_RESOLUTION=16384
 
 class CLIPTextEncode:
     @classmethod
@@ -1892,6 +1892,7 @@ def load_custom_node(module_path, ignore=set()):
         sp = os.path.splitext(module_path)
         module_name = sp[0]
     try:
+        logging.debug("Trying to load custom node {}".format(module_path))
         if os.path.isfile(module_path):
             module_spec = importlib.util.spec_from_file_location(module_name, module_path)
             module_dir = os.path.split(module_path)[0]
