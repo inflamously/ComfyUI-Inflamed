@@ -92,7 +92,7 @@ const PromptSelector = (props: { onPromptNameSelected: (promptName: string) => v
                                 {name}
                             </option>
                         ) : (
-                            <option key="null" value="">
+                            <option key="null" value="#">
                                 {'none'}
                             </option>
                         )
