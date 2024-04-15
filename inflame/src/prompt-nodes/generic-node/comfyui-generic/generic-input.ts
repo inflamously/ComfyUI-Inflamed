@@ -1,4 +1,4 @@
-import {BindValueLink} from "@inflame/models";
+import { BindValueLink } from '@inflame/models'
 
 type ComfyuiInputs = {
     required: Record<string, unknown[] | unknown[][]>
@@ -15,12 +15,10 @@ export const mapComfyuiInput = (
         return undefined
     }
 
-    const entries = Object
-        .keys(input.required)
-        .map((key) =>
-            // We return here undefined because BindValueLink must be used from other contexts
-            [key, undefined]
-        )
+    const entries = Object.keys(input.required).map((key) =>
+        // We explicitely need to return an object, since these properties must be defined
+        [key, {}]
+    )
 
     return Object.fromEntries(entries)
 }

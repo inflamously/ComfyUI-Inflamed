@@ -1,4 +1,4 @@
-import { AbstractDataNode, NodeTypeBuilderDefinition, ResolvedNodeType } from '@inflame/models'
+import { NodeTypeBuilderDefinition, ResolvedNodeType } from '@inflame/models'
 import { GenericNode } from '@inflame/models'
 
 // TODO: What should I do?
@@ -39,31 +39,6 @@ const validateGenericPromptNode = (
     recurseCheckProperties(node.state, typeDefinition.state)
 
     return true
-}
-
-// TODO: Implement NodeTypeDefinition validation
-export const typeDataNode = <T extends NodeTypeBuilderDefinition>(props: {
-    id: string
-    node: AbstractDataNode
-    mapper: (id: string, dataNode: AbstractDataNode) => GenericNode | undefined
-    definition: T
-}): ResolvedNodeType<T> | undefined => {
-    return untypedDataNode(props) as ResolvedNodeType<T>
-}
-
-export const untypedDataNode = (props: {
-    id: string
-    node: AbstractDataNode
-    mapper: (id: string, dataNode: AbstractDataNode) => GenericNode | undefined
-}): GenericNode | undefined => {
-    const { id, node, mapper } = props
-
-    // TODO: Should I validate or not?
-    // if (!validateGenericPromptNode(dynamicNode, definition)) {
-    //     return undefined
-    // }
-
-    return mapper(id, node)
 }
 
 export const castGenericNode = <T extends NodeTypeBuilderDefinition>(

@@ -17,7 +17,7 @@ export const promptEditorSlice = createSlice({
     initialState: INITIAL_STATE,
     reducers: {
         setCurrentPrompt: (state, action: PayloadAction<string>) => {
-            state.prompt.id = action.payload
+            state.currentPrompt.id = action.payload
         },
     },
 })

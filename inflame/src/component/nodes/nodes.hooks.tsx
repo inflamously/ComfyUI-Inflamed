@@ -6,11 +6,7 @@ import { useSelector } from 'react-redux'
 import { dataNodesSelectors } from '../../+state/data-nodes/data-nodes.selectors.ts'
 import { mapComfyuiDataNodeAsGenericPromptNode } from '../../prompt-nodes/generic-node/comfyui-generic/comfyui-generic-node.utils.ts'
 import { NodeTypeBuilderDefinition, Prompt, ResolvedNodeType } from '@inflame/models'
-import {
-    castGenericNode,
-    typeDataNode,
-    untypedDataNode,
-} from '../../prompt-nodes/generic-node/generic-node.utils.ts'
+import { castGenericNode } from '../../prompt-nodes/generic-node/generic-node.utils.ts'
 import { findPromptNodeById } from '../../prompt-nodes/prompt-workflow.utils.ts'
 import { GenericNode } from '@inflame/models'
 
@@ -28,13 +24,12 @@ export const useGenericPromptNodeFromDataNode = (props: { id: string; classtype:
             return
         }
 
-        setTypedNode(
-            untypedDataNode({
-                id,
-                node,
-                mapper: mapComfyuiDataNodeAsGenericPromptNode,
-            })
-        )
+        // TODO: Should I validate or not?
+        // if (!validateGenericPromptNode(dynamicNode, definition)) {
+        //     return undefined
+        // }
+
+        setTypedNode(mapComfyuiDataNodeAsGenericPromptNode(id, node))
     }, [id, node, setTypedNode])
 
     return typedNode
@@ -57,14 +52,12 @@ export const useTypedGenericPromptNodeFromDataNode = <T extends NodeTypeBuilderD
             return
         }
 
-        setTypedNode(
-            typeDataNode({
-                id,
-                node,
-                definition,
-                mapper: mapComfyuiDataNodeAsGenericPromptNode,
-            })
-        )
+        // TODO: Should I validate or not?
+        // if (!validateGenericPromptNode(dynamicNode, definition)) {
+        //     return undefined
+        // }
+
+        setTypedNode(mapComfyuiDataNodeAsGenericPromptNode(id, node) as ResolvedNodeType<T>)
     }, [definition, id, node, setTypedNode])
 
     return typedNode

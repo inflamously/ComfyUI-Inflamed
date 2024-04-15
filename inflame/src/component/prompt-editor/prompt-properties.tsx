@@ -32,6 +32,7 @@ const PromptNodeAdd = (props: { onNodeAdd: (node: GenericNode) => void }) => {
 
     const handlePromptNodeAdd = useCallback(() => {
         if (node) {
+            console.log('Node creation', node)
             onNodeAdd(node)
         }
     }, [node, onNodeAdd])

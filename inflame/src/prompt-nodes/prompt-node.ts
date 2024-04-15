@@ -46,14 +46,3 @@ export const createPromptNode = <NTD extends BaseNodeTypeDefinition>(
 export type PromptNodeTypeGuardFunction<T extends GenericNode = never> = (
     obj: GenericNode | undefined
 ) => obj is T
-
-/**
- * Cast specific node to a given type based on its classtype which should be unique.
- */
-export const PromptNodeTypeGuard = <T extends GenericNode = never>(
-    classtype: string
-): PromptNodeTypeGuardFunction<T> => {
-    return (obj: GenericNode | undefined): obj is T => {
-        return obj !== undefined && obj !== null && obj.classtype === classtype
-    }
-}

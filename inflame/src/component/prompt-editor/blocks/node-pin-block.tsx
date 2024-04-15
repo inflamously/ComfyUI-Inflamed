@@ -1,16 +1,6 @@
-import { Flex, IconButton } from '@chakra-ui/react'
-import { PlusSquareIcon, ViewIcon } from '@chakra-ui/icons'
+import { Button, Flex } from '@chakra-ui/react'
 import { PromptNodeConnection } from '@inflame/models'
 import { useCallback } from 'react'
-
-const NodePinIcon = (iconType: string) => {
-    switch (iconType.toUpperCase()) {
-        case 'IMAGE':
-            return <ViewIcon />
-        case 'MASK':
-            return <PlusSquareIcon />
-    }
-}
 
 /**
  * Handle simple pin
@@ -18,18 +8,14 @@ const NodePinIcon = (iconType: string) => {
 export const NodePin = (props: { label: string; onClick?: (label: string) => void }) => {
     const { label, onClick } = props
 
-    const iconSwitch = useCallback(() => NodePinIcon(props.label), [props.label])
     const handleClick = useCallback(() => {
         onClick?.(label)
     }, [label, onClick])
 
     return (
-        <IconButton
-            aria-label="node-pin"
-            key={props.label}
-            icon={iconSwitch()}
-            onClick={handleClick}
-        ></IconButton>
+        <Button key={props.label} onClick={handleClick}>
+            {props.label}
+        </Button>
     )
 }
 
@@ -40,12 +26,16 @@ export const NodeInputPinBlock = (props: {
     inputs: Record<string, PromptNodeConnection>
     onClick?: (pin: PromptNodeConnection) => void
 }) => {
+    const { onClick, inputs } = props
+
     const handleClick = useCallback(
         (label: string) => {
-            props.onClick?.(props.inputs[label])
+            onClick?.(inputs[label])
         },
-        [props.inputs, props.onClick]
+        [onClick, inputs]
     )
+
+    console.log('NodeInputPinBlock', props.inputs)
 
     return (
         <Flex justifyContent="center">

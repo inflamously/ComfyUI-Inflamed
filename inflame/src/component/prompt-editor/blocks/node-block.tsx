@@ -28,12 +28,10 @@ export const NodeBlock = (props: {
         <Block>
             <NodeToolbar onDelete={handleDelete} />
             <NodeInputPinBlock inputs={props.node.inputs} onClick={handlePinClick} />
-            {props.node?.state && (
-                <NodePropertyBlock
-                    entries={Object.entries(props.node.state)}
-                    customProperties={props.customProperties}
-                />
-            )}
+            <NodePropertyBlock
+                entries={props.node?.state}
+                customProperties={props.customProperties}
+            />
             <NodeOutputPinBlock outputs={props.node.outputs} onClick={handlePinClick} />
         </Block>
     )
