@@ -51,7 +51,7 @@ export const PromptEditor = () => {
         promptEditorSelectors.selectCurrentPromptName(state)
     )
     const prompt = useMemoSelector((state) =>
-        promptsSelectors.selectPromptByName(state, promptName)
+        promptName ? promptsSelectors.selectPromptByName(state, promptName) : undefined
     )
 
     const handlePromptNodeAdd = useCallback(
@@ -91,7 +91,7 @@ export const PromptEditor = () => {
     )
 
     const handlePromptSelection = useCallback(
-        (promptName: string) => {
+        (promptName: string | null) => {
             dispatch(promptEditorActions.setCurrentPrompt(promptName))
         },
         [dispatch]

@@ -11,10 +11,13 @@ import { promptEditorSelectors } from '../../+state/prompt/prompt-editor/prompt-
 const PromptNodeAdd = (props: { onNodeAdd: (node: GenericNode) => void }) => {
     const { onNodeAdd } = props
 
-    const names: string[] = [
+    const dateNodeNames: string[] = [
         '',
         ...useMemoSelector((state) => dataNodesSelectors.selectDataNodeNames(state)),
     ]
+    const promptName = useMemoSelector((state) =>
+        promptEditorSelectors.selectCurrentPromptName(state)
+    )
     const [selectedNodeName, setSelectedNodeName] = useState<string>('')
     const node = useGenericPromptNodeFromDataNode({
         id: '-1',
@@ -31,18 +34,18 @@ const PromptNodeAdd = (props: { onNodeAdd: (node: GenericNode) => void }) => {
     )
 
     const handlePromptNodeAdd = useCallback(() => {
-        if (node) {
+        if (node && promptName !== null) {
             console.log('Node creation', node)
             onNodeAdd(node)
         }
-    }, [node, onNodeAdd])
+    }, [node, onNodeAdd, promptName])
 
     return (
         <Flex gap={2} direction="column">
             <FormControl>
                 <FormLabel>Nodes</FormLabel>
                 <Select onChange={handlePromptNodeSelection}>
-                    {names?.map((name, index) => {
+                    {dateNodeNames?.map((name, index) => {
                         return (
                             <option key={index} value={name}>
                                 {name}
@@ -58,7 +61,7 @@ const PromptNodeAdd = (props: { onNodeAdd: (node: GenericNode) => void }) => {
     )
 }
 
-const PromptSelector = (props: { onPromptNameSelected: (promptName: string) => void }) => {
+const PromptSelector = (props: { onPromptNameSelected: (promptName: string | null) => void }) => {
     const { onPromptNameSelected } = props
 
     const promptNames = useMemoSelector((state: AppState) =>
@@ -74,6 +77,12 @@ const PromptSelector = (props: { onPromptNameSelected: (promptName: string) => v
     const handlePromptSelection = useCallback(
         (ev: ChangeEvent<HTMLSelectElement>) => {
             const { value } = ev?.target as unknown as { value: string }
+
+            if (value === '#') {
+                onPromptNameSelected?.(null)
+                return
+            }
+
             if (value) {
                 onPromptNameSelected?.(value)
             }
@@ -84,7 +93,7 @@ const PromptSelector = (props: { onPromptNameSelected: (promptName: string) => v
     return (
         <FormControl>
             <FormLabel>Prompt</FormLabel>
-            <Select onChange={handlePromptSelection} value={selectedPromptName}>
+            <Select onChange={handlePromptSelection} value={selectedPromptName ?? '#'}>
                 {promptNames &&
                     promptNames.map((name) => {
                         return name ? (
@@ -103,7 +112,7 @@ const PromptSelector = (props: { onPromptNameSelected: (promptName: string) => v
 }
 
 export const PromptProperties = (props: {
-    onPromptNameSelected: (prompt: string) => void
+    onPromptNameSelected: (prompt: string | null) => void
     onPromptNodeAdd: (node: GenericNode) => void
 }) => {
     const { onPromptNameSelected, onPromptNodeAdd } = props

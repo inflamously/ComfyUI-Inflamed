@@ -61,6 +61,14 @@ export const mapComfyuiDataNodeAsGenericPromptNode = (id: string, dataNode: Abst
 
     const { name } = dataNode
 
+    // TODO: Temporarily limit to PreviewImage and LoadImage
+    if (!['PreviewImage', 'LoadImage'].includes(name)) {
+        console.error(`Unsupported node type "${name}"`)
+        return undefined
+    }
+
+    console.log('dataNode', dataNode)
+
     return promptNodeGeneric(
         {
             id,

@@ -1,7 +1,10 @@
 // tsconfig.prod.json
 {
   "extends": "./tsconfig",
+  "compilerOptions": {
+    "sourceMap": false
+  },
   "exclude": [
-    "./src/**/*.spec.ts",
+    "./src/**/*.spec.ts"
   ]
 }
