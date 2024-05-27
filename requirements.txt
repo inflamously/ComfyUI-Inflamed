@@ -10,5 +10,9 @@ Pillow
 scipy
 tqdm
 psutil
+
+#non essential dependencies:
 kornia>=0.7.1
+spandrel
+
 clip-interrogator==0.5.4
